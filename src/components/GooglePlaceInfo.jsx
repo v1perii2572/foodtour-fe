@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 import { MdAccessTime } from "react-icons/md";
 import { useEffect, useState } from "react";
+import config from "../config";
 
 export default function GooglePlaceInfo({ name, address }) {
   const [data, setData] = useState(null);
@@ -18,14 +19,11 @@ export default function GooglePlaceInfo({ name, address }) {
       try {
         setError(null);
         setData(null);
-        const response = await fetch(
-          "https://localhost:7298/api/Place/details",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ input: name + ", " + address }),
-          }
-        );
+        const response = await fetch(`${config.apiUrl}/api/Place/details`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ input: name + ", " + address }),
+        });
 
         if (!response.ok) {
           const text = await response.text();
