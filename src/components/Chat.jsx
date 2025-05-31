@@ -36,7 +36,7 @@ export default function Chat({ token, onPlacesSelected }) {
     setCanSaveRoute(false);
 
     try {
-      const res = await fetch(`${config.apiUrl}/api/Chat/message`, {
+      const res = await fetch(`${config.apiUrl}/api/chat/message`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export default function Chat({ token, onPlacesSelected }) {
       return;
     }
     try {
-      const res = await fetch(`${config.apiUrl}/api/Chat/save-route`, {
+      const res = await fetch(`${config.apiUrl}/api/chat/save-route`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
