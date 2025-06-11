@@ -78,7 +78,7 @@ export default function Header({ username, onLogout }) {
             className="block px-4 py-2 text-green-700 font-semibold hover:text-green-400 transition-colors"
             onClick={() => setMenuOpen(false)}
           >
-            Chat
+            Chatbot AI
           </Link>
 
           {username ? (
