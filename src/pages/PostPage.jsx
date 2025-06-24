@@ -110,7 +110,7 @@ export default function PostPage({ token, username }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         {/* Create Post Form */}
         <div className="bg-white rounded-lg shadow-md mb-6">
@@ -188,12 +188,12 @@ export default function PostPage({ token, username }) {
                     {post.content}
                   </div>
                   {post.imageUrls?.length > 0 && (
-                    <div className="mt-3 grid grid-cols-2 gap-2">
+                    <div className="mt-3 flex justify-center">
                       {post.imageUrls.map((url, i) => (
                         <img
                           key={i}
                           src={url}
-                          className="w-full h-48 object-cover rounded-lg"
+                          className="max-w-full h-96 object-contain rounded-lg"
                           alt="Post"
                         />
                       ))}
