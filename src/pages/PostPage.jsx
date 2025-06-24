@@ -10,6 +10,8 @@ export default function PostPage({ token, username }) {
   const [commentText, setCommentText] = useState({});
   const [copiedPostId, setCopiedPostId] = useState(null);
   const [showAllComments, setShowAllComments] = useState({});
+  const [search, setSearch] = useState("");
+  const [filterDays, setFilterDays] = useState("all");
 
   const userId = localStorage.getItem("userId");
 
@@ -64,7 +66,7 @@ export default function PostPage({ token, username }) {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       loadPosts();
-    } catch (err) {
+    } catch {
       alert("Bạn đã thích bài viết này rồi.");
     }
   };
@@ -96,14 +98,29 @@ export default function PostPage({ token, username }) {
       if (Array.isArray(res.data)) {
         setPosts(res.data);
       } else {
-        console.error("Expected array but got:", res.data);
         setPosts([]);
       }
-    } catch (err) {
-      console.error("Failed to load posts:", err);
+    } catch {
       setPosts([]);
     }
   };
+
+  const filteredPosts = posts.filter((post) => {
+    const matchSearch =
+      post.content.toLowerCase().includes(search.toLowerCase()) ||
+      post.userName.toLowerCase().includes(search.toLowerCase());
+
+    let matchDate = true;
+    if (filterDays !== "all") {
+      const postDate = new Date(post.createdAt);
+      const now = new Date();
+      const daysAgo = new Date();
+      daysAgo.setDate(now.getDate() - parseInt(filterDays));
+      matchDate = postDate >= daysAgo;
+    }
+
+    return matchSearch && matchDate;
+  });
 
   useEffect(() => {
     loadPosts();
@@ -112,7 +129,6 @@ export default function PostPage({ token, username }) {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        {/* Create Post Form */}
         <div className="bg-white rounded-lg shadow-md mb-6">
           <div className="p-4 border-b border-gray-200">
             <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
@@ -162,10 +178,29 @@ export default function PostPage({ token, username }) {
           </form>
         </div>
 
-        {/* Posts List */}
+        <div className="mb-6 flex flex-col sm:flex-row items-center gap-4">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Tìm bài viết hoặc người đăng..."
+            className="flex-1 border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <select
+            value={filterDays}
+            onChange={(e) => setFilterDays(e.target.value)}
+            className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          >
+            <option value="all">Tất cả ngày</option>
+            <option value="1">Hôm nay</option>
+            <option value="7">7 ngày gần đây</option>
+            <option value="30">30 ngày gần đây</option>
+          </select>
+        </div>
+
         <div className="space-y-6">
-          {Array.isArray(posts) &&
-            posts.map((post) => (
+          {Array.isArray(filteredPosts) &&
+            filteredPosts.map((post) => (
               <div
                 key={post.id}
                 className="bg-white rounded-lg shadow-md overflow-hidden"
