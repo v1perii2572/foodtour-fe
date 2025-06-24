@@ -97,7 +97,19 @@ export default function App() {
         <Route path="/posts" element={<ProtectedRoute element={PostPage} />} />
         <Route
           path="/posts/:id"
-          element={<ProtectedRoute element={PostDetail} />}
+          element={
+            token ? (
+              <Layout username={username} onLogout={handleLogout}>
+                <PostDetail
+                  token={token}
+                  username={username}
+                  onLogout={handleLogout}
+                />
+              </Layout>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
       </Routes>
     </Router>
