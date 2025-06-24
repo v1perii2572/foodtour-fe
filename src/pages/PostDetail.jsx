@@ -17,31 +17,49 @@ export default function PostDetail() {
   if (post === null) return <div className="p-4">Không tìm thấy bài viết.</div>;
 
   return (
-    <div className="max-w-2xl mx-auto p-4 space-y-4">
-      <div className="text-green-700 font-bold text-lg">{post.userName}</div>
-      <div className="whitespace-pre-line text-gray-800">{post.content}</div>
-      <div className="flex gap-2 flex-wrap">
-        {post.imageUrls?.map((url, i) => (
-          <img
-            key={i}
-            src={url}
-            className="w-32 h-32 object-cover rounded border"
-          />
-        ))}
-      </div>
-      <div className="text-sm text-gray-500">
-        {new Date(post.createdAt).toLocaleString("vi-VN")}
-      </div>
-      <div className="mt-2">
-        <div className="text-sm font-semibold text-gray-700 mb-1">
-          Bình luận
-        </div>
-        {post.comments?.map((c, i) => (
-          <div key={i} className="text-sm border-t pt-1">
-            <span className="text-green-700 font-medium">{c.userName}:</span>{" "}
-            {c.content}
+    <div className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-semibold">
+              {post.userName?.[0]?.toUpperCase() || "U"}
+            </div>
+            <div>
+              <div className="font-semibold text-gray-800">{post.userName}</div>
+              <div className="text-xs text-gray-500">
+                {new Date(post.createdAt).toLocaleString("vi-VN")}
+              </div>
+            </div>
           </div>
-        ))}
+          <div className="whitespace-pre-line text-gray-800">
+            {post.content}
+          </div>
+          {post.imageUrls?.length > 0 && (
+            <div className="flex justify-center">
+              {post.imageUrls.map((url, i) => (
+                <img
+                  key={i}
+                  src={url}
+                  className="max-w-full h-96 object-contain rounded-lg"
+                  alt="Post"
+                />
+              ))}
+            </div>
+          )}
+          <div className="mt-4">
+            <div className="text-sm font-semibold text-gray-700 mb-2">
+              Bình luận
+            </div>
+            {post.comments?.map((c, i) => (
+              <div key={i} className="text-sm border-t pt-2">
+                <span className="text-green-700 font-medium">
+                  {c.userName}:
+                </span>{" "}
+                <span className="text-gray-700">{c.content}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
