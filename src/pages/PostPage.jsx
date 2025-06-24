@@ -111,32 +111,6 @@ export default function PostPage({ token, username }) {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <div className="bg-white shadow-md p-4 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="Logo" className="h-10" />
-          <h1 className="text-xl font-bold text-green-700">EAT AROUND</h1>
-        </div>
-        <div className="flex space-x-4">
-          <a href="#" className="text-green-600 hover:underline">
-            Trang chủ
-          </a>
-          <a href="#" className="text-green-600 hover:underline">
-            ChatBot
-          </a>
-          <a href="#" className="text-green-600 hover:underline">
-            Bài viết
-          </a>
-          <a href="#" className="text-green-600 hover:underline">
-            Lợi nhuận đã lưu
-          </a>
-          <span className="text-green-600 bg-green-100 px-2 py-1 rounded-full">
-            Xin chào, 123
-          </span>
-        </div>
-      </div>
-
-      {/* Main Content */}
       <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         {/* Create Post Form */}
         <div className="bg-white rounded-lg shadow-md mb-6">
