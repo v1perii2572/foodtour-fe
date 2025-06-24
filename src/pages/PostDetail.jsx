@@ -38,7 +38,7 @@ export default function PostDetail() {
         </div>
         {post.comments?.map((c, i) => (
           <div key={i} className="text-sm border-t pt-1">
-            <span className="text-green-700 font-medium">{c.userEmail}:</span>{" "}
+            <span className="text-green-700 font-medium">{c.userName}:</span>{" "}
             {c.content}
           </div>
         ))}
