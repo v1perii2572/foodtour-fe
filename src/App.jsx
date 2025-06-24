@@ -24,12 +24,15 @@ export default function App() {
     localStorage.getItem("username") || ""
   );
 
-  const handleLogin = (token, user) => {
-    const shortName = user.name;
+  const [userId, setUserId] = useState(localStorage.getItem("userId") || "");
+
+  const handleLogin = ({ token, username, userId }) => {
     setToken(token);
-    setUsername(shortName);
+    setUsername(username);
+    setUserId(userId);
     localStorage.setItem("token", token);
-    localStorage.setItem("username", shortName);
+    localStorage.setItem("username", username);
+    localStorage.setItem("userId", userId);
   };
 
   const handleLogout = () => {
@@ -37,6 +40,8 @@ export default function App() {
     setUsername("");
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    localStorage.removeItem("userId");
+    setUserId("");
   };
 
   const ProtectedRoute = ({ element: Element }) =>
@@ -94,7 +99,14 @@ export default function App() {
           path="/goi-dang-ky"
           element={<ProtectedRoute element={SubscriptionPage} />}
         />
-        <Route path="/posts" element={<ProtectedRoute element={PostPage} />} />
+        <Route
+          path="/posts"
+          element={
+            <ProtectedRoute
+              element={(props) => <PostPage {...props} userId={userId} />}
+            />
+          }
+        />
         <Route
           path="/posts/:id"
           element={

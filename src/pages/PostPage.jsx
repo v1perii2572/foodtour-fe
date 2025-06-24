@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import config from "../config";
 
-export default function PostPage({ token, username }) {
+export default function PostPage({ token, username, userId }) {
   const [content, setContent] = useState("");
   const [images, setImages] = useState([]);
   const [preview, setPreview] = useState([]);
@@ -12,8 +12,6 @@ export default function PostPage({ token, username }) {
   const [showAllComments, setShowAllComments] = useState({});
   const [search, setSearch] = useState("");
   const [filterDays, setFilterDays] = useState("all");
-
-  const userId = localStorage.getItem("userId");
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -59,16 +57,12 @@ export default function PostPage({ token, username }) {
   };
 
   const handleLike = async (postId) => {
-    try {
-      await axios.post(
-        `${config.apiUrl}/api/Posts/${postId}/like?userId=${userId}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      loadPosts();
-    } catch {
-      alert("Bạn đã thích bài viết này rồi.");
-    }
+    await axios.post(
+      `${config.apiUrl}/api/Posts/${postId}/like?userId=${userId}`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    loadPosts();
   };
 
   const handleComment = async (postId) => {
@@ -92,14 +86,11 @@ export default function PostPage({ token, username }) {
 
   const loadPosts = async () => {
     try {
-      const res = await axios.get(`${config.apiUrl}/api/Posts`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (Array.isArray(res.data)) {
-        setPosts(res.data);
-      } else {
-        setPosts([]);
-      }
+      const res = await axios.get(
+        `${config.apiUrl}/api/Posts?userId=${userId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setPosts(Array.isArray(res.data) ? res.data : []);
     } catch {
       setPosts([]);
     }
@@ -199,115 +190,116 @@ export default function PostPage({ token, username }) {
         </div>
 
         <div className="space-y-6">
-          {Array.isArray(filteredPosts) &&
-            filteredPosts.map((post) => (
-              <div
-                key={post.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden"
-              >
-                <div className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-semibold">
-                      {post.userName?.[0]?.toUpperCase() || "U"}
+          {filteredPosts.map((post) => (
+            <div
+              key={post.id}
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+            >
+              <div className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-semibold">
+                    {post.userName?.[0]?.toUpperCase() || "U"}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-gray-800">
+                      {post.userName}
                     </div>
-                    <div>
-                      <div className="font-semibold text-gray-800">
-                        {post.userName}
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {new Date(post.createdAt).toLocaleString("vi-VN")}
-                      </div>
+                    <div className="text-xs text-gray-500">
+                      {new Date(post.createdAt).toLocaleString("vi-VN")}
                     </div>
                   </div>
-                  <div className="mt-3 text-gray-800 whitespace-pre-line">
-                    {post.content}
-                  </div>
-                  {post.imageUrls?.length > 0 && (
-                    <div className="mt-3 flex justify-center">
-                      {post.imageUrls.map((url, i) => (
-                        <img
-                          key={i}
-                          src={url}
-                          className="max-w-full h-96 object-contain rounded-lg"
-                          alt="Post"
-                        />
-                      ))}
-                    </div>
-                  )}
                 </div>
-                <div className="px-4 py-2 border-t border-gray-200 flex justify-between text-sm text-gray-600">
-                  <span>❤️ {post.likeCount || 0} lượt thích</span>
-                  <span>{post.comments?.length || 0} bình luận</span>
+                <div className="mt-3 text-gray-800 whitespace-pre-line">
+                  {post.content}
                 </div>
-                <div className="border-t border-gray-200 flex divide-x divide-gray-200">
-                  <button
-                    onClick={() => handleLike(post.id)}
-                    className="flex-1 py-2 text-gray-600 hover:bg-gray-100 transition flex items-center justify-center gap-2 text-sm font-medium"
-                  >
-                    <span className="text-green-600">❤️</span> Thích
-                  </button>
-                  <button
-                    onClick={() => handleShare(post.id)}
-                    className="flex-1 py-2 text-gray-600 hover:bg-gray-100 transition flex items-center justify-center gap-2 text-sm font-medium"
-                  >
-                    <span className="text-blue-600">🔗</span> Chia sẻ
-                  </button>
-                </div>
-                {copiedPostId === post.id && (
-                  <div className="px-4 py-1 text-xs text-gray-500 bg-gray-50">
-                    Đã sao chép liên kết!
+                {post.imageUrls?.length > 0 && (
+                  <div className="mt-3 flex justify-center">
+                    {post.imageUrls.map((url, i) => (
+                      <img
+                        key={i}
+                        src={url}
+                        className="max-w-full h-96 object-contain rounded-lg"
+                        alt="Post"
+                      />
+                    ))}
                   </div>
                 )}
-                <div className="p-4 border-t border-gray-200">
-                  {(showAllComments[post.id]
-                    ? post.comments
-                    : post.comments?.slice(0, 3)
-                  )?.map((c, i) => (
-                    <div key={i} className="mb-2 text-sm">
-                      <span className="font-medium text-gray-800">
-                        {c.userName}:
-                      </span>{" "}
-                      <span className="text-gray-700">{c.content}</span>
-                    </div>
-                  ))}
-                  {post.comments?.length > 3 && (
-                    <button
-                      className="text-blue-600 text-sm hover:underline"
-                      onClick={() =>
-                        setShowAllComments((prev) => ({
-                          ...prev,
-                          [post.id]: !prev[post.id],
-                        }))
-                      }
-                    >
-                      {showAllComments[post.id]
-                        ? "Ẩn bớt bình luận"
-                        : "Xem thêm bình luận"}
-                    </button>
-                  )}
-                  <div className="mt-3 flex gap-2">
-                    <input
-                      type="text"
-                      value={commentText[post.id] || ""}
-                      onChange={(e) =>
-                        setCommentText((prev) => ({
-                          ...prev,
-                          [post.id]: e.target.value,
-                        }))
-                      }
-                      placeholder="Viết bình luận..."
-                      className="flex-1 border border-gray-300 px-3 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-                    />
-                    <button
-                      onClick={() => handleComment(post.id)}
-                      className="bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
-                    >
-                      Gửi
-                    </button>
+              </div>
+              <div className="px-4 py-2 border-t border-gray-200 flex justify-between text-sm text-gray-600">
+                <span>❤️ {post.likeCount || 0} lượt thích</span>
+                <span>{post.comments?.length || 0} bình luận</span>
+              </div>
+              <div className="border-t border-gray-200 flex divide-x divide-gray-200">
+                <button
+                  onClick={() => handleLike(post.id)}
+                  className={`flex-1 py-2 hover:bg-gray-100 transition flex items-center justify-center gap-2 text-sm font-medium ${
+                    post.isLiked ? "text-red-600" : "text-gray-600"
+                  }`}
+                >
+                  <span>{post.isLiked ? "❤️" : "🤍"}</span> Thích
+                </button>
+                <button
+                  onClick={() => handleShare(post.id)}
+                  className="flex-1 py-2 text-gray-600 hover:bg-gray-100 transition flex items-center justify-center gap-2 text-sm font-medium"
+                >
+                  <span className="text-blue-600">🔗</span> Chia sẻ
+                </button>
+              </div>
+              {copiedPostId === post.id && (
+                <div className="px-4 py-1 text-xs text-gray-500 bg-gray-50">
+                  Đã sao chép liên kết!
+                </div>
+              )}
+              <div className="p-4 border-t border-gray-200">
+                {(showAllComments[post.id]
+                  ? post.comments
+                  : post.comments?.slice(0, 3)
+                )?.map((c, i) => (
+                  <div key={i} className="mb-2 text-sm">
+                    <span className="font-medium text-gray-800">
+                      {c.userName}:
+                    </span>{" "}
+                    <span className="text-gray-700">{c.content}</span>
                   </div>
+                ))}
+                {post.comments?.length > 3 && (
+                  <button
+                    className="text-blue-600 text-sm hover:underline"
+                    onClick={() =>
+                      setShowAllComments((prev) => ({
+                        ...prev,
+                        [post.id]: !prev[post.id],
+                      }))
+                    }
+                  >
+                    {showAllComments[post.id]
+                      ? "Ẩn bớt bình luận"
+                      : "Xem thêm bình luận"}
+                  </button>
+                )}
+                <div className="mt-3 flex gap-2">
+                  <input
+                    type="text"
+                    value={commentText[post.id] || ""}
+                    onChange={(e) =>
+                      setCommentText((prev) => ({
+                        ...prev,
+                        [post.id]: e.target.value,
+                      }))
+                    }
+                    placeholder="Viết bình luận..."
+                    className="flex-1 border border-gray-300 px-3 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                  <button
+                    onClick={() => handleComment(post.id)}
+                    className="bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
+                  >
+                    Gửi
+                  </button>
                 </div>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
       </div>
     </div>
