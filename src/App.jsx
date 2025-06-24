@@ -1,4 +1,5 @@
-import { useState } from "react";
+// App.jsx
+import { useState, useEffect } from "react";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import {
   BrowserRouter as Router,
@@ -6,7 +7,6 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Home from "./pages/Home";
@@ -23,31 +23,30 @@ export default function App() {
   const [username, setUsername] = useState(
     localStorage.getItem("username") || ""
   );
-
   const [userId, setUserId] = useState(localStorage.getItem("userId") || "");
 
   const handleLogin = ({ token, username, userId }) => {
-    setToken(token);
-    setUsername(username);
-    setUserId(userId);
     localStorage.setItem("token", token);
     localStorage.setItem("username", username);
     localStorage.setItem("userId", userId);
+    setToken(token);
+    setUsername(username);
+    setUserId(userId);
   };
 
   const handleLogout = () => {
-    setToken("");
-    setUsername("");
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     localStorage.removeItem("userId");
+    setToken("");
+    setUsername("");
     setUserId("");
   };
 
   const ProtectedRoute = ({ element: Element }) =>
     token ? (
       <Layout username={username} onLogout={handleLogout}>
-        <Element token={token} username={username} onLogout={handleLogout} />
+        <Element token={token} username={username} userId={userId} />
       </Layout>
     ) : (
       <Navigate to="/login" />
@@ -112,11 +111,7 @@ export default function App() {
           element={
             token ? (
               <Layout username={username} onLogout={handleLogout}>
-                <PostDetail
-                  token={token}
-                  username={username}
-                  onLogout={handleLogout}
-                />
+                <PostDetail token={token} username={username} userId={userId} />
               </Layout>
             ) : (
               <Navigate to="/login" />
