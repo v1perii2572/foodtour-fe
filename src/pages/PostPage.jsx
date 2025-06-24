@@ -53,6 +53,7 @@ export default function PostPage({ token, username, userId }) {
     setContent("");
     setImages([]);
     setPreview([]);
+    document.getElementById("imageInput").value = null;
     loadPosts();
   };
 
@@ -139,6 +140,7 @@ export default function PostPage({ token, username, userId }) {
                 <span className="text-green-600">📷</span>
                 <span className="text-sm text-gray-600">Ảnh</span>
                 <input
+                  id="imageInput"
                   type="file"
                   multiple
                   accept="image/*"
