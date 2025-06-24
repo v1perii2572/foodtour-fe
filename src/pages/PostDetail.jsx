@@ -19,7 +19,7 @@ export default function PostDetail() {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
+        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 space-y-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-semibold">
               {post.userName?.[0]?.toUpperCase() || "U"}
@@ -31,11 +31,11 @@ export default function PostDetail() {
               </div>
             </div>
           </div>
-          <div className="whitespace-pre-line text-gray-800">
+          <div className="whitespace-pre-line text-gray-800 border-t border-gray-200 pt-3">
             {post.content}
           </div>
           {post.imageUrls?.length > 0 && (
-            <div className="flex justify-center">
+            <div className="flex justify-center border-t border-gray-200 pt-3">
               {post.imageUrls.map((url, i) => (
                 <img
                   key={i}
@@ -46,12 +46,12 @@ export default function PostDetail() {
               ))}
             </div>
           )}
-          <div className="mt-4">
+          <div className="border-t border-gray-200 pt-3">
             <div className="text-sm font-semibold text-gray-700 mb-2">
               Bình luận
             </div>
             {post.comments?.map((c, i) => (
-              <div key={i} className="text-sm border-t pt-2">
+              <div key={i} className="text-sm border-b border-gray-200 py-2">
                 <span className="text-green-700 font-medium">
                   {c.userName}:
                 </span>{" "}
