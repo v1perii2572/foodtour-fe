@@ -18,11 +18,11 @@ export default function Header({ username, onLogout }) {
 
   return (
     <header className="bg-white shadow sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-3">
-          <img src="/vn.png" alt="Logo" className="h-20 w-auto" />
+          <img src="/vn.png" alt="Logo" className="h-14 w-auto" />
           <h1
-            className="text-2xl font-bold text-green-700 select-none"
+            className="text-xl sm:text-2xl font-bold text-green-700 select-none"
             style={{ fontFamily: "iCielBC Lodestone" }}
           >
             Eat Around
@@ -32,14 +32,12 @@ export default function Header({ username, onLogout }) {
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="lg:hidden p-2 rounded-md text-green-700 hover:bg-green-100 focus:outline-none"
-          aria-label="Toggle menu"
         >
           <svg
             className="w-6 h-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
           >
             {menuOpen ? (
               <path
@@ -60,52 +58,49 @@ export default function Header({ username, onLogout }) {
         </button>
 
         <nav
-          className={`flex flex-col lg:flex-row lg:items-center lg:gap-6 absolute lg:static bg-white lg:bg-transparent w-full lg:w-auto left-0 top-full lg:top-auto shadow lg:shadow-none transition-transform transform lg:translate-x-0 ${
-            menuOpen ? "translate-y-0" : "-translate-y-full"
-          } lg:translate-y-0`}
+          className={`${
+            menuOpen ? "block" : "hidden"
+          } lg:flex flex-col lg:flex-row lg:items-center absolute lg:static top-full left-0 w-full lg:w-auto bg-white lg:bg-transparent shadow lg:shadow-none transition-all duration-200 lg:translate-y-0`}
         >
           <Link
             to="/"
-            className="block px-4 py-2 text-green-700 font-semibold hover:text-green-400 transition-colors"
             onClick={() => setMenuOpen(false)}
+            className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
           >
             Trang chủ
           </Link>
-
           <Link
             to="/chat"
-            className="block px-4 py-2 text-green-700 font-semibold hover:text-green-400 transition-colors"
             onClick={() => setMenuOpen(false)}
+            className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
           >
             Chatbot AI
           </Link>
-
           {username && (
             <Link
               to="/posts"
-              className="block px-4 py-2 text-green-700 font-semibold hover:text-green-400 transition-colors"
               onClick={() => setMenuOpen(false)}
+              className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
             >
               Bài viết
             </Link>
           )}
-
           {username ? (
             <>
               <Link
                 to="/saved"
-                className="block px-4 py-2 text-green-700 font-semibold hover:text-green-400 transition-colors"
                 onClick={() => setMenuOpen(false)}
+                className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
               >
                 Lộ trình đã lưu
               </Link>
 
-              <div className="relative" ref={dropdownRef}>
+              <div className="relative px-4 py-2" ref={dropdownRef}>
                 <button
-                  className="flex items-center gap-2 px-4 py-2 text-green-700 font-semibold hover:text-green-400 focus:outline-none"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  className="flex items-center gap-2 text-green-700 font-semibold hover:text-green-500 focus:outline-none"
                 >
-                  <span>
+                  <span className="hidden sm:inline">
                     👋 Xin chào, <strong>{username}</strong>
                   </span>
                   <img
@@ -114,11 +109,10 @@ export default function Header({ username, onLogout }) {
                     className="w-8 h-8 rounded-full"
                   />
                   <svg
-                    className="w-4 h-4 text-green-700"
+                    className="w-4 h-4"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
                       strokeLinecap="round"
@@ -129,27 +123,15 @@ export default function Header({ username, onLogout }) {
                   </svg>
                 </button>
                 {userDropdownOpen && (
-                  <ul className="absolute right-0 mt-1 bg-white border border-green-200 rounded shadow-md w-48 z-50">
-                    <li>
-                      <Link
-                        to="/chu-san"
-                        className="block px-4 py-2 hover:bg-green-100 text-green-700"
-                        onClick={() => {
-                          setUserDropdownOpen(false);
-                          setMenuOpen(false);
-                        }}
-                      >
-                        Trang quản trị
-                      </Link>
-                    </li>
+                  <ul className="absolute right-0 mt-2 w-48 bg-white border rounded shadow z-50">
                     <li>
                       <Link
                         to="/trang-ca-nhan"
-                        className="block px-4 py-2 hover:bg-green-100 text-green-700"
                         onClick={() => {
                           setUserDropdownOpen(false);
                           setMenuOpen(false);
                         }}
+                        className="block px-4 py-2 hover:bg-green-100 text-green-700"
                       >
                         Thông tin cá nhân
                       </Link>
@@ -173,8 +155,8 @@ export default function Header({ username, onLogout }) {
           ) : (
             <Link
               to="/login"
-              className="block px-4 py-2 mt-2 lg:mt-0 bg-green-600 hover:bg-green-700 text-white rounded transition"
               onClick={() => setMenuOpen(false)}
+              className="block px-4 py-2 mt-2 lg:mt-0 bg-green-600 hover:bg-green-700 text-white rounded transition"
             >
               Đăng nhập
             </Link>
