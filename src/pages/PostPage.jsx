@@ -9,6 +9,7 @@ export default function PostPage({ token, username }) {
   const [posts, setPosts] = useState([]);
   const [commentText, setCommentText] = useState({});
   const [copiedPostId, setCopiedPostId] = useState(null);
+  const [showAllComments, setShowAllComments] = useState({});
 
   const userId = localStorage.getItem("userId");
 
@@ -196,14 +197,32 @@ export default function PostPage({ token, username }) {
                 <div className="text-sm text-gray-700 font-semibold">
                   Bình luận
                 </div>
-                {post.comments?.map((c, i) => (
+                {(showAllComments[post.id]
+                  ? post.comments
+                  : post.comments?.slice(0, 3)
+                )?.map((c, i) => (
                   <div key={i} className="text-sm border-t pt-1">
                     <span className="text-green-700 font-medium">
-                      {c.userEmail}:
+                      {c.userName}:
                     </span>{" "}
                     {c.content}
                   </div>
                 ))}
+                {post.comments?.length > 3 && (
+                  <button
+                    className="text-blue-600 text-sm mt-1 hover:underline"
+                    onClick={() =>
+                      setShowAllComments((prev) => ({
+                        ...prev,
+                        [post.id]: !prev[post.id],
+                      }))
+                    }
+                  >
+                    {showAllComments[post.id]
+                      ? "Ẩn bớt bình luận"
+                      : "Xem thêm bình luận"}
+                  </button>
+                )}
                 <div className="flex mt-2 gap-2">
                   <input
                     type="text"
