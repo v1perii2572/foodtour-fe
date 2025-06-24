@@ -15,6 +15,8 @@ import RouteViewer from "./pages/RouteViewer";
 import ChatPage from "./pages/ChatPage";
 import Layout from "./components/Layout";
 import ProfilePage from "./pages/ProfilePage";
+import PostPage from "./pages/PostPage";
+import PostDetail from "./pages/PostDetail";
 
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -75,7 +77,6 @@ export default function App() {
             </Layout>
           }
         />
-
         <Route
           path="/saved"
           element={<ProtectedRoute element={SavedRoutes} />}
@@ -92,6 +93,11 @@ export default function App() {
         <Route
           path="/goi-dang-ky"
           element={<ProtectedRoute element={SubscriptionPage} />}
+        />
+        <Route path="/posts" element={<ProtectedRoute element={PostPage} />} />
+        <Route
+          path="/posts/:id"
+          element={<ProtectedRoute element={PostDetail} />}
         />
       </Routes>
     </Router>

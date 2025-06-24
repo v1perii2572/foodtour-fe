@@ -12,6 +12,7 @@ export default function Login({ onLogin }) {
     e.preventDefault();
     try {
       const data = await login(email, password);
+      console.log("LOGIN RESPONSE:", data);
       const user = data.user || { email };
       onLogin(data.token, user);
     } catch {

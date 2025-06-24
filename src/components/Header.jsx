@@ -12,7 +12,6 @@ export default function Header({ username, onLogout }) {
         setUserDropdownOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -80,6 +79,16 @@ export default function Header({ username, onLogout }) {
           >
             Chatbot AI
           </Link>
+
+          {username && (
+            <Link
+              to="/posts"
+              className="block px-4 py-2 text-green-700 font-semibold hover:text-green-400 transition-colors"
+              onClick={() => setMenuOpen(false)}
+            >
+              Bài viết
+            </Link>
+          )}
 
           {username ? (
             <>
