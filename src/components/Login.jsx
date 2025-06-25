@@ -12,16 +12,18 @@ export default function Login({ onLogin }) {
 
       console.log("Login response:", res);
 
-      const username = res.username || res.email;
+      const token = res.token;
+      const username = res.user.name;
+      const userId = res.user.id;
 
-      localStorage.setItem("token", res.token);
-      localStorage.setItem("userId", res.userId);
+      localStorage.setItem("token", token);
       localStorage.setItem("username", username);
+      localStorage.setItem("userId", userId);
 
       onLogin({
-        token: res.token,
-        userId: res.userId,
-        username: username,
+        token,
+        username,
+        userId,
       });
     } catch (err) {
       alert("Đăng nhập thất bại");
