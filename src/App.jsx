@@ -1,4 +1,3 @@
-// App.jsx
 import { useState, useEffect } from "react";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import {
@@ -19,11 +18,20 @@ import PostPage from "./pages/PostPage";
 import PostDetail from "./pages/PostDetail";
 
 export default function App() {
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const [username, setUsername] = useState(
-    localStorage.getItem("username") || ""
-  );
-  const [userId, setUserId] = useState(localStorage.getItem("userId") || "");
+  const [token, setToken] = useState("");
+  const [username, setUsername] = useState("");
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedUsername = localStorage.getItem("username");
+    const storedUserId = localStorage.getItem("userId");
+    if (storedToken && storedUsername && storedUserId) {
+      setToken(storedToken);
+      setUsername(storedUsername);
+      setUserId(storedUserId);
+    }
+  }, []);
 
   const handleLogin = ({ token, username, userId }) => {
     localStorage.setItem("token", token);
@@ -35,9 +43,7 @@ export default function App() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    localStorage.removeItem("userId");
+    localStorage.clear();
     setToken("");
     setUsername("");
     setUserId("");
@@ -98,14 +104,7 @@ export default function App() {
           path="/goi-dang-ky"
           element={<ProtectedRoute element={SubscriptionPage} />}
         />
-        <Route
-          path="/posts"
-          element={
-            <ProtectedRoute
-              element={(props) => <PostPage {...props} userId={userId} />}
-            />
-          }
-        />
+        <Route path="/posts" element={<ProtectedRoute element={PostPage} />} />
         <Route
           path="/posts/:id"
           element={

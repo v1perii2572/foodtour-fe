@@ -94,7 +94,6 @@ export default function Header({ username, onLogout }) {
               >
                 Lộ trình đã lưu
               </Link>
-
               <div className="relative px-4 py-2" ref={dropdownRef}>
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
@@ -141,9 +140,6 @@ export default function Header({ username, onLogout }) {
                         onClick={() => {
                           setUserDropdownOpen(false);
                           setMenuOpen(false);
-                          localStorage.removeItem("token");
-                          localStorage.removeItem("userId");
-                          localStorage.removeItem("username");
                           onLogout();
                         }}
                         className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600"
