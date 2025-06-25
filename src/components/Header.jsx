@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export default function Header({ username, onLogout }) {
+export default function Header({ username: initialUsername, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [username, setUsername] = useState(initialUsername);
   const dropdownRef = useRef();
 
   useEffect(() => {
@@ -15,6 +16,11 @@ export default function Header({ username, onLogout }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    setUsername(storedUsername);
+  }, [initialUsername]);
 
   return (
     <header className="bg-white shadow sticky top-0 z-50">
