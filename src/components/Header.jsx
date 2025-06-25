@@ -7,6 +7,9 @@ export default function Header({ onLogout }) {
   const [username, setUsername] = useState(localStorage.getItem("username"));
   const dropdownRef = useRef();
 
+  // DEBUG INIT
+  console.log("Header mounted. Initial username from localStorage:", username);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -20,10 +23,19 @@ export default function Header({ onLogout }) {
   useEffect(() => {
     const interval = setInterval(() => {
       const storedUsername = localStorage.getItem("username");
-      setUsername(storedUsername);
+      if (storedUsername !== username) {
+        console.log(
+          "Detected username change in localStorage:",
+          storedUsername
+        );
+        setUsername(storedUsername);
+      }
     }, 500);
     return () => clearInterval(interval);
-  }, []);
+  }, [username]);
+
+  // DEBUG DISPLAY
+  console.log("Current username in Header render:", username);
 
   return (
     <header className="bg-white shadow sticky top-0 z-50">
@@ -130,34 +142,6 @@ export default function Header({ onLogout }) {
                     />
                   </svg>
                 </button>
-                {userDropdownOpen && (
-                  <ul className="absolute right-0 mt-2 w-48 bg-white border rounded shadow z-50">
-                    <li>
-                      <Link
-                        to="/trang-ca-nhan"
-                        onClick={() => {
-                          setUserDropdownOpen(false);
-                          setMenuOpen(false);
-                        }}
-                        className="block px-4 py-2 hover:bg-green-100 text-green-700"
-                      >
-                        Thông tin cá nhân
-                      </Link>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => {
-                          setUserDropdownOpen(false);
-                          setMenuOpen(false);
-                          onLogout();
-                        }}
-                        className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600"
-                      >
-                        Đăng xuất
-                      </button>
-                    </li>
-                  </ul>
-                )}
               </div>
             </>
           ) : (
