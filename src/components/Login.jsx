@@ -10,8 +10,6 @@ export default function Login({ onLogin }) {
     try {
       const res = await login(email, password);
 
-      console.log("Login response:", res);
-
       const token = res.token;
       const username = res.user.name;
       const userId = res.user.id;
