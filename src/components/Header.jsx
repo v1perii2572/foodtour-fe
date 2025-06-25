@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export default function Header({ username: initialUsername, onLogout }) {
+export default function Header({ onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-  const [username, setUsername] = useState(initialUsername);
+  const [username, setUsername] = useState(localStorage.getItem("username"));
   const dropdownRef = useRef();
 
   useEffect(() => {
@@ -18,9 +18,12 @@ export default function Header({ username: initialUsername, onLogout }) {
   }, []);
 
   useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    setUsername(storedUsername);
-  }, [initialUsername]);
+    const interval = setInterval(() => {
+      const storedUsername = localStorage.getItem("username");
+      setUsername(storedUsername);
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <header className="bg-white shadow sticky top-0 z-50">
