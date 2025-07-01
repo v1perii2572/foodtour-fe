@@ -16,6 +16,7 @@ import {
   FaPlay,
   FaMapMarkerAlt,
 } from "react-icons/fa";
+import GooglePlaceInfo from "../components/GooglePlaceInfo";
 import { useState } from "react";
 
 const faqData = [
@@ -89,13 +90,14 @@ function FAQSection() {
 }
 
 export default function Home() {
+  const [selectedPlace, setSelectedPlace] = useState(null);
   return (
     <>
       <section className="relative text-white py-28 overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center z-0"
           style={{
-             backgroundImage: "url('/hero1.png')",
+            backgroundImage: "url('/hero1.png')",
           }}
         >
           <div className="absolute inset-0 bg-green-900 opacity-60"></div>{" "}
@@ -134,7 +136,33 @@ export default function Home() {
       </section>
 
       <div className="container mx-auto max-w-7xl px-4 py-16">
-        <TopNearbyPlaces />
+        <TopNearbyPlaces onPlaceClick={(place) => setSelectedPlace(place)} />
+        {selectedPlace && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-start overflow-auto pt-10"
+            onClick={() => setSelectedPlace(null)}
+          >
+            <div
+              className="bg-white rounded-2xl shadow-xl max-w-4xl w-full mx-4 relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setSelectedPlace(null)}
+                className="absolute top-3 right-4 text-green-800 text-3xl font-bold"
+              >
+                ✕
+              </button>
+              <GooglePlaceInfo
+                name={selectedPlace.name}
+                address={
+                  selectedPlace.vicinity ||
+                  selectedPlace.formatted_address ||
+                  ""
+                }
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       <section className="container mx-auto py-20 px-4 max-w-7xl">

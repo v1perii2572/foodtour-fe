@@ -2,16 +2,18 @@ import { useEffect, useState } from "react";
 import { FaMapMarkerAlt, FaPhoneAlt, FaStar, FaUtensils } from "react-icons/fa";
 import config from "../config";
 
-function PlaceCard({ place }) {
+function PlaceCard({ place, onClick }) {
   const apiKey = config.google1ApiKey;
 
-  const photoUrl =
-    place.photos && place.photos.length > 0
-      ? `https://maps.gomaps.pro/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${apiKey}`
-      : "/no-image.png";
+  const photoUrl = place.photos?.[0]?.photo_reference
+    ? `https://maps.gomaps.pro/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${apiKey}`
+    : "/no-image.png";
 
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer flex flex-col">
+    <div
+      onClick={() => onClick(place)}
+      className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer flex flex-col"
+    >
       <img
         src={photoUrl}
         alt={place.name}
@@ -21,31 +23,12 @@ function PlaceCard({ place }) {
         <h3 className="text-lg font-bold text-green-800 mb-2 flex items-center gap-2">
           <FaUtensils className="text-green-600" /> {place.name}
         </h3>
-
         <p className="text-gray-600 text-sm mb-1 flex items-center gap-2">
           <FaMapMarkerAlt className="text-green-500" />
           {place.vicinity ||
             place.formatted_address ||
             "Địa chỉ không xác định"}
         </p>
-
-        {place.formatted_phone_number && (
-          <p className="text-gray-600 text-sm mb-1 flex items-center gap-2">
-            <FaPhoneAlt className="text-green-500" />
-            {place.formatted_phone_number}
-          </p>
-        )}
-
-        {place.opening_hours && place.opening_hours.open_now !== undefined && (
-          <p
-            className={`text-sm font-semibold mb-1 ${
-              place.opening_hours.open_now ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {place.opening_hours.open_now ? "Đang mở cửa" : "Hiện đang đóng"}
-          </p>
-        )}
-
         {place.rating !== undefined && (
           <p className="text-yellow-500 font-semibold mt-auto flex items-center gap-1">
             <FaStar />
@@ -57,7 +40,7 @@ function PlaceCard({ place }) {
   );
 }
 
-export default function TopNearbyPlaces() {
+export default function TopNearbyPlaces({ onPlaceClick }) {
   const [location, setLocation] = useState(null);
   const [places, setPlaces] = useState([]);
 
@@ -122,7 +105,7 @@ export default function TopNearbyPlaces() {
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {places.map((place, idx) => (
-          <PlaceCard key={idx} place={place} />
+          <PlaceCard key={idx} place={place} onClick={onPlaceClick} />
         ))}
       </div>
     </section>
