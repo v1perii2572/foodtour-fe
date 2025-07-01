@@ -136,16 +136,11 @@ export default function Home() {
       </section>
 
       <div className="container mx-auto max-w-7xl px-4 py-16">
-        <TopNearbyPlaces
-          onPlaceClick={(place) => {
-            console.log("Đã chọn:", place);
-            setSelectedPlace(place);
-          }}
-        />
+        <TopNearbyPlaces onPlaceClick={(place) => setSelectedPlace(place)} />
 
         {selectedPlace && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-start overflow-auto pt-10"
+            className="fixed inset-0 backdrop-blur-sm bg-white/30 z-50 flex justify-center items-start overflow-auto pt-10"
             onClick={() => setSelectedPlace(null)}
           >
             <div
