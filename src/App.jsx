@@ -22,6 +22,7 @@ export default function App() {
   const [token, setToken] = useState("");
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -32,6 +33,7 @@ export default function App() {
       setUsername(storedUsername);
       setUserId(storedUserId);
     }
+    setIsLoading(false);
   }, []);
 
   const handleLogin = ({ token, username, userId }) => {
@@ -59,7 +61,7 @@ export default function App() {
       <Navigate to="/login" />
     );
 
-  return (
+  return isLoading ? null : (
     <Router>
       <Routes>
         <Route
