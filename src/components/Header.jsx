@@ -101,13 +101,13 @@ export default function Header({ onLogout }) {
               >
                 Lộ trình đã lưu
               </Link>
-              {/* <Link
+              <Link
                 to="/admin"
                 onClick={() => setMenuOpen(false)}
                 className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
               >
                 Quản trị
-              </Link> */}
+              </Link>
             </>
           )}
           {username ? (
