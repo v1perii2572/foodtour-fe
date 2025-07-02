@@ -57,17 +57,20 @@ function generateFakeUsers(count, offset = 1000) {
 
 function generateFakePayments(count = 30, offset = 2000) {
   const amounts = [49000, 129000, 549000, 849000];
+  const fixedSeed = 1719859200000;
+
   return Array.from({ length: count }, (_, i) => {
     const id = i + offset;
-    const random = Math.random();
-    let amount = 49000;
-    if (random < 0.6) amount = 49000;
-    else if (random < 0.9) amount = 129000;
-    else amount = amounts[Math.floor(Math.random() * amounts.length)];
+    const amount =
+      Math.random() < 0.6
+        ? 49000
+        : Math.random() < 0.9
+        ? 129000
+        : amounts[Math.floor(id % amounts.length)];
 
     return {
-      orderId: `EA${100000 + id}`,
-      requestId: `REQ${100000 + id}`,
+      orderId: `EA${fixedSeed + id}`,
+      requestId: crypto.randomUUID?.() || `REQ-${100000 + id}`,
       amount,
       resultCode: i % 5 === 0 ? 1 : 0,
       message: i % 5 === 0 ? "Thất bại" : "Thành công",
