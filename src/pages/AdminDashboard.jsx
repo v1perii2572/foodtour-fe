@@ -13,12 +13,14 @@ import {
 export default function AdminDashboard() {
   const [tab, setTab] = useState("users");
   const [userSummary, setUserSummary] = useState(null);
+  const [userList, setUserList] = useState([]);
   const [activitySummary, setActivitySummary] = useState([]);
   const [activityLog, setActivityLog] = useState([]);
   const [postSummary, setPostSummary] = useState(null);
   const [routeSummary, setRouteSummary] = useState(null);
   const [feedbackSummary, setFeedbackSummary] = useState(null);
   const [paymentSummary, setPaymentSummary] = useState(null);
+  const [paymentList, setPaymentList] = useState([]);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
@@ -37,6 +39,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     fetchJson(`${apiUrl}/api/admin/stats/users/summary`, setUserSummary);
+    fetchJson(`${apiUrl}/api/admin/stats/users/list`, setUserList);
     fetchJson(
       `${apiUrl}/api/admin/stats/users/activity-summary?from=${fromDate}&to=${toDate}`,
       setActivitySummary
@@ -52,6 +55,7 @@ export default function AdminDashboard() {
       setFeedbackSummary
     );
     fetchJson(`${apiUrl}/api/admin/stats/payments/summary`, setPaymentSummary);
+    fetchJson(`${apiUrl}/api/admin/stats/payments/list`, setPaymentList);
   }, [fromDate, toDate]);
 
   const renderCombinedChart = () => {
@@ -128,19 +132,53 @@ export default function AdminDashboard() {
         </label>
       </div>
 
-      {tab === "users" && userSummary && (
+      {tab === "users" && (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Card title="Tổng số user" value={userSummary.total} />
-            <Card title="User trả phí" value={userSummary.paid} />
-            <Card title="User mới tháng này" value={userSummary.newThisMonth} />
-          </div>
+          {userSummary && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <Card title="Tổng số user" value={userSummary.total} />
+              <Card title="User trả phí" value={userSummary.paid} />
+              <Card
+                title="User mới tháng này"
+                value={userSummary.newThisMonth}
+              />
+            </div>
+          )}
 
-          <div>
+          <div className="overflow-auto">
             <h3 className="text-lg font-semibold mb-2">
-              Biểu đồ tương tác tổng hợp
+              📄 Danh sách người dùng
             </h3>
-            {renderCombinedChart()}
+            <table className="w-full text-sm border rounded overflow-hidden">
+              <thead className="bg-green-100 text-green-800">
+                <tr>
+                  <th className="p-2 text-left">Email</th>
+                  <th className="p-2 text-left">Role</th>
+                  <th className="p-2 text-left">Đăng ký</th>
+                  <th className="p-2 text-left">Đã Chat</th>
+                  <th className="p-2 text-left">Đã Lưu Route</th>
+                  <th className="p-2 text-left">Đã Feedback</th>
+                  <th className="p-2 text-left">Đã Post</th>
+                </tr>
+              </thead>
+              <tbody>
+                {userList.map((u, idx) => (
+                  <tr key={idx} className="border-b hover:bg-green-50">
+                    <td className="p-2">{u.email}</td>
+                    <td className="p-2">{u.role}</td>
+                    <td className="p-2 text-gray-500">{u.subscriptionDate}</td>
+                    <td className="p-2 text-center">{u.hasChat ? "✅" : ""}</td>
+                    <td className="p-2 text-center">
+                      {u.hasSavedRoute ? "✅" : ""}
+                    </td>
+                    <td className="p-2 text-center">
+                      {u.hasFeedback ? "✅" : ""}
+                    </td>
+                    <td className="p-2 text-center">{u.hasPost ? "✅" : ""}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
@@ -253,6 +291,59 @@ export default function AdminDashboard() {
           <Card title="Thành công" value={paymentSummary.totalSuccess} />
           <Card title="Thất bại" value={paymentSummary.totalFailed} />
           <Card title="Doanh thu (vnđ)" value={paymentSummary.revenue} />
+        </div>
+      )}
+
+      {tab === "payments" && (
+        <div className="space-y-6">
+          {paymentSummary && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Card title="Tổng giao dịch" value={paymentSummary.total} />
+              <Card title="Thành công" value={paymentSummary.totalSuccess} />
+              <Card title="Thất bại" value={paymentSummary.totalFailed} />
+              <Card title="Doanh thu (vnđ)" value={paymentSummary.revenue} />
+            </div>
+          )}
+
+          <div className="overflow-auto">
+            <h3 className="text-lg font-semibold mb-2">
+              📄 Danh sách giao dịch
+            </h3>
+            <table className="w-full text-sm border rounded overflow-hidden">
+              <thead className="bg-green-100 text-green-800">
+                <tr>
+                  <th className="p-2 text-left">Order ID</th>
+                  <th className="p-2 text-left">Request ID</th>
+                  <th className="p-2 text-left">Số tiền</th>
+                  <th className="p-2 text-left">Kết quả</th>
+                  <th className="p-2 text-left">Ghi chú</th>
+                  <th className="p-2 text-left">Thời gian</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paymentList.map((item, idx) => (
+                  <tr key={idx} className="border-b hover:bg-green-50">
+                    <td className="p-2 font-mono text-xs">{item.orderId}</td>
+                    <td className="p-2 font-mono text-xs">{item.requestId}</td>
+                    <td className="p-2">{item.amount.toLocaleString()} ₫</td>
+                    <td className="p-2">
+                      {item.resultCode === 0 ? (
+                        <span className="text-green-600 font-semibold">
+                          ✔️ Thành công
+                        </span>
+                      ) : (
+                        <span className="text-red-500 font-semibold">
+                          ❌ Thất bại
+                        </span>
+                      )}
+                    </td>
+                    <td className="p-2 text-gray-700">{item.message}</td>
+                    <td className="p-2 text-gray-500">{item.createdAt}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
