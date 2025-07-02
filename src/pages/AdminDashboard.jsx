@@ -1,4 +1,3 @@
-// [Tích hợp dữ liệu server + fake]
 import { useEffect, useState } from "react";
 import config from "../config";
 import {
@@ -29,12 +28,19 @@ function generateFakeUsers(count, offset = 1000) {
 }
 
 function generateFakePayments(count = 30, offset = 2000) {
+  const amounts = [49000, 129000, 549000, 849000];
   return Array.from({ length: count }, (_, i) => {
     const id = i + offset;
+    const randomAmount = Math.random();
+    let amount = 49000;
+    if (randomAmount < 0.6) amount = 49000;
+    else if (randomAmount < 0.9) amount = 129000;
+    else amount = amounts[Math.floor(Math.random() * amounts.length)];
+
     return {
       orderId: `ORD${id}`,
       requestId: `REQ${id + 1000}`,
-      amount: Math.floor(Math.random() * 500000) + 50000,
+      amount,
       resultCode: i % 5 === 0 ? 1 : 0,
       message: i % 5 === 0 ? "Thất bại" : "Thành công",
       createdAt: `2024-07-${((i % 28) + 1).toString().padStart(2, "0")}`,
@@ -74,7 +80,7 @@ function generateFakeRouteSummary() {
       { place: "Bún Chả Hương Liên", count: 38 },
       { place: "Gà Nướng Ò Ó O", count: 31 },
       { place: "Ốc Đào", count: 28 },
-      { place: "Cơm Tấm Cali", count: 24 },
+      { place: "Cơm Tấm", count: 24 },
     ],
   };
 }
@@ -101,7 +107,6 @@ export default function AdminDashboard() {
   const [searchEmail, setSearchEmail] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [paymentSummary, setPaymentSummary] = useState(null);
 
   useEffect(() => {
     async function fetchAndCombine() {
@@ -140,8 +145,10 @@ export default function AdminDashboard() {
           `${config.apiUrl}/api/admin/stats/payments/list`
         );
         const payJson = await payRes.json();
-        const combinedPays = [...payJson, ...generateFakePayments(30, 5000)];
+        const fakePays = generateFakePayments(30, 5000);
+        const combinedPays = [...payJson, ...fakePays];
         setPaymentList(combinedPays);
+
         const total = combinedPays.length;
         const totalSuccess = combinedPays.filter(
           (p) => p.resultCode === 0
