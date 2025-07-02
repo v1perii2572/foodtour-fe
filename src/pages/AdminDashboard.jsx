@@ -101,6 +101,7 @@ export default function AdminDashboard() {
   const [searchEmail, setSearchEmail] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [paymentSummary, setPaymentSummary] = useState(null);
 
   useEffect(() => {
     async function fetchAndCombine() {
@@ -141,6 +142,15 @@ export default function AdminDashboard() {
         const payJson = await payRes.json();
         const combinedPays = [...payJson, ...generateFakePayments(30, 5000)];
         setPaymentList(combinedPays);
+        const total = combinedPays.length;
+        const totalSuccess = combinedPays.filter(
+          (p) => p.resultCode === 0
+        ).length;
+        const totalFailed = total - totalSuccess;
+        const revenue = combinedPays
+          .filter((p) => p.resultCode === 0)
+          .reduce((sum, p) => sum + p.amount, 0);
+        setPaymentSummary({ total, totalSuccess, totalFailed, revenue });
 
         const actSumRes = await fetch(
           `${config.apiUrl}/api/admin/stats/users/activity-summary?from=${fromDate}&to=${toDate}`
