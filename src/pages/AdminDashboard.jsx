@@ -70,8 +70,8 @@ function generateFakePayments(count = 30, offset = 2000) {
     else amount = amounts[i % amounts.length];
 
     return {
-      orderId: `EA${100000 + id}`,
-      requestId: `REQ${100000 + id}`,
+      orderId: `EA${fixedSeed + id}`,
+      requestId: crypto.randomUUID?.() || `REQ-${100000 + id}`,
       amount,
       resultCode: i % 5 === 0 ? 1 : 0,
       message: i % 5 === 0 ? "Thất bại" : "Thành công",
