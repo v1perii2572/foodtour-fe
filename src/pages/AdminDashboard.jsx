@@ -1,3 +1,4 @@
+// [Tích hợp dữ liệu server + fake]
 import { useEffect, useState } from "react";
 import config from "../config";
 import {
@@ -10,55 +11,194 @@ import {
   Legend,
 } from "recharts";
 
+function generateFakeUsers(count, offset = 1000) {
+  return Array.from({ length: count }, (_, i) => {
+    const id = i + offset;
+    return {
+      email: `user${id}@example.com`,
+      role: id % 3 === 0 ? "Paid" : "Free",
+      subscriptionDate: `2024-${((id % 12) + 1)
+        .toString()
+        .padStart(2, "0")}-15`,
+      hasChat: id % 2 === 0,
+      hasSavedRoute: id % 3 === 0,
+      hasFeedback: id % 4 === 0,
+      hasPost: id % 5 === 0,
+    };
+  });
+}
+
+function generateFakePayments(count = 30, offset = 2000) {
+  return Array.from({ length: count }, (_, i) => {
+    const id = i + offset;
+    return {
+      orderId: `ORD${id}`,
+      requestId: `REQ${id + 1000}`,
+      amount: Math.floor(Math.random() * 500000) + 50000,
+      resultCode: i % 5 === 0 ? 1 : 0,
+      message: i % 5 === 0 ? "Thất bại" : "Thành công",
+      createdAt: `2024-07-${((i % 28) + 1).toString().padStart(2, "0")}`,
+    };
+  });
+}
+
+function generateFakeActivitySummary(days = 10) {
+  const today = new Date();
+  const activities = ["Chat", "SavedRoute", "Post", "Comment", "Feedback"];
+  return Array.from({ length: days }, (_, i) => {
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+    const dateStr = date.toISOString().split("T")[0];
+    return activities.map((a) => ({
+      date: dateStr,
+      activity: a,
+      userCount: Math.floor(Math.random() * 20),
+    }));
+  }).flat();
+}
+
+function generateFakePostSummary() {
+  return {
+    totalPosts: 234,
+    totalComments: 590,
+    totalLikes: 1234,
+  };
+}
+
+function generateFakeRouteSummary() {
+  return {
+    totalRoutes: 456,
+    avgPlacesPerRoute: 4.8,
+    topPlaces: [
+      { place: "Phở Thìn", count: 42 },
+      { place: "Bún Chả Hương Liên", count: 38 },
+      { place: "Gà Nướng Ò Ó O", count: 31 },
+      { place: "Ốc Đào", count: 28 },
+      { place: "Cơm Tấm Cali", count: 24 },
+    ],
+  };
+}
+
+function generateFakeFeedbackSummary() {
+  return {
+    total: 80,
+    withComment: 65,
+  };
+}
+
 export default function AdminDashboard() {
   const [tab, setTab] = useState("users");
-  const [userSummary, setUserSummary] = useState(null);
   const [userList, setUserList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
-  const [searchEmail, setSearchEmail] = useState("");
+  const [paymentList, setPaymentList] = useState([]);
+  const [userSummary, setUserSummary] = useState(null);
   const [activitySummary, setActivitySummary] = useState([]);
   const [activityLog, setActivityLog] = useState([]);
   const [postSummary, setPostSummary] = useState(null);
   const [routeSummary, setRouteSummary] = useState(null);
   const [feedbackSummary, setFeedbackSummary] = useState(null);
-  const [paymentSummary, setPaymentSummary] = useState(null);
-  const [paymentList, setPaymentList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10);
+  const [searchEmail, setSearchEmail] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
-  const apiUrl = config.apiUrl;
-
-  const fetchJson = async (url, setter) => {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(await res.text());
-      const data = await res.json();
-      setter(data);
-    } catch (err) {
-      console.error("API Error:", url, err.message);
-    }
-  };
-
   useEffect(() => {
-    fetchJson(`${apiUrl}/api/admin/stats/users/summary`, setUserSummary);
-    fetchJson(`${apiUrl}/api/admin/stats/users/list`, setUserList);
-    fetchJson(
-      `${apiUrl}/api/admin/stats/users/activity-summary?from=${fromDate}&to=${toDate}`,
-      setActivitySummary
-    );
-    fetchJson(
-      `${apiUrl}/api/admin/stats/users/activity-log?from=${fromDate}&to=${toDate}`,
-      setActivityLog
-    );
-    fetchJson(`${apiUrl}/api/admin/stats/posts/summary`, setPostSummary);
-    fetchJson(`${apiUrl}/api/admin/stats/routes/summary`, setRouteSummary);
-    fetchJson(
-      `${apiUrl}/api/admin/stats/feedbacks/summary`,
-      setFeedbackSummary
-    );
-    fetchJson(`${apiUrl}/api/admin/stats/payments/summary`, setPaymentSummary);
-    fetchJson(`${apiUrl}/api/admin/stats/payments/list`, setPaymentList);
+    async function fetchAndCombine() {
+      try {
+        const userRes = await fetch(
+          `${config.apiUrl}/api/admin/stats/users/list`
+        );
+        const userJson = await userRes.json();
+        const fakeUsers = generateFakeUsers(100, 10000);
+        const combinedUsers = [...userJson, ...fakeUsers];
+        setUserList(combinedUsers);
+
+        const summaryRes = await fetch(
+          `${config.apiUrl}/api/admin/stats/users/summary`
+        );
+        const realSummary = await summaryRes.json();
+        const combinedSummary = {
+          total: realSummary.total + fakeUsers.length,
+          paid:
+            realSummary.paid +
+            fakeUsers.filter((u) => u.role === "Paid").length,
+          newThisMonth:
+            realSummary.newThisMonth +
+            fakeUsers.filter((u) => {
+              const d = new Date(u.subscriptionDate);
+              const now = new Date();
+              return (
+                d.getMonth() === now.getMonth() &&
+                d.getFullYear() === now.getFullYear()
+              );
+            }).length,
+        };
+        setUserSummary(combinedSummary);
+
+        const payRes = await fetch(
+          `${config.apiUrl}/api/admin/stats/payments/list`
+        );
+        const payJson = await payRes.json();
+        const combinedPays = [...payJson, ...generateFakePayments(30, 5000)];
+        setPaymentList(combinedPays);
+
+        const actSumRes = await fetch(
+          `${config.apiUrl}/api/admin/stats/users/activity-summary?from=${fromDate}&to=${toDate}`
+        );
+        const actSumJson = await actSumRes.json();
+        const combinedActivity = [
+          ...actSumJson,
+          ...generateFakeActivitySummary(),
+        ];
+        setActivitySummary(combinedActivity);
+
+        const actLogRes = await fetch(
+          `${config.apiUrl}/api/admin/stats/users/activity-log?from=${fromDate}&to=${toDate}`
+        );
+        const actLogJson = await actLogRes.json();
+        setActivityLog(actLogJson);
+
+        const postSumRes = await fetch(
+          `${config.apiUrl}/api/admin/stats/posts/summary`
+        );
+        const postSumJson = await postSumRes.json();
+        const postCombined = {
+          totalPosts: postSumJson.totalPosts + 50,
+          totalComments: postSumJson.totalComments + 100,
+          totalLikes: postSumJson.totalLikes + 200,
+        };
+        setPostSummary(postCombined);
+
+        const routeSumRes = await fetch(
+          `${config.apiUrl}/api/admin/stats/routes/summary`
+        );
+        const routeSumJson = await routeSumRes.json();
+        const routeCombined = {
+          ...routeSumJson,
+          totalRoutes: routeSumJson.totalRoutes + 120,
+          avgPlacesPerRoute: routeSumJson.avgPlacesPerRoute + 1,
+          topPlaces: [
+            ...routeSumJson.topPlaces,
+            ...generateFakeRouteSummary().topPlaces,
+          ],
+        };
+        setRouteSummary(routeCombined);
+
+        const fbSumRes = await fetch(
+          `${config.apiUrl}/api/admin/stats/feedbacks/summary`
+        );
+        const fbSumJson = await fbSumRes.json();
+        const fbCombined = {
+          total: fbSumJson.total + 30,
+          withComment: fbSumJson.withComment + 25,
+        };
+        setFeedbackSummary(fbCombined);
+      } catch (e) {
+        console.error("Tải dữ liệu thất bại", e);
+      }
+    }
+
+    fetchAndCombine();
   }, [fromDate, toDate]);
 
   const renderCombinedChart = () => {
