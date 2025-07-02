@@ -107,6 +107,7 @@ export default function AdminDashboard() {
   const [searchEmail, setSearchEmail] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [paymentSummary, setPaymentSummary] = useState(null);
 
   useEffect(() => {
     async function fetchAndCombine() {
