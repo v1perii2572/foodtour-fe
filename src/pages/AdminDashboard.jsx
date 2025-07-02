@@ -12,6 +12,12 @@ import {
 
 const fixedSeed = 1719859200000;
 
+function getWeekOfYear(date) {
+  const firstDay = new Date(date.getFullYear(), 0, 1);
+  const pastDays = Math.floor((date - firstDay) / (24 * 60 * 60 * 1000));
+  return Math.ceil((pastDays + firstDay.getDay() + 1) / 7);
+}
+
 function generateFakeUsers(count, offset = 1000) {
   const domains = [
     "gmail.com",
@@ -43,9 +49,8 @@ function generateFakeUsers(count, offset = 1000) {
     "dev",
     "2025",
   ];
-  const now = new Date();
-  const thisMonth = (now.getMonth() + 1).toString().padStart(2, "0");
-  const thisYear = now.getFullYear();
+  const start = new Date("2025-06-15");
+  const end = new Date();
 
   return Array.from({ length: count }, (_, i) => {
     const id = i + offset;
@@ -53,18 +58,19 @@ function generateFakeUsers(count, offset = 1000) {
     const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
     const domain = domains[Math.floor(Math.random() * domains.length)];
 
-    const isNewThisMonth = i < count * 0.5;
-    const month = isNewThisMonth
-      ? thisMonth
-      : ((id % 12) + 1).toString().padStart(2, "0");
-    const year = isNewThisMonth ? thisYear : 2024;
+    const randTime =
+      start.getTime() + Math.random() * (end.getTime() - start.getTime());
+    const date = new Date(randTime);
+    const dateStr = date.toISOString().split("T")[0];
 
     return {
       email: `${name}${suffix}${id}@${domain}`,
       role: id % 3 === 0 ? "Paid" : "Free",
-      subscriptionDate: `${year}-${month}-15`,
+      subscriptionDate: dateStr,
       hasChat: id % 2 === 0,
       hasSavedRoute: id % 3 === 0,
+      hasFeedback: false,
+      hasPost: false,
     };
   });
 }
@@ -99,16 +105,22 @@ function generateFakePayments(count = 30, offset = 2000) {
 
 function generateFakeActivitySummary(days = 10) {
   const today = new Date();
-  const activities = ["Chat", "SavedRoute", "Post", "Comment", "Feedback"];
+  const activities = ["Chat", "SavedRoute"]; // chỉ giữ 2 loại này
+
   return Array.from({ length: days }, (_, i) => {
     const date = new Date(today);
     date.setDate(today.getDate() - i);
     const dateStr = date.toISOString().split("T")[0];
-    return activities.map((a) => ({
-      date: dateStr,
-      activity: a,
-      userCount: Math.floor(10 + Math.random() * 10),
-    }));
+
+    return activities.map((a) => {
+      const base = a === "Chat" ? 20 + (i % 5) * 3 : 35 + (i % 4) * 10;
+
+      return {
+        date: dateStr,
+        activity: a,
+        userCount: base,
+      };
+    });
   }).flat();
 }
 
@@ -159,6 +171,32 @@ export default function AdminDashboard() {
   const [paymentSummary, setPaymentSummary] = useState(null);
 
   const fakeUsers = useMemo(() => generateFakeUsers(100, 10000), []);
+  const cohortRetention = useMemo(() => {
+    const cohorts = {};
+
+    userList.forEach((user) => {
+      if (!user.subscriptionDate) return;
+      const date = new Date(user.subscriptionDate);
+      const year = date.getFullYear();
+      const week = getWeekOfYear(date);
+      const key = `${year}-W${week}`;
+
+      if (!cohorts[key]) {
+        cohorts[key] = { total: 0, stayed: 0 };
+      }
+
+      cohorts[key].total += 1;
+      if (user.hasChat || user.hasSavedRoute) {
+        cohorts[key].stayed += 1;
+      }
+    });
+
+    return Object.entries(cohorts).map(([week, { total, stayed }]) => ({
+      week,
+      retention: Math.round((stayed / total) * 100),
+    }));
+  }, [userList]);
+
   const fakePayments = useMemo(() => generateFakePayments(30, 5000), []);
   const fakeActivity = useMemo(() => generateFakeActivitySummary(10), []);
 
@@ -376,6 +414,21 @@ export default function AdminDashboard() {
               📊 Biểu đồ tương tác người dùng
             </h3>
             {renderCombinedChart()}
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">
+              📈 Retention theo tuần đăng ký (% user có Chat hoặc SavedRoute)
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={cohortRetention}>
+                <XAxis dataKey="week" />
+                <YAxis domain={[0, 100]} unit="%" />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="retention" fill="#4ade80" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
 
           <div className="overflow-auto">
