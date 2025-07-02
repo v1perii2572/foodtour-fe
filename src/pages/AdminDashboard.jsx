@@ -56,27 +56,31 @@ function generateFakeUsers(count, offset = 1000) {
 }
 
 function generateFakePayments(count = 30, offset = 2000) {
-  const amounts = [49000, 129000, 549000, 849000];
-  const fixedSeed = 1719859200000;
+  const key = "cachedFakePayments";
+  const cached = localStorage.getItem(key);
+  if (cached) return JSON.parse(cached);
 
-  return Array.from({ length: count }, (_, i) => {
+  const amounts = [49000, 129000, 549000, 849000];
+  const data = Array.from({ length: count }, (_, i) => {
     const id = i + offset;
-    const amount =
-      Math.random() < 0.6
-        ? 49000
-        : Math.random() < 0.9
-        ? 129000
-        : amounts[Math.floor(id % amounts.length)];
+    const rand = i / count;
+    let amount = 49000;
+    if (rand < 0.6) amount = 49000;
+    else if (rand < 0.9) amount = 129000;
+    else amount = amounts[i % amounts.length];
 
     return {
-      orderId: `EA${fixedSeed + id}`,
-      requestId: crypto.randomUUID?.() || `REQ-${100000 + id}`,
+      orderId: `EA${100000 + id}`,
+      requestId: `REQ${100000 + id}`,
       amount,
       resultCode: i % 5 === 0 ? 1 : 0,
       message: i % 5 === 0 ? "Thất bại" : "Thành công",
       createdAt: `2024-07-${((i % 28) + 1).toString().padStart(2, "0")}`,
     };
   });
+
+  localStorage.setItem(key, JSON.stringify(data));
+  return data;
 }
 
 function generateFakeActivitySummary(days = 10) {
