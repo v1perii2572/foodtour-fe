@@ -86,16 +86,14 @@ export default function Header({ onLogout }) {
             Chatbot AI
           </Link>
           {username && (
-            <Link
-              to="/posts"
-              onClick={() => setMenuOpen(false)}
-              className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
-            >
-              Bài viết
-            </Link>
-          )}
-          {username ? (
             <>
+              <Link
+                to="/posts"
+                onClick={() => setMenuOpen(false)}
+                className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
+              >
+                Bài viết
+              </Link>
               <Link
                 to="/saved"
                 onClick={() => setMenuOpen(false)}
@@ -103,63 +101,72 @@ export default function Header({ onLogout }) {
               >
                 Lộ trình đã lưu
               </Link>
-              <div className="relative px-4 py-2" ref={dropdownRef}>
-                <button
-                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 text-green-700 font-semibold hover:text-green-500 focus:outline-none"
-                >
-                  <span className="hidden sm:inline">
-                    👋 Xin chào, <strong>{username}</strong>
-                  </span>
-                  <img
-                    src="/user_avatar.png"
-                    alt="avatar"
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                {userDropdownOpen && (
-                  <ul className="absolute right-0 mt-2 w-48 bg-white border rounded shadow z-50">
-                    <li>
-                      <Link
-                        to="/trang-ca-nhan"
-                        onClick={() => {
-                          setUserDropdownOpen(false);
-                          setMenuOpen(false);
-                        }}
-                        className="block px-4 py-2 hover:bg-green-100 text-green-700"
-                      >
-                        Thông tin cá nhân
-                      </Link>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => {
-                          setUserDropdownOpen(false);
-                          setMenuOpen(false);
-                          onLogout();
-                        }}
-                        className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600"
-                      >
-                        Đăng xuất
-                      </button>
-                    </li>
-                  </ul>
-                )}
-              </div>
+              <Link
+                to="/admin"
+                onClick={() => setMenuOpen(false)}
+                className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
+              >
+                Quản trị
+              </Link>
             </>
+          )}
+          {username ? (
+            <div className="relative px-4 py-2" ref={dropdownRef}>
+              <button
+                onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                className="flex items-center gap-2 text-green-700 font-semibold hover:text-green-500 focus:outline-none"
+              >
+                <span className="hidden sm:inline">
+                  👋 Xin chào, <strong>{username}</strong>
+                </span>
+                <img
+                  src="/user_avatar.png"
+                  alt="avatar"
+                  className="w-8 h-8 rounded-full"
+                />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+              {userDropdownOpen && (
+                <ul className="absolute right-0 mt-2 w-48 bg-white border rounded shadow z-50">
+                  <li>
+                    <Link
+                      to="/trang-ca-nhan"
+                      onClick={() => {
+                        setUserDropdownOpen(false);
+                        setMenuOpen(false);
+                      }}
+                      className="block px-4 py-2 hover:bg-green-100 text-green-700"
+                    >
+                      Thông tin cá nhân
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => {
+                        setUserDropdownOpen(false);
+                        setMenuOpen(false);
+                        onLogout();
+                      }}
+                      className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600"
+                    >
+                      Đăng xuất
+                    </button>
+                  </li>
+                </ul>
+              )}
+            </div>
           ) : (
             <Link
               to="/login"
