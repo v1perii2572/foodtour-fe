@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+// [Tích hợp dữ liệu server + fake]
+import { useEffect, useState, useMemo } from "react";
 import config from "../config";
 import {
   BarChart,
@@ -11,56 +12,45 @@ import {
 } from "recharts";
 
 function generateFakeUsers(count, offset = 1000) {
-  const firstNames = [
-    "an",
-    "binh",
-    "cuong",
-    "dat",
-    "duong",
-    "giang",
-    "hien",
-    "khanh",
-    "lam",
-    "minh",
-    "nam",
-    "phuong",
-    "quang",
-    "son",
-    "tuan",
-    "van",
-    "yen",
-  ];
-  const lastNames = [
+  const domains = ["gmail.com", "hotmail.com", "fpt.edu.vn", "outlook.com"];
+  const names = [
     "nguyen",
     "tran",
     "le",
     "pham",
     "hoang",
     "do",
-    "ngo",
-    "dang",
     "vo",
+    "dang",
+    "bui",
     "truong",
   ];
-  const domains = ["fpt.edu.vn", "gmail.com", "outlook.com", "hotmail.com"];
-
-  function randomEmail(id) {
-    const first = firstNames[Math.floor(Math.random() * firstNames.length)];
-    const last = lastNames[Math.floor(Math.random() * lastNames.length)];
-    const domain = domains[Math.floor(Math.random() * domains.length)];
-    return `${last}${first}${id}@${domain}`;
-  }
-
+  const suffixes = [
+    "123",
+    "456",
+    "789",
+    "001",
+    "x",
+    "88",
+    "pro",
+    "dev",
+    "2025",
+  ];
   return Array.from({ length: count }, (_, i) => {
     const id = i + offset;
+    const name = names[Math.floor(Math.random() * names.length)];
+    const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+    const domain = domains[Math.floor(Math.random() * domains.length)];
     return {
-      email: randomEmail(id),
-      role: id % 3 === 0 ? "Paid" : id % 7 === 0 ? "VIP" : "Free",
-      subscriptionDate: `2025-${String((id % 6) + 1).padStart(2, "0")}-21`,
-      hasChat: Math.random() < 0.7,
-      hasSavedRoute: Math.random() < 0.5,
-      hasFeedback: Math.random() < 0.3,
-      hasPost: Math.random() < 0.4,
+      email: `${name}${suffix}${id}@${domain}`,
+      role: id % 3 === 0 ? "Paid" : "Free",
+      subscriptionDate: `2024-${((id % 12) + 1)
+        .toString()
+        .padStart(2, "0")}-15`,
+      hasChat: id % 2 === 0,
+      hasSavedRoute: id % 3 === 0,
+      hasFeedback: id % 4 === 0,
+      hasPost: id % 5 === 0,
     };
   });
 }
@@ -69,15 +59,15 @@ function generateFakePayments(count = 30, offset = 2000) {
   const amounts = [49000, 129000, 549000, 849000];
   return Array.from({ length: count }, (_, i) => {
     const id = i + offset;
-    const randomAmount = Math.random();
+    const random = Math.random();
     let amount = 49000;
-    if (randomAmount < 0.6) amount = 49000;
-    else if (randomAmount < 0.9) amount = 129000;
+    if (random < 0.6) amount = 49000;
+    else if (random < 0.9) amount = 129000;
     else amount = amounts[Math.floor(Math.random() * amounts.length)];
 
     return {
-      orderId: `EA${Date.now() + id}`,
-      requestId: crypto.randomUUID?.() || `REQ-${id + 1000}`,
+      orderId: `EA${100000 + id}`,
+      requestId: `REQ${100000 + id}`,
       amount,
       resultCode: i % 5 === 0 ? 1 : 0,
       message: i % 5 === 0 ? "Thất bại" : "Thành công",
@@ -89,7 +79,6 @@ function generateFakePayments(count = 30, offset = 2000) {
 function generateFakeActivitySummary(days = 10) {
   const today = new Date();
   const activities = ["Chat", "SavedRoute", "Post", "Comment", "Feedback"];
-
   return Array.from({ length: days }, (_, i) => {
     const date = new Date(today);
     date.setDate(today.getDate() - i);
@@ -97,7 +86,7 @@ function generateFakeActivitySummary(days = 10) {
     return activities.map((a) => ({
       date: dateStr,
       activity: a,
-      userCount: Math.floor(Math.random() * 20),
+      userCount: Math.floor(10 + Math.random() * 10),
     }));
   }).flat();
 }
@@ -148,6 +137,10 @@ export default function AdminDashboard() {
   const [toDate, setToDate] = useState("");
   const [paymentSummary, setPaymentSummary] = useState(null);
 
+  const fakeUsers = useMemo(() => generateFakeUsers(100, 10000), []);
+  const fakePayments = useMemo(() => generateFakePayments(30, 5000), []);
+  const fakeActivity = useMemo(() => generateFakeActivitySummary(10), []);
+
   useEffect(() => {
     async function fetchAndCombine() {
       try {
@@ -155,7 +148,6 @@ export default function AdminDashboard() {
           `${config.apiUrl}/api/admin/stats/users/list`
         );
         const userJson = await userRes.json();
-        const fakeUsers = generateFakeUsers(100, 10000);
         const combinedUsers = [...userJson, ...fakeUsers];
         setUserList(combinedUsers);
 
@@ -185,8 +177,7 @@ export default function AdminDashboard() {
           `${config.apiUrl}/api/admin/stats/payments/list`
         );
         const payJson = await payRes.json();
-        const fakePays = generateFakePayments(30, 5000);
-        const combinedPays = [...payJson, ...fakePays];
+        const combinedPays = [...payJson, ...fakePayments];
         setPaymentList(combinedPays);
 
         const total = combinedPays.length;
@@ -203,10 +194,7 @@ export default function AdminDashboard() {
           `${config.apiUrl}/api/admin/stats/users/activity-summary?from=${fromDate}&to=${toDate}`
         );
         const actSumJson = await actSumRes.json();
-        const combinedActivity = [
-          ...actSumJson,
-          ...generateFakeActivitySummary(),
-        ].sort((a, b) => new Date(a.date) - new Date(b.date));
+        const combinedActivity = [...actSumJson, ...fakeActivity];
         setActivitySummary(combinedActivity);
 
         const actLogRes = await fetch(
@@ -257,7 +245,6 @@ export default function AdminDashboard() {
 
     fetchAndCombine();
   }, [fromDate, toDate]);
-
   const renderCombinedChart = () => {
     const grouped = {};
     activitySummary.forEach((item) => {
