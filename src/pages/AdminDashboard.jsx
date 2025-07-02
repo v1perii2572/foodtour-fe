@@ -124,6 +124,21 @@ function generateFakeActivitySummary(days = 10) {
   }).flat();
 }
 
+function mergeActivityData(dataArray) {
+  const map = new Map();
+
+  dataArray.forEach(({ date, activity, userCount }) => {
+    const key = `${date}-${activity}`;
+    if (map.has(key)) {
+      map.get(key).userCount += userCount;
+    } else {
+      map.set(key, { date, activity, userCount });
+    }
+  });
+
+  return Array.from(map.values());
+}
+
 // function generateFakePostSummary() {
 //   return {
 //     totalPosts: 234,
@@ -253,7 +268,10 @@ export default function AdminDashboard() {
           `${config.apiUrl}/api/admin/stats/users/activity-summary?from=${fromDate}&to=${toDate}`
         );
         const actSumJson = await actSumRes.json();
-        const combinedActivity = [...actSumJson, ...fakeActivity];
+        const combinedActivity = mergeActivityData([
+          ...actSumJson,
+          ...fakeActivity,
+        ]);
         setActivitySummary(combinedActivity);
 
         const actLogRes = await fetch(
