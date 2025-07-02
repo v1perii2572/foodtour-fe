@@ -11,18 +11,56 @@ import {
 } from "recharts";
 
 function generateFakeUsers(count, offset = 1000) {
+  const firstNames = [
+    "an",
+    "binh",
+    "cuong",
+    "dat",
+    "duong",
+    "giang",
+    "hien",
+    "khanh",
+    "lam",
+    "minh",
+    "nam",
+    "phuong",
+    "quang",
+    "son",
+    "tuan",
+    "van",
+    "yen",
+  ];
+  const lastNames = [
+    "nguyen",
+    "tran",
+    "le",
+    "pham",
+    "hoang",
+    "do",
+    "ngo",
+    "dang",
+    "vo",
+    "truong",
+  ];
+  const domains = ["fpt.edu.vn", "gmail.com", "outlook.com", "hotmail.com"];
+
+  function randomEmail(id) {
+    const first = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const last = lastNames[Math.floor(Math.random() * lastNames.length)];
+    const domain = domains[Math.floor(Math.random() * domains.length)];
+    return `${last}${first}${id}@${domain}`;
+  }
+
   return Array.from({ length: count }, (_, i) => {
     const id = i + offset;
     return {
-      email: `user${id}@example.com`,
-      role: id % 3 === 0 ? "Paid" : "Free",
-      subscriptionDate: `2024-${((id % 12) + 1)
-        .toString()
-        .padStart(2, "0")}-15`,
-      hasChat: id % 2 === 0,
-      hasSavedRoute: id % 3 === 0,
-      hasFeedback: id % 4 === 0,
-      hasPost: id % 5 === 0,
+      email: randomEmail(id),
+      role: id % 3 === 0 ? "Paid" : id % 7 === 0 ? "VIP" : "Free",
+      subscriptionDate: `2025-${String((id % 6) + 1).padStart(2, "0")}-21`,
+      hasChat: Math.random() < 0.7,
+      hasSavedRoute: Math.random() < 0.5,
+      hasFeedback: Math.random() < 0.3,
+      hasPost: Math.random() < 0.4,
     };
   });
 }
@@ -51,6 +89,7 @@ function generateFakePayments(count = 30, offset = 2000) {
 function generateFakeActivitySummary(days = 10) {
   const today = new Date();
   const activities = ["Chat", "SavedRoute", "Post", "Comment", "Feedback"];
+
   return Array.from({ length: days }, (_, i) => {
     const date = new Date(today);
     date.setDate(today.getDate() - i);
@@ -167,7 +206,7 @@ export default function AdminDashboard() {
         const combinedActivity = [
           ...actSumJson,
           ...generateFakeActivitySummary(),
-        ];
+        ].sort((a, b) => new Date(a.date) - new Date(b.date));
         setActivitySummary(combinedActivity);
 
         const actLogRes = await fetch(
@@ -231,7 +270,16 @@ export default function AdminDashboard() {
       <ResponsiveContainer width="100%" height={350}>
         <BarChart data={combinedData}>
           <XAxis dataKey="date" />
-          <YAxis />
+          <XAxis
+            dataKey="date"
+            tickFormatter={(value) => {
+              try {
+                return new Date(value).toISOString().split("T")[0];
+              } catch {
+                return value;
+              }
+            }}
+          />
           <Tooltip />
           <Legend />
           <Bar dataKey="Chat" stackId="a" fill="#10b981" />
