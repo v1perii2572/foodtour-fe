@@ -11,6 +11,8 @@ import {
   Legend,
 } from "recharts";
 
+const fixedSeed = 1719859200000;
+
 function generateFakeUsers(count, offset = 1000) {
   const domains = ["gmail.com", "hotmail.com", "fpt.edu.vn", "outlook.com"];
   const names = [
@@ -61,7 +63,7 @@ function generateFakePayments(count = 30, offset = 2000) {
   if (cached) return JSON.parse(cached);
 
   const amounts = [49000, 129000, 549000, 849000];
-  const data = Array.from({ length: count }, (_, i) => {
+  const payments = Array.from({ length: count }, (_, i) => {
     const id = i + offset;
     const rand = i / count;
     let amount = 49000;
@@ -79,8 +81,8 @@ function generateFakePayments(count = 30, offset = 2000) {
     };
   });
 
-  localStorage.setItem(key, JSON.stringify(data));
-  return data;
+  localStorage.setItem(key, JSON.stringify(payments));
+  return payments;
 }
 
 function generateFakeActivitySummary(days = 10) {
