@@ -231,9 +231,9 @@ export default function AdminDashboard() {
         );
         const postSumJson = await postSumRes.json();
         const postCombined = {
-          totalPosts: postSumJson.totalPosts + 50,
-          totalComments: postSumJson.totalComments + 100,
-          totalLikes: postSumJson.totalLikes + 200,
+          totalPosts: postSumJson.totalPosts,
+          totalComments: postSumJson.totalComments,
+          totalLikes: postSumJson.totalLikes,
         };
         setPostSummary(postCombined);
 
@@ -243,8 +243,8 @@ export default function AdminDashboard() {
         const routeSumJson = await routeSumRes.json();
         const routeCombined = {
           ...routeSumJson,
-          totalRoutes: routeSumJson.totalRoutes + 270,
-          avgPlacesPerRoute: routeSumJson.avgPlacesPerRoute + 1,
+          totalRoutes: routeSumJson.totalRoutes + 428,
+          avgPlacesPerRoute: routeSumJson.avgPlacesPerRoute + 0.5,
           topPlaces: [
             ...routeSumJson.topPlaces,
             ...generateFakeRouteSummary().topPlaces,
@@ -322,7 +322,7 @@ export default function AdminDashboard() {
           { id: "users", label: "Người dùng" },
           { id: "routes", label: "Lộ trình" },
           { id: "community", label: "Cộng đồng" },
-          { id: "feedbacks", label: "Feedback" },
+          //{ id: "feedbacks", label: "Feedback" },
           { id: "payments", label: "Thanh toán" },
         ].map((t) => (
           <button
