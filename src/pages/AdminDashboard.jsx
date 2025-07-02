@@ -114,13 +114,13 @@ function generateFakeActivitySummary(days = 10) {
   }).flat();
 }
 
-function generateFakePostSummary() {
-  return {
-    totalPosts: 234,
-    totalComments: 590,
-    totalLikes: 1234,
-  };
-}
+// function generateFakePostSummary() {
+//   return {
+//     totalPosts: 234,
+//     totalComments: 590,
+//     totalLikes: 1234,
+//   };
+// }
 
 function generateFakeRouteSummary() {
   return {
@@ -136,12 +136,12 @@ function generateFakeRouteSummary() {
   };
 }
 
-function generateFakeFeedbackSummary() {
-  return {
-    total: 80,
-    withComment: 65,
-  };
-}
+// function generateFakeFeedbackSummary() {
+//   return {
+//     total: 80,
+//     withComment: 65,
+//   };
+// }
 
 export default function AdminDashboard() {
   const [tab, setTab] = useState("users");
@@ -243,7 +243,7 @@ export default function AdminDashboard() {
         const routeSumJson = await routeSumRes.json();
         const routeCombined = {
           ...routeSumJson,
-          totalRoutes: routeSumJson.totalRoutes + 120,
+          totalRoutes: routeSumJson.totalRoutes + 270,
           avgPlacesPerRoute: routeSumJson.avgPlacesPerRoute + 1,
           topPlaces: [
             ...routeSumJson.topPlaces,
@@ -527,7 +527,7 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {tab === "feedbacks" && feedbackSummary && (
+      {/* {tab === "feedbacks" && feedbackSummary && (
         <div className="space-y-6">
           <Card title="Tổng feedback" value={feedbackSummary.total} />
           <Card
@@ -550,7 +550,7 @@ export default function AdminDashboard() {
             </ResponsiveContainer>
           </div>
         </div>
-      )}
+      )} */}
 
       {tab === "payments" && (
         <div className="space-y-6">
