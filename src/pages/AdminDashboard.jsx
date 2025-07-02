@@ -65,8 +65,6 @@ function generateFakeUsers(count, offset = 1000) {
       subscriptionDate: `${year}-${month}-15`,
       hasChat: id % 2 === 0,
       hasSavedRoute: id % 3 === 0,
-      hasFeedback: id % 4 === 0,
-      hasPost: id % 5 === 0,
     };
   });
 }
