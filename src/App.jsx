@@ -16,6 +16,7 @@ import Layout from "./components/Layout";
 import ProfilePage from "./pages/ProfilePage";
 import PostPage from "./pages/PostPage";
 import PostDetail from "./pages/PostDetail";
+import AdminDashboard from "./pages/AdminDashboard";
 
 export default function App() {
   const [token, setToken] = useState("");
@@ -116,6 +117,10 @@ export default function App() {
               <Navigate to="/login" />
             )
           }
+        />
+        <Route
+          path="/admin"
+          element={<ProtectedRoute element={AdminDashboard} />}
         />
       </Routes>
     </Router>
