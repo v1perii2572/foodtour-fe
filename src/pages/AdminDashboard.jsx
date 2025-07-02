@@ -112,7 +112,7 @@ function generateFakeActivitySummary(days = 10) {
     date.setDate(today.getDate() - i);
     const dateStr = date.toISOString().split("T")[0];
 
-    const chatBase = 50 + (i % 3) * 5;
+    const chatBase = 25 + (i % 3) * 5;
     const routeBase = 20 + (i % 3) * 5;
 
     return activities.map((a) => ({
@@ -185,30 +185,54 @@ export default function AdminDashboard() {
   const [paymentSummary, setPaymentSummary] = useState(null);
 
   const fakeUsers = useMemo(() => generateFakeUsers(100, 10000), []);
+  function getWeekRange(date) {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diffToMonday = day === 0 ? -6 : 1 - day;
+    const monday = new Date(d);
+    monday.setDate(d.getDate() + diffToMonday);
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+
+    const format = (d) =>
+      d.toLocaleDateString("vi-VN", {
+        day: "2-digit",
+        month: "2-digit",
+      });
+
+    return `${format(monday)} - ${format(sunday)}`;
+  }
+
   const cohortRetention = useMemo(() => {
     const cohorts = {};
 
     userList.forEach((user) => {
       if (!user.subscriptionDate) return;
       const date = new Date(user.subscriptionDate);
-      const year = date.getFullYear();
-      const week = getWeekOfYear(date);
-      const key = `${year}-W${week}`;
+      if (isNaN(date)) return;
 
-      if (!cohorts[key]) {
-        cohorts[key] = { total: 0, stayed: 0 };
+      const range = getWeekRange(date);
+
+      if (!cohorts[range]) {
+        cohorts[range] = { total: 0, stayed: 0 };
       }
 
-      cohorts[key].total += 1;
+      cohorts[range].total += 1;
       if (user.hasChat || user.hasSavedRoute) {
-        cohorts[key].stayed += 1;
+        cohorts[range].stayed += 1;
       }
     });
 
-    return Object.entries(cohorts).map(([week, { total, stayed }]) => ({
-      week,
-      retention: Math.round((stayed / total) * 100),
-    }));
+    return Object.entries(cohorts)
+      .map(([week, { total, stayed }]) => ({
+        week,
+        retention: Math.round((stayed / total) * 100),
+      }))
+      .sort(
+        (a, b) =>
+          new Date(a.week.split(" - ")[0].split("/").reverse().join("-")) -
+          new Date(b.week.split(" - ")[0].split("/").reverse().join("-"))
+      );
   }, [userList]);
 
   const fakePayments = useMemo(() => generateFakePayments(30, 5000), []);
