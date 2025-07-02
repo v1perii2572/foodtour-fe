@@ -14,6 +14,8 @@ export default function AdminDashboard() {
   const [tab, setTab] = useState("users");
   const [userSummary, setUserSummary] = useState(null);
   const [userList, setUserList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10);
   const [activitySummary, setActivitySummary] = useState([]);
   const [activityLog, setActivityLog] = useState([]);
   const [postSummary, setPostSummary] = useState(null);
@@ -83,6 +85,12 @@ export default function AdminDashboard() {
     );
   };
 
+  const paginatedUsers = userList.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+  const totalPages = Math.ceil(userList.length / pageSize);
+
   return (
     <div className="container mx-auto p-4 sm:p-6">
       <h1 className="text-2xl sm:text-3xl font-bold text-green-700 mb-4 sm:mb-6">
@@ -145,6 +153,13 @@ export default function AdminDashboard() {
             </div>
           )}
 
+          <div>
+            <h3 className="text-lg font-semibold mb-2">
+              📊 Biểu đồ tương tác người dùng
+            </h3>
+            {renderCombinedChart()}
+          </div>
+
           <div className="overflow-auto">
             <h3 className="text-lg font-semibold mb-2">
               📄 Danh sách người dùng
@@ -162,7 +177,7 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {userList.map((u, idx) => (
+                {paginatedUsers.map((u, idx) => (
                   <tr key={idx} className="border-b hover:bg-green-50">
                     <td className="p-2">{u.email}</td>
                     <td className="p-2">{u.role}</td>
@@ -179,6 +194,28 @@ export default function AdminDashboard() {
                 ))}
               </tbody>
             </table>
+
+            <div className="flex justify-between items-center mt-4">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                className="px-3 py-1 rounded bg-green-100 hover:bg-green-200 disabled:opacity-50"
+              >
+                Trang trước
+              </button>
+              <span className="text-sm">
+                Trang {currentPage} / {totalPages}
+              </span>
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
+                className="px-3 py-1 rounded bg-green-100 hover:bg-green-200 disabled:opacity-50"
+              >
+                Trang sau
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -282,15 +319,6 @@ export default function AdminDashboard() {
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </div>
-      )}
-
-      {tab === "payments" && paymentSummary && (
-        <div className="space-y-6">
-          <Card title="Tổng giao dịch" value={paymentSummary.total} />
-          <Card title="Thành công" value={paymentSummary.totalSuccess} />
-          <Card title="Thất bại" value={paymentSummary.totalFailed} />
-          <Card title="Doanh thu (vnđ)" value={paymentSummary.revenue} />
         </div>
       )}
 
