@@ -119,7 +119,7 @@ function generateFakeActivitySummary(days = 10) {
     return activities.map((a) => ({
       date: dateStr,
       activity: a,
-      userCount: a === "Chat" ? chatBase : routeBase,
+      userCount: a === "Chat" ? chatCount : saveRouteCount,
     }));
   }).flat();
 }
