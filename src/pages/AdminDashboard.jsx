@@ -16,6 +16,7 @@ export default function AdminDashboard() {
   const [userList, setUserList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
+  const [searchEmail, setSearchEmail] = useState("");
   const [activitySummary, setActivitySummary] = useState([]);
   const [activityLog, setActivityLog] = useState([]);
   const [postSummary, setPostSummary] = useState(null);
@@ -85,11 +86,14 @@ export default function AdminDashboard() {
     );
   };
 
-  const paginatedUsers = userList.slice(
+  const filteredUsers = userList.filter((u) =>
+    u.email.toLowerCase().includes(searchEmail.toLowerCase())
+  );
+  const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
   );
-  const totalPages = Math.ceil(userList.length / pageSize);
+  const totalPages = Math.ceil(filteredUsers.length / pageSize);
 
   return (
     <div className="container mx-auto p-4 sm:p-6">
@@ -161,9 +165,19 @@ export default function AdminDashboard() {
           </div>
 
           <div className="overflow-auto">
-            <h3 className="text-lg font-semibold mb-2">
-              📄 Danh sách người dùng
-            </h3>
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-lg font-semibold">📄 Danh sách người dùng</h3>
+              <input
+                type="text"
+                placeholder="Tìm theo email..."
+                value={searchEmail}
+                onChange={(e) => {
+                  setSearchEmail(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="border px-3 py-1 rounded text-sm"
+              />
+            </div>
             <table className="w-full text-sm border rounded overflow-hidden">
               <thead className="bg-green-100 text-green-800">
                 <tr>
