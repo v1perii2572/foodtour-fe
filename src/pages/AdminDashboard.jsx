@@ -105,22 +105,21 @@ function generateFakePayments(count = 30, offset = 2000) {
 
 function generateFakeActivitySummary(days = 10) {
   const today = new Date();
-  const activities = ["Chat", "SavedRoute"]; // chỉ giữ 2 loại này
+  const activities = ["Chat", "SavedRoute"];
 
   return Array.from({ length: days }, (_, i) => {
     const date = new Date(today);
     date.setDate(today.getDate() - i);
     const dateStr = date.toISOString().split("T")[0];
 
-    return activities.map((a) => {
-      const base = a === "Chat" ? 20 + (i % 5) * 3 : 35 + (i % 4) * 10;
+    const chatBase = 50 + (i % 3) * 5;
+    const routeBase = 20 + (i % 3) * 5;
 
-      return {
-        date: dateStr,
-        activity: a,
-        userCount: base,
-      };
-    });
+    return activities.map((a) => ({
+      date: dateStr,
+      activity: a,
+      userCount: a === "Chat" ? chatBase : routeBase,
+    }));
   }).flat();
 }
 
