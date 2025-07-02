@@ -112,8 +112,9 @@ function generateFakeActivitySummary(days = 10) {
     date.setDate(today.getDate() - i);
     const dateStr = date.toISOString().split("T")[0];
 
-    const chatBase = 25 + (i % 3) * 5;
-    const routeBase = 20 + (i % 3) * 5;
+    const base = Math.floor(Math.random() * 16) + 10;
+    const chatCount = base + Math.floor(Math.random() * 10);
+    const saveRouteCount = base;
 
     return activities.map((a) => ({
       date: dateStr,
@@ -127,11 +128,13 @@ function mergeActivityData(dataArray) {
   const map = new Map();
 
   dataArray.forEach(({ date, activity, userCount }) => {
-    const key = `${date}-${activity}`;
+    const normalizedDate = new Date(date).toISOString().split("T")[0];
+    const key = `${normalizedDate}-${activity}`;
+
     if (map.has(key)) {
       map.get(key).userCount += userCount;
     } else {
-      map.set(key, { date, activity, userCount });
+      map.set(key, { date: normalizedDate, activity, userCount });
     }
   });
 
