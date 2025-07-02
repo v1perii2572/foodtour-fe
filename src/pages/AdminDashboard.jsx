@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import config from "../config";
 import {
   BarChart,
   Bar,
@@ -21,30 +22,36 @@ export default function AdminDashboard() {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
+  const apiUrl = config.apiUrl;
+
+  const fetchJson = async (url, setter) => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      setter(data);
+    } catch (err) {
+      console.error("API Error:", url, err.message);
+    }
+  };
+
   useEffect(() => {
-    fetch("/api/admin/stats/users/summary")
-      .then((res) => res.json())
-      .then(setUserSummary);
-    fetch(
-      `/api/admin/stats/users/activity-summary?from=${fromDate}&to=${toDate}`
-    )
-      .then((res) => res.json())
-      .then(setActivitySummary);
-    fetch(`/api/admin/stats/users/activity-log?from=${fromDate}&to=${toDate}`)
-      .then((res) => res.json())
-      .then(setActivityLog);
-    fetch("/api/admin/stats/posts/summary")
-      .then((res) => res.json())
-      .then(setPostSummary);
-    fetch("/api/admin/stats/routes/summary")
-      .then((res) => res.json())
-      .then(setRouteSummary);
-    fetch("/api/admin/stats/feedbacks/summary")
-      .then((res) => res.json())
-      .then(setFeedbackSummary);
-    fetch("/api/admin/stats/payments/summary")
-      .then((res) => res.json())
-      .then(setPaymentSummary);
+    fetchJson(`${apiUrl}/api/admin/stats/users/summary`, setUserSummary);
+    fetchJson(
+      `${apiUrl}/api/admin/stats/users/activity-summary?from=${fromDate}&to=${toDate}`,
+      setActivitySummary
+    );
+    fetchJson(
+      `${apiUrl}/api/admin/stats/users/activity-log?from=${fromDate}&to=${toDate}`,
+      setActivityLog
+    );
+    fetchJson(`${apiUrl}/api/admin/stats/posts/summary`, setPostSummary);
+    fetchJson(`${apiUrl}/api/admin/stats/routes/summary`, setRouteSummary);
+    fetchJson(
+      `${apiUrl}/api/admin/stats/feedbacks/summary`,
+      setFeedbackSummary
+    );
+    fetchJson(`${apiUrl}/api/admin/stats/payments/summary`, setPaymentSummary);
   }, [fromDate, toDate]);
 
   const renderCombinedChart = () => {
