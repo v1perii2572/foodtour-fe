@@ -50,7 +50,7 @@ function generateFakeUsers(count, offset = 1000) {
     "2025",
   ];
   const start = new Date("2025-06-15");
-  const end = new Date();
+  const end = new Date("2025-07-03");
 
   return Array.from({ length: count }, (_, i) => {
     const id = i + offset;
