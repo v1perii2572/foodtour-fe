@@ -1,4 +1,3 @@
-// [Tích hợp dữ liệu server + fake]
 import { useEffect, useState, useMemo } from "react";
 import config from "../config";
 import {
@@ -14,7 +13,13 @@ import {
 const fixedSeed = 1719859200000;
 
 function generateFakeUsers(count, offset = 1000) {
-  const domains = ["gmail.com", "hotmail.com", "fpt.edu.vn", "outlook.com"];
+  const domains = [
+    "gmail.com",
+    "yahoo.com",
+    "hotmail.com",
+    "fpt.edu.vn",
+    "outlook.com",
+  ];
   const names = [
     "nguyen",
     "tran",
@@ -38,17 +43,26 @@ function generateFakeUsers(count, offset = 1000) {
     "dev",
     "2025",
   ];
+  const now = new Date();
+  const thisMonth = (now.getMonth() + 1).toString().padStart(2, "0");
+  const thisYear = now.getFullYear();
+
   return Array.from({ length: count }, (_, i) => {
     const id = i + offset;
     const name = names[Math.floor(Math.random() * names.length)];
     const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
     const domain = domains[Math.floor(Math.random() * domains.length)];
+
+    const isNewThisMonth = i < count * 0.5;
+    const month = isNewThisMonth
+      ? thisMonth
+      : ((id % 12) + 1).toString().padStart(2, "0");
+    const year = isNewThisMonth ? thisYear : 2024;
+
     return {
       email: `${name}${suffix}${id}@${domain}`,
       role: id % 3 === 0 ? "Paid" : "Free",
-      subscriptionDate: `2024-${((id % 12) + 1)
-        .toString()
-        .padStart(2, "0")}-15`,
+      subscriptionDate: `${year}-${month}-15`,
       hasChat: id % 2 === 0,
       hasSavedRoute: id % 3 === 0,
       hasFeedback: id % 4 === 0,
