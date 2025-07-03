@@ -75,7 +75,7 @@ function generateFakeUsers(count, offset = 1000) {
   });
 }
 
-function generateFakePayments(count = 30, offset = 2000) {
+function generateFakePayments(count = 36, offset = 2000) {
   const key = "cachedFakePayments";
   const cached = localStorage.getItem(key);
   if (cached) return JSON.parse(cached);
@@ -187,7 +187,15 @@ export default function AdminDashboard() {
   const [toDate, setToDate] = useState("");
   const [paymentSummary, setPaymentSummary] = useState(null);
 
-  const fakeUsers = useMemo(() => generateFakeUsers(100, 10000), []);
+  const fakeUsers = useMemo(() => {
+    const cached = localStorage.getItem("cachedFakeUsers");
+    if (cached) return JSON.parse(cached);
+
+    const users = generateFakeUsers(100, 10000);
+    localStorage.setItem("cachedFakeUsers", JSON.stringify(users));
+    return users;
+  }, []);
+
   function getWeekRange(date) {
     const d = new Date(date);
     const day = d.getDay();
