@@ -277,14 +277,15 @@ export default function AdminDashboard() {
           `${config.apiUrl}/api/admin/stats/payments/list`
         );
         const payJson = await payRes.json();
-        const combinedPays = [...payJson, ...fakePayments];
+        const combinedPays = [...payJson, ...fakePayments].filter(
+          (p) => p.resultCode === 0
+        );
+
         setPaymentList(combinedPays);
 
         const total = combinedPays.length;
-        const totalSuccess = combinedPays.filter(
-          (p) => p.resultCode === 0
-        ).length;
-        const totalFailed = total - totalSuccess;
+        const totalSuccess = total;
+        const totalFailed = 0;
         const revenue = combinedPays
           .filter((p) => p.resultCode === 0)
           .reduce((sum, p) => sum + p.amount, 0);
@@ -458,21 +459,6 @@ export default function AdminDashboard() {
               📊 Biểu đồ tương tác người dùng
             </h3>
             {renderCombinedChart()}
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold mb-2">
-              📈 Retention theo tuần đăng ký (% user có Chat hoặc SavedRoute)
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={cohortRetention}>
-                <XAxis dataKey="week" />
-                <YAxis domain={[0, 100]} unit="%" />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="retention" fill="#4ade80" />
-              </BarChart>
-            </ResponsiveContainer>
           </div>
 
           <div className="overflow-auto">
