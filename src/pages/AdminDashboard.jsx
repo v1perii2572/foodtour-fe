@@ -19,13 +19,11 @@ function getWeekOfYear(date) {
 }
 
 function generateFakeUsers(count, offset = 1000) {
-  const domains = [
-    "gmail.com",
-    "yahoo.com",
-    "hotmail.com",
-    "fpt.edu.vn",
-    "outlook.com",
-  ];
+  const key = "cachedFakeUsers";
+  const cached = localStorage.getItem(key);
+  if (cached) return JSON.parse(cached);
+
+  const domains = ["gmail.com", "hotmail.com", "outlook.com"];
   const names = [
     "nguyen",
     "tran",
@@ -52,7 +50,7 @@ function generateFakeUsers(count, offset = 1000) {
   const start = new Date("2025-06-15");
   const end = new Date("2025-07-03");
 
-  return Array.from({ length: count }, (_, i) => {
+  const users = Array.from({ length: count }, (_, i) => {
     const id = i + offset;
     const name = names[Math.floor(Math.random() * names.length)];
     const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
@@ -73,6 +71,9 @@ function generateFakeUsers(count, offset = 1000) {
       hasPost: false,
     };
   });
+
+  localStorage.setItem(key, JSON.stringify(users));
+  return users;
 }
 
 function generateFakePayments(count = 36, offset = 2000) {
