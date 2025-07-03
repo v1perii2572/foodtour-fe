@@ -93,8 +93,8 @@ function generateFakePayments(count = 30, offset = 2000) {
       orderId: `EA${fixedSeed + id}`,
       requestId: crypto.randomUUID?.() || `REQ-${100000 + id}`,
       amount,
-      resultCode: i % 5 === 0 ? 1 : 0,
-      message: i % 5 === 0 ? "Thất bại" : "Thành công",
+      resultCode: 0,
+      message: "Thành công",
       createdAt: `2024-07-${((i % 28) + 1).toString().padStart(2, "0")}`,
     };
   });
