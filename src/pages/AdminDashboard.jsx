@@ -47,21 +47,40 @@ function generateFakeUsers(count, offset = 1000) {
     "dev",
     "2025",
   ];
-  const start = new Date("2025-06-15");
-  const end = new Date("2025-07-03");
 
-  const users = Array.from({ length: count }, (_, i) => {
+  const users = [];
+
+  // 👉 Add 60 spike users on July 3
+  for (let i = 0; i < 60; i++) {
     const id = i + offset;
     const name = names[Math.floor(Math.random() * names.length)];
     const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
     const domain = domains[Math.floor(Math.random() * domains.length)];
 
+    users.push({
+      email: `${name}${suffix}${id}@${domain}`,
+      role: id % 3 === 0 ? "Paid" : "Free",
+      subscriptionDate: "2025-07-03",
+      hasChat: true,
+      hasSavedRoute: i % 2 === 0,
+      hasFeedback: i % 5 === 0,
+      hasPost: i % 4 === 0,
+    });
+  }
+
+  // 👉 Add the rest of the users with random dates
+  const start = new Date("2025-06-15");
+  const end = new Date("2025-07-02");
+  for (let i = 60; i < count; i++) {
+    const id = i + offset;
+    const name = names[Math.floor(Math.random() * names.length)];
+    const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+    const domain = domains[Math.floor(Math.random() * domains.length)];
     const randTime =
       start.getTime() + Math.random() * (end.getTime() - start.getTime());
-    const date = new Date(randTime);
-    const dateStr = date.toISOString().split("T")[0];
+    const dateStr = new Date(randTime).toISOString().split("T")[0];
 
-    return {
+    users.push({
       email: `${name}${suffix}${id}@${domain}`,
       role: id % 3 === 0 ? "Paid" : "Free",
       subscriptionDate: dateStr,
@@ -69,26 +88,33 @@ function generateFakeUsers(count, offset = 1000) {
       hasSavedRoute: id % 3 === 0,
       hasFeedback: false,
       hasPost: false,
-    };
-  });
+    });
+  }
 
   localStorage.setItem(key, JSON.stringify(users));
   return users;
 }
 
-function generateFakePayments(count = 36, offset = 2000) {
+function generateFakePayments(count = 7, offset = 3000) {
   const key = "cachedFakePayments";
   const cached = localStorage.getItem(key);
   if (cached) return JSON.parse(cached);
 
-  const amounts = [49000, 129000, 549000, 849000];
+  const amounts = [49000, 129000];
+  const specificDates = [
+    "2025-07-01",
+    "2025-07-02",
+    "2025-07-03",
+    "2025-07-03",
+    "2025-07-04",
+    "2025-07-05",
+    "2025-07-06",
+  ];
+
   const payments = Array.from({ length: count }, (_, i) => {
     const id = i + offset;
-    const rand = i / count;
-    let amount = 49000;
-    if (rand < 0.6) amount = 49000;
-    else if (rand < 0.9) amount = 129000;
-    else amount = amounts[i % amounts.length];
+    const amount = amounts[Math.floor(Math.random() * amounts.length)];
+    const createdAt = specificDates[i % specificDates.length];
 
     return {
       orderId: `EA${fixedSeed + id}`,
@@ -96,7 +122,7 @@ function generateFakePayments(count = 36, offset = 2000) {
       amount,
       resultCode: 0,
       message: "Thành công",
-      createdAt: `2024-07-${((i % 28) + 1).toString().padStart(2, "0")}`,
+      createdAt,
     };
   });
 
@@ -107,22 +133,29 @@ function generateFakePayments(count = 36, offset = 2000) {
 function generateFakeActivitySummary(days = 10) {
   const today = new Date();
   const activities = ["Chat", "SavedRoute"];
+  const data = [];
 
-  return Array.from({ length: days }, (_, i) => {
+  for (let i = 0; i < days; i++) {
     const date = new Date(today);
     date.setDate(today.getDate() - i);
     const dateStr = date.toISOString().split("T")[0];
 
-    const base = Math.floor(Math.random() * 16) + 10;
-    const chatCount = base + Math.floor(Math.random() * 10);
-    const saveRouteCount = base;
+    const isPeak = dateStr === "2025-07-03";
+    const base = isPeak ? 60 : Math.floor(Math.random() * 16) + 10;
 
-    return activities.map((a) => ({
+    data.push({
       date: dateStr,
-      activity: a,
-      userCount: a === "Chat" ? chatCount : saveRouteCount,
-    }));
-  }).flat();
+      activity: "Chat",
+      userCount: base + Math.floor(Math.random() * 10),
+    });
+    data.push({
+      date: dateStr,
+      activity: "SavedRoute",
+      userCount: Math.floor(base * 0.9),
+    });
+  }
+
+  return data;
 }
 
 function mergeActivityData(dataArray) {
@@ -364,22 +397,15 @@ export default function AdminDashboard() {
       if (!grouped[item.date]) grouped[item.date] = { date: item.date };
       grouped[item.date][item.activity] = item.userCount;
     });
-    const combinedData = Object.values(grouped);
+
+    const combinedData = Object.values(grouped).sort(
+      (a, b) => new Date(a.date) - new Date(b.date)
+    );
 
     return (
       <ResponsiveContainer width="100%" height={350}>
         <BarChart data={combinedData}>
           <XAxis dataKey="date" />
-          <XAxis
-            dataKey="date"
-            tickFormatter={(value) => {
-              try {
-                return new Date(value).toISOString().split("T")[0];
-              } catch {
-                return value;
-              }
-            }}
-          />
           <Tooltip />
           <Legend />
           <Bar dataKey="Chat" stackId="a" fill="#10b981" />
