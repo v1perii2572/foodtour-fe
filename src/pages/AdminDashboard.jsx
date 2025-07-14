@@ -82,7 +82,7 @@ function generateFakeUsers(count, offset = 1000) {
 
     users.push({
       email: `${name}${suffix}${id}@${domain}`,
-      role: id % 20 === 0 ? "Paid" : "Free",
+      role: id % 5 === 0 ? "Paid" : "Free",
       subscriptionDate: dateStr,
       hasChat: id % 2 === 0,
       hasSavedRoute: id % 3 === 0,
