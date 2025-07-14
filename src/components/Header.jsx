@@ -32,7 +32,7 @@ export default function Header({ onLogout }) {
           <img src="/vn.png" alt="Logo" className="h-14 w-auto" />
           <h1
             className="text-xl sm:text-2xl font-bold text-green-700 select-none"
-            style={{ fontFamily: "iCielBC Lodestone" }}
+            style={{ fontFamily: "iCielBC Lodestone, sans-serif" }}
           >
             Eat Around
           </h1>
