@@ -19,7 +19,6 @@ import {
 import GooglePlaceInfo from "../components/GooglePlaceInfo";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Chat from "../components/Chat";
 
 const faqData = [
   {
@@ -153,14 +152,14 @@ export default function Home() {
           </h2>
           <form
             onSubmit={handleQuerySubmit}
-            className="flex items-center gap-2 mb-6"
+            className="flex items-center gap-2 justify-center"
           >
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Bạn muốn ăn gì hôm nay?"
-              className="flex-1 px-4 py-2 rounded-full text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="flex-1 px-4 py-2 rounded-full text-gray-800 text-sm max-w-md focus:outline-none focus:ring-2 focus:ring-green-500"
             />
             <button
               type="submit"
@@ -169,7 +168,6 @@ export default function Home() {
               Hỏi ngay
             </button>
           </form>
-          <Chat token={localStorage.getItem("token")} />
         </div>
       </section>
 
