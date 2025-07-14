@@ -143,7 +143,7 @@ function generateFakeActivitySummary(days = 20) {
     const isPeak = dateStr === "2025-07-03";
     let base;
     if (isPeak) {
-      base = 200 + Math.floor(Math.random() * 50);
+      base = 50 + Math.floor(Math.random() * 50);
     } else {
       base = Math.floor(Math.random() * 16) + 10;
     }
