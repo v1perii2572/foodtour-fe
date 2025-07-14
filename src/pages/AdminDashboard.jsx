@@ -68,17 +68,19 @@ function generateFakeUsers(count, offset = 1000) {
     });
   }
 
-  // 👉 Add the rest of the users with random dates
-  const start = new Date("2025-06-15");
-  const end = new Date("2025-07-02");
+  const start = new Date("2025-06-20");
+  const today = new Date();
+  const totalDays = Math.floor((today - start) / (1000 * 60 * 60 * 24));
   for (let i = 60; i < count; i++) {
     const id = i + offset;
     const name = names[Math.floor(Math.random() * names.length)];
     const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
     const domain = domains[Math.floor(Math.random() * domains.length)];
-    const randTime =
-      start.getTime() + Math.random() * (end.getTime() - start.getTime());
-    const dateStr = new Date(randTime).toISOString().split("T")[0];
+
+    const dayOffset = (i - 60) % (totalDays + 1);
+    const regDate = new Date(start);
+    regDate.setDate(regDate.getDate() + dayOffset);
+    const dateStr = regDate.toISOString().split("T")[0];
 
     users.push({
       email: `${name}${suffix}${id}@${domain}`,
