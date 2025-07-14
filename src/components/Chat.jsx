@@ -16,7 +16,6 @@ export default function Chat({ token, onPlacesSelected }) {
 
   const [mode, setMode] = useState("route");
   const [mood, setMood] = useState("");
-  const [specificLocation, setSpecificLocation] = useState("");
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -68,7 +67,6 @@ export default function Chat({ token, onPlacesSelected }) {
           lng: userLocation.lng,
           mode,
           mood,
-          specificLocation,
         }),
       });
 
@@ -149,13 +147,6 @@ export default function Chat({ token, onPlacesSelected }) {
           <option value="ăn nhanh">⚡ Ăn nhanh</option>
           <option value="tụ họp bạn bè">🍻 Tụ họp bạn bè</option>
         </select>
-
-        <input
-          value={specificLocation}
-          onChange={(e) => setSpecificLocation(e.target.value)}
-          placeholder="📌 Nhập tên phố, phường hoặc quận..."
-          className="flex-1 border px-3 py-2 rounded text-sm"
-        />
       </div>
 
       <div className="h-[320px] overflow-y-auto p-4 bg-green-50 border border-green-100 rounded-xl shadow-inner space-y-3 text-sm leading-relaxed">
