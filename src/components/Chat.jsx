@@ -7,6 +7,17 @@ export default function Chat({ token, onPlacesSelected }) {
   const [messages, setMessages] = useState([]);
   const location = useLocation();
 
+  const [input, setInput] = useState("");
+  const [sessionId, setSessionId] = useState(null);
+  const [userLocation, setUserLocation] = useState({ lat: 0, lng: 0 });
+  const [canSaveRoute, setCanSaveRoute] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [routeName, setRouteName] = useState("");
+
+  const [mode, setMode] = useState("route");
+  const [mood, setMood] = useState("");
+  const [specificLocation, setSpecificLocation] = useState("");
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const initialQ = params.get("q");
@@ -17,13 +28,6 @@ export default function Chat({ token, onPlacesSelected }) {
       }, 300);
     }
   }, [location.search]);
-
-  const [input, setInput] = useState("");
-  const [sessionId, setSessionId] = useState(null);
-  const [userLocation, setUserLocation] = useState({ lat: 0, lng: 0 });
-  const [canSaveRoute, setCanSaveRoute] = useState(false);
-  const [showSaveModal, setShowSaveModal] = useState(false);
-  const [routeName, setRouteName] = useState("");
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -62,6 +66,9 @@ export default function Chat({ token, onPlacesSelected }) {
           message: msg,
           lat: userLocation.lat,
           lng: userLocation.lng,
+          mode,
+          mood,
+          specificLocation,
         }),
       });
 
@@ -74,10 +81,10 @@ export default function Chat({ token, onPlacesSelected }) {
       const data = await res.json();
       setSessionId(data.sessionId);
       const replyText = typeof data.reply === "string" ? data.reply : "";
-      const cleanReply = replyText.replace(/\n\\s*\n/g, "\n");
+      const cleanReply = replyText.replace(/\n\s*\n/g, "\n");
 
       setMessages((prev) => [...prev, { role: "assistant", text: cleanReply }]);
-      setCanSaveRoute(true);
+      setCanSaveRoute(mode === "route");
       setInput("");
     } catch (error) {
       alert("Gửi thất bại");
@@ -120,6 +127,37 @@ export default function Chat({ token, onPlacesSelected }) {
 
   return (
     <div className="space-y-4 relative">
+      <div className="flex flex-col md:flex-row gap-2">
+        <select
+          value={mode}
+          onChange={(e) => setMode(e.target.value)}
+          className="border px-3 py-2 rounded text-sm w-full md:w-52"
+        >
+          <option value="route">🗺️ Gợi ý theo lộ trình</option>
+          <option value="place">📍 Gợi ý quán ăn lẻ</option>
+        </select>
+
+        <select
+          value={mood}
+          onChange={(e) => setMood(e.target.value)}
+          className="border px-3 py-2 rounded text-sm w-full md:w-48"
+        >
+          <option value="">🎯 Dịp (tuỳ chọn)</option>
+          <option value="hẹn hò">💖 Hẹn hò</option>
+          <option value="đi chơi">🎉 Đi chơi</option>
+          <option value="ăn tối muộn">🌙 Ăn tối muộn</option>
+          <option value="ăn nhanh">⚡ Ăn nhanh</option>
+          <option value="tụ họp bạn bè">🍻 Tụ họp bạn bè</option>
+        </select>
+
+        <input
+          value={specificLocation}
+          onChange={(e) => setSpecificLocation(e.target.value)}
+          placeholder="📌 Nhập tên phố, phường hoặc quận..."
+          className="flex-1 border px-3 py-2 rounded text-sm"
+        />
+      </div>
+
       <div className="h-[320px] overflow-y-auto p-4 bg-green-50 border border-green-100 rounded-xl shadow-inner space-y-3 text-sm leading-relaxed">
         {messages.map((m, i) => (
           <div
