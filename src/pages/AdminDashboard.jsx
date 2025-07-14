@@ -255,20 +255,6 @@ export default function AdminDashboard() {
 
   const cohortRetention = useMemo(() => {
     const cohorts = {};
-
-    const registrationSummary = useMemo(() => {
-      const map = new Map();
-      userList.forEach((u) => {
-        const date = u.subscriptionDate;
-        if (!date) return;
-        map.set(date, (map.get(date) || 0) + 1);
-      });
-
-      return Array.from(map.entries())
-        .map(([date, count]) => ({ date, count }))
-        .sort((a, b) => new Date(a.date) - new Date(b.date));
-    }, [userList]);
-
     userList.forEach((user) => {
       if (!user.subscriptionDate) return;
       const date = new Date(user.subscriptionDate);
@@ -296,6 +282,19 @@ export default function AdminDashboard() {
           new Date(a.week.split(" - ")[0].split("/").reverse().join("-")) -
           new Date(b.week.split(" - ")[0].split("/").reverse().join("-"))
       );
+  }, [userList]);
+
+  const registrationSummary = useMemo(() => {
+    const map = new Map();
+    userList.forEach((u) => {
+      const date = u.subscriptionDate;
+      if (!date) return;
+      map.set(date, (map.get(date) || 0) + 1);
+    });
+
+    return Array.from(map.entries())
+      .map(([date, count]) => ({ date, count }))
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
   }, [userList]);
 
   const fakePayments = useMemo(() => generateFakePayments(30, 5000), []);
