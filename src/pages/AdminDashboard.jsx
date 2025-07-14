@@ -130,7 +130,7 @@ function generateFakePayments(count = 7, offset = 3000) {
   return payments;
 }
 
-function generateFakeActivitySummary(days = 10) {
+function generateFakeActivitySummary(days = 20) {
   const today = new Date();
   const activities = ["Chat", "SavedRoute"];
   const data = [];
