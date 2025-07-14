@@ -145,7 +145,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-green-50 py-12">
+      <section className="py-12">
         <div className="container mx-auto max-w-4xl px-4">
           <h2 className="text-2xl font-bold text-green-800 mb-4 text-center">
             💬 Hỏi EatAround AI
@@ -163,7 +163,7 @@ export default function Home() {
             />
             <button
               type="submit"
-              className="bg-green-600 text-white font-semibold px-4 py-2 rounded-full hover:bg-green-700 transition text-sm"
+              className=" text-white font-semibold px-4 py-2 rounded-full hover:bg-green-700 transition text-sm"
             >
               Hỏi ngay
             </button>
