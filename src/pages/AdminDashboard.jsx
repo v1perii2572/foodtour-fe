@@ -141,17 +141,22 @@ function generateFakeActivitySummary(days = 10) {
     const dateStr = date.toISOString().split("T")[0];
 
     const isPeak = dateStr === "2025-07-03";
-    const base = isPeak ? 60 : Math.floor(Math.random() * 16) + 10;
+    let base;
+    if (isPeak) {
+      base = 200 + Math.floor(Math.random() * 50);
+    } else {
+      base = Math.floor(Math.random() * 16) + 10;
+    }
 
     data.push({
       date: dateStr,
       activity: "Chat",
-      userCount: base + Math.floor(Math.random() * 10),
+      userCount: base + Math.floor(Math.random() * 20),
     });
     data.push({
       date: dateStr,
       activity: "SavedRoute",
-      userCount: Math.floor(base * 0.9),
+      userCount: Math.floor(base * 0.8 + Math.random() * 10),
     });
   }
 
