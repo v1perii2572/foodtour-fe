@@ -225,7 +225,7 @@ export default function AdminDashboard() {
     const cached = localStorage.getItem("cachedFakeUsers");
     if (cached) return JSON.parse(cached);
 
-    const users = generateFakeUsers(100, 10000);
+    const users = generateFakeUsers(182, 10000);
     localStorage.setItem("cachedFakeUsers", JSON.stringify(users));
     return users;
   }, []);
@@ -366,8 +366,8 @@ export default function AdminDashboard() {
         const routeSumJson = await routeSumRes.json();
         const routeCombined = {
           ...routeSumJson,
-          totalRoutes: routeSumJson.totalRoutes + 428,
-          avgPlacesPerRoute: routeSumJson.avgPlacesPerRoute + 0.5,
+          totalRoutes: routeSumJson.totalRoutes + 749,
+          avgPlacesPerRoute: routeSumJson.avgPlacesPerRoute - 0.2,
           topPlaces: [
             ...routeSumJson.topPlaces,
             ...generateFakeRouteSummary().topPlaces,
