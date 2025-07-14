@@ -68,29 +68,57 @@ function generateFakeUsers(count, offset = 1000) {
     });
   }
 
+  // 👉 Distribute the rest evenly but with variation
   const start = new Date("2025-06-20");
   const today = new Date();
-  const totalDays = Math.floor((today - start) / (1000 * 60 * 60 * 24));
-  for (let i = 60; i < count; i++) {
-    const id = i + offset;
-    const name = names[Math.floor(Math.random() * names.length)];
-    const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
-    const domain = domains[Math.floor(Math.random() * domains.length)];
+  const totalDays = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
+  const basePerDay = Math.floor((count - 60) / totalDays);
+  const userPerDayList = [];
 
-    const dayOffset = (i - 60) % (totalDays + 1);
-    const regDate = new Date(start);
-    regDate.setDate(regDate.getDate() + dayOffset);
-    const dateStr = regDate.toISOString().split("T")[0];
+  let remaining = count - 60;
 
-    users.push({
-      email: `${name}${suffix}${id}@${domain}`,
-      role: id % 5 === 0 ? "Paid" : "Free",
-      subscriptionDate: dateStr,
-      hasChat: id % 2 === 0,
-      hasSavedRoute: id % 3 === 0,
-      hasFeedback: false,
-      hasPost: false,
-    });
+  // Tạo số lượng user mỗi ngày có dao động nhẹ
+  for (let i = 0; i < totalDays; i++) {
+    const variation = Math.floor(Math.random() * 5) - 2; // dao động từ -2 đến +2
+    const num = Math.max(1, basePerDay + variation);
+    userPerDayList.push(num);
+  }
+
+  // Cắt bớt nếu dư
+  const totalAllocated = userPerDayList.reduce((a, b) => a + b, 0);
+  if (totalAllocated > remaining) {
+    let diff = totalAllocated - remaining;
+    for (let i = 0; i < totalDays && diff > 0; i++) {
+      if (userPerDayList[i] > 1) {
+        userPerDayList[i]--;
+        diff--;
+      }
+    }
+  }
+
+  let currentId = offset + 60;
+  for (let i = 0; i < totalDays; i++) {
+    const date = new Date(start);
+    date.setDate(date.getDate() + i);
+    const dateStr = date.toISOString().split("T")[0];
+    const usersToday = userPerDayList[i] || 0;
+
+    for (let j = 0; j < usersToday; j++) {
+      const id = currentId++;
+      const name = names[Math.floor(Math.random() * names.length)];
+      const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+      const domain = domains[Math.floor(Math.random() * domains.length)];
+
+      users.push({
+        email: `${name}${suffix}${id}@${domain}`,
+        role: id % 5 === 0 ? "Paid" : "Free",
+        subscriptionDate: dateStr,
+        hasChat: id % 2 === 0,
+        hasSavedRoute: id % 3 === 0,
+        hasFeedback: false,
+        hasPost: false,
+      });
+    }
   }
 
   localStorage.setItem(key, JSON.stringify(users));
