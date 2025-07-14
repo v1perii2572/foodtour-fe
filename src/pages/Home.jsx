@@ -145,25 +145,29 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-12">
-        <div className="container mx-auto max-w-4xl px-4">
-          <h2 className="text-2xl font-bold text-green-800 mb-4 text-center">
-            💬 Hỏi EatAround AI
+      <section className="bg-white py-16">
+        <div className="container mx-auto max-w-3xl px-4 text-center">
+          <h2 className="text-3xl font-extrabold text-green-800 mb-4">
+            💬 Trợ Lý Ăn Uống EatAround AI
           </h2>
+          <p className="text-gray-600 mb-6 text-base">
+            Bạn đang phân vân hôm nay ăn gì? Hãy để EatAround AI gợi ý cho bạn
+            món ngon và địa điểm phù hợp!
+          </p>
           <form
             onSubmit={handleQuerySubmit}
-            className="flex items-center gap-2 justify-center"
+            className="flex flex-col sm:flex-row items-center gap-3 justify-center"
           >
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Bạn muốn ăn gì hôm nay?"
-              className="flex-1 px-4 py-2 rounded-full text-gray-800 text-sm max-w-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="flex-1 w-full px-5 py-3 rounded-full text-gray-800 text-sm border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
             />
             <button
               type="submit"
-              className=" text-white font-semibold px-4 py-2 rounded-full hover:bg-green-700 transition text-sm"
+              className="bg-green-600 text-white font-semibold px-6 py-3 rounded-full hover:bg-green-700 transition text-sm shadow-md"
             >
               Hỏi ngay
             </button>
