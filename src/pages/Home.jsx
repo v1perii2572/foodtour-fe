@@ -18,6 +18,7 @@ import {
 } from "react-icons/fa";
 import GooglePlaceInfo from "../components/GooglePlaceInfo";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const faqData = [
   {
@@ -91,6 +92,15 @@ function FAQSection() {
 
 export default function Home() {
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleQuerySubmit = (e) => {
+    e.preventDefault();
+    if (query.trim()) {
+      navigate(`/chat?q=${encodeURIComponent(query.trim())}`);
+    }
+  };
   return (
     <>
       <section className="relative text-white py-28 overflow-hidden">
@@ -116,6 +126,24 @@ export default function Home() {
               Hành trình ẩm thực thú vị, khám phá các quán ăn nổi bật gần bạn
               với sự trợ giúp của AI.
             </p>
+            <form
+              onSubmit={handleQuerySubmit}
+              className="mt-4 flex items-center gap-2"
+            >
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Hỏi EatAround AI điều gì đó..."
+                className="flex-1 px-4 py-2 rounded-full text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <button
+                type="submit"
+                className="bg-white text-green-700 font-semibold px-4 py-2 rounded-full hover:bg-green-200 transition text-sm"
+              >
+                Hỏi ngay
+              </button>
+            </form>
             <div className="space-x-4">
               <a
                 href="#"

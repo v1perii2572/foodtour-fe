@@ -1,9 +1,23 @@
 import { useState, useEffect } from "react";
 import { FaPaperPlane, FaSave, FaUser, FaRobot } from "react-icons/fa";
 import config from "../config";
+import { useLocation } from "react-router-dom";
 
 export default function Chat({ token, onPlacesSelected }) {
   const [messages, setMessages] = useState([]);
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const initialQ = params.get("q");
+    if (initialQ && messages.length === 0) {
+      setInput(initialQ);
+      setTimeout(() => {
+        handleSend(initialQ);
+      }, 300);
+    }
+  }, [location.search]);
+
   const [input, setInput] = useState("");
   const [sessionId, setSessionId] = useState(null);
   const [userLocation, setUserLocation] = useState({ lat: 0, lng: 0 });
@@ -28,10 +42,11 @@ export default function Chat({ token, onPlacesSelected }) {
     }
   }, []);
 
-  const handleSend = async () => {
-    if (!input.trim()) return;
+  const handleSend = async (customInput) => {
+    const msg = customInput ?? input;
+    if (!msg.trim()) return;
 
-    const userMsg = { role: "user", text: input };
+    const userMsg = { role: "user", text: msg };
     setMessages((prev) => [...prev, userMsg]);
     setCanSaveRoute(false);
 
@@ -44,7 +59,7 @@ export default function Chat({ token, onPlacesSelected }) {
         },
         body: JSON.stringify({
           sessionId,
-          message: input,
+          message: msg,
           lat: userLocation.lat,
           lng: userLocation.lng,
         }),
@@ -59,7 +74,7 @@ export default function Chat({ token, onPlacesSelected }) {
       const data = await res.json();
       setSessionId(data.sessionId);
       const replyText = typeof data.reply === "string" ? data.reply : "";
-      const cleanReply = replyText.replace(/\n\s*\n/g, "\n");
+      const cleanReply = replyText.replace(/\n\\s*\n/g, "\n");
 
       setMessages((prev) => [...prev, { role: "assistant", text: cleanReply }]);
       setCanSaveRoute(true);
