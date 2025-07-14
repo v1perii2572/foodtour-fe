@@ -19,6 +19,7 @@ import {
 import GooglePlaceInfo from "../components/GooglePlaceInfo";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Chat from "../components/Chat";
 
 const faqData = [
   {
