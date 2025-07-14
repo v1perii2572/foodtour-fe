@@ -286,7 +286,7 @@ export default function AdminDashboard() {
   }, [userList]);
 
   const fakePayments = useMemo(() => generateFakePayments(30, 5000), []);
-  const fakeActivity = useMemo(() => generateFakeActivitySummary(10), []);
+  const fakeActivity = useMemo(() => generateFakeActivitySummary(20), []);
 
   useEffect(() => {
     async function fetchAndCombine() {
