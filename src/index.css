@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @font-face {
   font-family: "iCielBC Lodestone";
-  src: url("iCielBCLodestone-Regular.tff") format("truetype");
+  src: url("iCielBCLodestone.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
