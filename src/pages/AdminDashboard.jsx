@@ -256,6 +256,19 @@ export default function AdminDashboard() {
   const cohortRetention = useMemo(() => {
     const cohorts = {};
 
+    const registrationSummary = useMemo(() => {
+      const map = new Map();
+      userList.forEach((u) => {
+        const date = u.subscriptionDate;
+        if (!date) return;
+        map.set(date, (map.get(date) || 0) + 1);
+      });
+
+      return Array.from(map.entries())
+        .map(([date, count]) => ({ date, count }))
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
+    }, [userList]);
+
     userList.forEach((user) => {
       if (!user.subscriptionDate) return;
       const date = new Date(user.subscriptionDate);
@@ -499,6 +512,21 @@ export default function AdminDashboard() {
               📊 Biểu đồ tương tác người dùng
             </h3>
             {renderCombinedChart()}
+          </div>
+
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold mb-2">
+              📈 Biểu đồ số user đăng ký theo ngày
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={registrationSummary}>
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="count" name="User mới" fill="#34d399" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
 
           <div className="overflow-auto">
