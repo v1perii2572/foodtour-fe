@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import config from "../config";
-import { fakePosts } from "./fakePosts"; // Assuming fakePosts is imported from the provided file
 
 export default function PostPage({ token, username, userId }) {
   const [content, setContent] = useState("");
