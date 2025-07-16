@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import config from "../config";
+import { fakePosts } from "./fakePosts"; // Assuming fakePosts is imported from the provided file
 
 export default function PostPage({ token, username, userId }) {
   const [content, setContent] = useState("");
@@ -86,8 +87,18 @@ export default function PostPage({ token, username, userId }) {
   };
 
   const loadPosts = async () => {
-    // Use fake posts instead of making an API request
-    setPosts(fakePosts);
+    try {
+      const res = await axios.get(
+        `${config.apiUrl}/api/Posts?userId=${userId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const apiPosts = Array.isArray(res.data) ? res.data : [];
+      // Combine fakePosts with API posts
+      setPosts([...fakePosts, ...apiPosts]);
+    } catch {
+      // If API fails, use only fakePosts
+      setPosts(fakePosts);
+    }
   };
 
   const filteredPosts = posts.filter((post) => {
@@ -282,7 +293,7 @@ export default function PostPage({ token, username, userId }) {
                         [post.id]: e.target.value,
                       }))
                     }
-                    placeholder="Viết bình luận..."
+                    쇼핑몰="Viết bình luận..."
                     className="flex-1 border border-gray-300 px-3 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
                   <button
@@ -303,34 +314,34 @@ export default function PostPage({ token, username, userId }) {
 const fakePosts = [
   {
     id: 1,
-    userName: "Nguyễn Minh Tuấn",
-    content: "Hôm nay mình thử món phở bò tại quán XYZ, rất ngon và đậm đà!",
-    imageUrls: ["https://via.placeholder.com/500"],
+    userName: "Nguyễn Văn An",
+    content: "Hôm nay mình thử món phở bò tại Phở Thìn, rất ngon và đậm đà!",
+    imageUrls: ["https://images.unsplash.com/photo-1512058564366-4c4e4e1c6143"],
     likeCount: 12,
     comments: [
       {
-        userName: "Trần Thị Lan",
-        content: "Mình cũng thích phở bò tại quán này!",
+        userName: "Trần Thị Mai",
+        content: "Mình cũng thích phở bò tại Phở Thìn!",
       },
-      { userName: "Lê Minh Tú", content: "Phở ở quán này đúng là tuyệt vời!" },
+      { userName: "Lê Văn Hùng", content: "Phở ở đây đúng là tuyệt vời!" },
     ],
     isLiked: false,
     createdAt: "2025-07-16T10:00:00Z",
   },
   {
     id: 2,
-    userName: "Phan Thị Hoa",
+    userName: "Phạm Thị Ngọc",
     content:
-      "Mới thử món sushi ở nhà hàng ABC. Món ăn tươi ngon nhưng giá hơi cao.",
-    imageUrls: ["https://via.placeholder.com/500"],
+      "Mới thử món sushi ở Sushi Kei. Món ăn tươi ngon nhưng giá hơi cao.",
+    imageUrls: ["https://images.unsplash.com/photo-1579584425555-35d27bf4a8d3"],
     likeCount: 45,
     comments: [
       {
-        userName: "Vũ Quang Huy",
-        content: "Sushi ở nhà hàng này có ngon không bạn?",
+        userName: "Vũ Quang Minh",
+        content: "Sushi ở Sushi Kei có ngon không bạn?",
       },
       {
-        userName: "Nguyễn Thị Lan",
+        userName: "Nguyễn Thị Hương",
         content: "Mình cũng thích sushi ở đó, nhưng đúng là giá hơi cao.",
       },
     ],
@@ -339,14 +350,14 @@ const fakePosts = [
   },
   {
     id: 3,
-    userName: "Bùi Minh Quang",
+    userName: "Đỗ Minh Tuấn",
     content:
-      "Hôm nay mình thử món bánh xèo tại quán ABC, không được như mong đợi, hơi khô và nhạt.",
-    imageUrls: ["https://via.placeholder.com/500"],
+      "Hôm nay mình thử món bánh xèo tại Bánh Xèo 46A, không được như mong đợi, hơi khô và nhạt.",
+    imageUrls: ["https://images.unsplash.com/photo-1629644295879-4b6e5e2489a7"],
     likeCount: 8,
     comments: [
       {
-        userName: "Lê Thị Kim",
+        userName: "Lê Thị Hồng",
         content:
           "Bánh xèo ở đó không ngon hả bạn? Mình nghe mọi người khen nhiều mà.",
       },
@@ -356,14 +367,14 @@ const fakePosts = [
   },
   {
     id: 4,
-    userName: "Nguyễn Minh Hải",
+    userName: "Trần Văn Hoàng",
     content: "Ngày mai mình sẽ bắt đầu thử thách mới. Cảm thấy hào hứng!",
     imageUrls: [],
     likeCount: 38,
     comments: [
-      { userName: "Nguyễn Thị Thanh", content: "Chúc bạn thành công nhé!" },
+      { userName: "Nguyễn Thị Linh", content: "Chúc bạn thành công nhé!" },
       {
-        userName: "Lê Văn Dũng",
+        userName: "Lê Văn Nam",
         content: "Mình cũng muốn tham gia thử thách này!",
       },
     ],
@@ -372,14 +383,14 @@ const fakePosts = [
   },
   {
     id: 5,
-    userName: "Đặng Minh Tâm",
-    content: "Mình đang học một khóa học mới, rất thú vị!",
-    imageUrls: ["https://via.placeholder.com/500"],
+    userName: "Hoàng Minh Đức",
+    content: "Mình đang học một khóa học mới tại FUNiX, rất thú vị!",
+    imageUrls: ["https://images.unsplash.com/photo-1516321318423-f06f85e504b3"],
     likeCount: 56,
     comments: [
-      { userName: "Trương Thị Mai", content: "Chúc mừng bạn, học tốt nhé!" },
+      { userName: "Trương Thị Hà", content: "Chúc mừng bạn, học tốt nhé!" },
       {
-        userName: "Phạm Quang Trung",
+        userName: "Phạm Văn Long",
         content: "Khóa học nào vậy? Mình cũng muốn đăng ký!",
       },
     ],
@@ -388,18 +399,18 @@ const fakePosts = [
   },
   {
     id: 6,
-    userName: "Lê Anh Duy",
-    content: "Cuối tuần này mình sẽ đi du lịch! Đang rất háo hức.",
-    imageUrls: ["https://via.placeholder.com/500"],
+    userName: "Lê Quang Vinh",
+    content: "Cuối tuần này mình sẽ đi du lịch Đà Lạt! Đang rất háo hức.",
+    imageUrls: ["https://images.unsplash.com/photo-1507525428034-b723cf961d3e"],
     likeCount: 67,
     comments: [
       {
-        userName: "Nguyễn Thị Lan",
+        userName: "Nguyễn Thị Thảo",
         content: "Wow, chúc bạn có chuyến đi vui vẻ!",
       },
       {
-        userName: "Trần Thị Kim",
-        content: "Địa điểm nào vậy? Mình cũng muốn đi!",
+        userName: "Trần Thị Yến",
+        content: "Đà Lạt đẹp lắm, mình cũng muốn đi!",
       },
     ],
     isLiked: true,
@@ -407,17 +418,18 @@ const fakePosts = [
   },
   {
     id: 7,
-    userName: "Lâm Quang Tuấn",
-    content: "Mình vừa hoàn thành một dự án lớn, rất tự hào với bản thân!",
-    imageUrls: ["https://via.placeholder.com/500"],
+    userName: "Vũ Quang Huy",
+    content:
+      "Mình vừa hoàn thành một dự án lớn tại FPT, rất tự hào với bản thân!",
+    imageUrls: ["https://images.unsplash.com/photo-1516321497487-e288fb19713f"],
     likeCount: 81,
     comments: [
       {
-        userName: "Nguyễn Quỳnh Mai",
+        userName: "Nguyễn Thị Quỳnh",
         content: "Chúc mừng bạn! Thành công tiếp theo nhé!",
       },
       {
-        userName: "Trương Quỳnh Hương",
+        userName: "Trương Thị Hương",
         content:
           "Bản thân mình cũng cảm thấy rất vui khi hoàn thành một dự án!",
       },
@@ -427,14 +439,14 @@ const fakePosts = [
   },
   {
     id: 8,
-    userName: "Nguyễn Thị Minh",
+    userName: "Nguyễn Thị Thu",
     content:
-      "Sắp tới tôi sẽ tổ chức một buổi hòa nhạc. Rất mong nhận được sự ủng hộ!",
-    imageUrls: ["https://via.placeholder.com/500"],
+      "Sắp tới tôi sẽ tổ chức một buổi hòa nhạc tại Nhà Văn Hóa Thanh Niên. Rất mong nhận được sự ủng hộ!",
+    imageUrls: ["https://images.unsplash.com/photo-1514525253161-7a46d19cd819"],
     likeCount: 29,
     comments: [
       {
-        userName: "Lê Minh Khánh",
+        userName: "Lê Minh Nhật",
         content: "Tuyệt vời, tôi rất muốn tham gia!",
       },
     ],
@@ -443,30 +455,30 @@ const fakePosts = [
   },
   {
     id: 9,
-    userName: "Trần Thị Kim",
-    content: "Bắt đầu đọc một cuốn sách mới, thật sự rất thú vị!",
+    userName: "Trần Thị Lan",
+    content: "Bắt đầu đọc cuốn 'Đắc Nhân Tâm', thật sự rất thú vị!",
     imageUrls: [],
     likeCount: 21,
     comments: [
       {
         userName: "Lê Thị Minh",
-        content: "Cuốn sách gì vậy? Rất muốn biết thêm!",
+        content: "Cuốn sách này mình cũng đang đọc!",
       },
-      { userName: "Nguyễn Thanh Hải", content: "Mình cũng yêu sách!" },
+      { userName: "Nguyễn Thanh Tùng", content: "Mình cũng yêu sách!" },
     ],
     isLiked: false,
     createdAt: "2025-07-08T17:30:00Z",
   },
   {
     id: 10,
-    userName: "Phạm Thị Bích",
-    content: "Đã thử một món ăn mới hôm nay, rất ngon!",
-    imageUrls: ["https://via.placeholder.com/500"],
+    userName: "Phạm Thị Hồng",
+    content: "Đã thử món bún riêu tại Bún Riêu Cua 6A, rất ngon!",
+    imageUrls: ["https://images.unsplash.com/photo-1598516802417-8d17f2d3b648"],
     likeCount: 63,
     comments: [
       {
-        userName: "Trần Minh Tuấn",
-        content: "Món ăn gì vậy? Trông rất hấp dẫn!",
+        userName: "Trần Minh Khang",
+        content: "Món này trông rất hấp dẫn! Quán ở đâu vậy?",
       },
     ],
     isLiked: true,
@@ -474,14 +486,15 @@ const fakePosts = [
   },
   {
     id: 11,
-    userName: "Nguyễn Quang Minh",
-    content: "Sắp tới mình sẽ đi phỏng vấn. Hy vọng mọi thứ sẽ suôn sẻ!",
+    userName: "Nguyễn Quang Anh",
+    content:
+      "Sắp tới mình sẽ đi phỏng vấn tại VinAI. Hy vọng mọi thứ sẽ suôn sẻ!",
     imageUrls: [],
     likeCount: 34,
     comments: [
-      { userName: "Lê Thị Lan", content: "Chúc bạn may mắn!" },
+      { userName: "Lê Thị Hoa", content: "Chúc bạn may mắn!" },
       {
-        userName: "Nguyễn Thanh Sơn",
+        userName: "Nguyễn Thanh Bình",
         content: "Hy vọng bạn sẽ có công việc như ý!",
       },
     ],
@@ -490,14 +503,14 @@ const fakePosts = [
   },
   {
     id: 12,
-    userName: "Bùi Thị Lan",
-    content: "Mình vừa tham gia một sự kiện thú vị! Thật tuyệt vời.",
-    imageUrls: ["https://via.placeholder.com/500"],
+    userName: "Bùi Thị Ngọc",
+    content: "Mình vừa tham gia một sự kiện tại GEM Center! Thật tuyệt vời.",
+    imageUrls: ["https://images.unsplash.com/photo-1517457373958-b4bdd8b50e05"],
     likeCount: 27,
     comments: [
-      { userName: "Nguyễn Minh Thi", content: "Sự kiện gì vậy?" },
+      { userName: "Nguyễn Minh Thư", content: "Sự kiện gì vậy?" },
       {
-        userName: "Trương Bích Ngọc",
+        userName: "Trương Bích Phượng",
         content: "Mong muốn được tham gia lần sau!",
       },
     ],
@@ -506,26 +519,26 @@ const fakePosts = [
   },
   {
     id: 13,
-    userName: "Phạm Minh Tuấn",
-    content: "Một ngày đẹp trời để đi dạo!",
-    imageUrls: ["https://via.placeholder.com/500"],
+    userName: "Phạm Minh Đức",
+    content: "Một ngày đẹp trời để đi dạo tại Công viên 30/4!",
+    imageUrls: ["https://images.unsplash.com/photo-1449824913935-59a10b8d2000"],
     likeCount: 16,
     comments: [
-      { userName: "Trần Quỳnh Mai", content: "Cảm giác tuyệt vời!" },
-      { userName: "Lê Thanh Tâm", content: "Ngày hôm nay thật tuyệt vời!" },
+      { userName: "Trần Quỳnh Anh", content: "Cảm giác tuyệt vời!" },
+      { userName: "Lê Thanh Phong", content: "Ngày hôm nay thật tuyệt vời!" },
     ],
     isLiked: false,
     createdAt: "2025-07-04T21:00:00Z",
   },
   {
     id: 14,
-    userName: "Đoàn Thị Nhung",
+    userName: "Đoàn Thị Hương",
     content: "Mình đang thử một thói quen mới, hy vọng sẽ thành công.",
     imageUrls: [],
     likeCount: 50,
     comments: [
       {
-        userName: "Nguyễn Minh Khánh",
+        userName: "Nguyễn Minh Khang",
         content: "Mình cũng thử thói quen này!",
       },
     ],
@@ -534,9 +547,9 @@ const fakePosts = [
   },
   {
     id: 15,
-    userName: "Lê Thị Kim",
-    content: "Mình vừa kết thúc một buổi học online, rất bổ ích!",
-    imageUrls: ["https://via.placeholder.com/500"],
+    userName: "Lê Thị Thảo",
+    content: "Mình vừa kết thúc một buổi học online tại Kyna, rất bổ ích!",
+    imageUrls: ["https://images.unsplash.com/photo-1527689368864-3a2c27e71999"],
     likeCount: 12,
     comments: [
       { userName: "Phạm Minh Khôi", content: "Mình cũng đang học khóa này!" },
@@ -546,22 +559,23 @@ const fakePosts = [
   },
   {
     id: 16,
-    userName: "Nguyễn Bảo Trâm",
+    userName: "Nguyễn Bảo Trân",
     content: "Cảm ơn tất cả các bạn đã luôn ủng hộ mình!",
     imageUrls: [],
     likeCount: 72,
     comments: [
       { userName: "Lê Thanh Mai", content: "Mình sẽ luôn ủng hộ bạn!" },
-      { userName: "Nguyễn Bích Hòa", content: "Chúc bạn luôn thành công!" },
+      { userName: "Nguyễn Bích Hạnh", content: "Chúc bạn luôn thành công!" },
     ],
     isLiked: true,
     createdAt: "2025-07-01T10:15:00Z",
   },
   {
     id: 17,
-    userName: "Lâm Thanh Sơn",
-    content: "Cuối tuần này sẽ là dịp để gặp gỡ bạn bè.",
-    imageUrls: ["https://via.placeholder.com/500"],
+    userName: "Lâm Thanh Tùng",
+    content:
+      "Cuối tuần này sẽ là dịp để gặp gỡ bạn bè tại Quán cà phê Nhà Sàn.",
+    imageUrls: ["https://images.unsplash.com/photo-1495470946180-0b3c805bf430"],
     likeCount: 85,
     comments: [
       {
@@ -569,8 +583,8 @@ const fakePosts = [
         content: "Hy vọng bạn có một buổi gặp mặt tuyệt vời!",
       },
       {
-        userName: "Trần Minh Tân",
-        content: "Mình cũng sẽ gặp bạn bè vào cuối tuần này!",
+        userName: "Trần Minh Tuấn",
+        content: "Mình cũng sẽ gặp bạn bè tại đó vào cuối tuần này!",
       },
     ],
     isLiked: false,
@@ -578,13 +592,13 @@ const fakePosts = [
   },
   {
     id: 18,
-    userName: "Phạm Minh Ngọc",
-    content: "Đọc một cuốn sách về phát triển bản thân. Cảm thấy rất hữu ích!",
+    userName: "Phạm Minh Châu",
+    content: "Đọc cuốn 'Nhà Giả Kim', cảm thấy rất hữu ích!",
     imageUrls: [],
     likeCount: 43,
     comments: [
       {
-        userName: "Nguyễn Quang Đạt",
+        userName: "Nguyễn Quang Vinh",
         content: "Cuốn sách này mình cũng đang đọc!",
       },
     ],
@@ -593,21 +607,20 @@ const fakePosts = [
   },
   {
     id: 19,
-    userName: "Nguyễn Thành Công",
+    userName: "Nguyễn Thành Đạt",
     content: "Cùng nhau làm việc và học hỏi, đó là chìa khóa thành công.",
-    imageUrls: ["https://via.placeholder.com/500"],
+    imageUrls: ["https://images.unsplash.com/photo-1516321497487-e288fb19713f"],
     likeCount: 32,
     comments: [
-      { userName: "Nguyễn Thiện Hưng", content: "Mình hoàn toàn đồng ý!" },
+      { userName: "Nguyễn Thiện Hùng", content: "Mình hoàn toàn đồng ý!" },
     ],
     isLiked: false,
     createdAt: "2025-06-28T13:40:00Z",
   },
   {
     id: 20,
-    userName: "Lê Minh Thu",
-    content:
-      "Mình đang chuẩn bị cho một kỳ thi quan trọng, mong mọi chuyện suôn sẻ!",
+    userName: "Lê Minh Thư",
+    content: "Mình đang chuẩn bị cho kỳ thi IELTS, mong mọi chuyện suôn sẻ!",
     imageUrls: [],
     likeCount: 64,
     comments: [
@@ -619,9 +632,10 @@ const fakePosts = [
   },
   {
     id: 21,
-    userName: "Hoàng Thị Tuyết",
-    content: "Mới thử món cơm tấm tại quán Hoàng Mai, rất ngon và hợp khẩu vị!",
-    imageUrls: ["https://via.placeholder.com/500"],
+    userName: "Hoàng Thị Mai",
+    content:
+      "Mới thử món cơm tấm tại Cơm Tấm Ba Ghiền, rất ngon và hợp khẩu vị!",
+    imageUrls: ["https://images.unsplash.com/photo-1598516802417-8d17f2d3b648"],
     likeCount: 55,
     comments: [
       { userName: "Vũ Thị Quỳnh", content: "Món này có giá hợp lý không?" },
@@ -635,51 +649,54 @@ const fakePosts = [
   },
   {
     id: 22,
-    userName: "Nguyễn Lan Hương",
-    content: "Bánh mì kẹp thịt tại quán Bảo Ngọc ngon xuất sắc! Đáng thử!",
-    imageUrls: ["https://via.placeholder.com/500"],
+    userName: "Nguyễn Lan Anh",
+    content: "Bánh mì kẹp thịt tại Bánh Mì Bà Dư ngon xuất sắc! Đáng thử!",
+    imageUrls: ["https://images.unsplash.com/photo-1555988639-34c765b717e0"],
     likeCount: 40,
     comments: [
-      { userName: "Lê Phương", content: "Bánh mì ở đó thật tuyệt vời!" },
+      { userName: "Lê Phương Anh", content: "Bánh mì ở đó thật tuyệt vời!" },
     ],
     isLiked: false,
-    createdAt: "2025-06-25T14:10:00Z",
+    createdAt: "2025-06-24T13:20:00Z",
   },
   {
     id: 23,
-    userName: "Trần Thị Bích",
+    userName: "Trần Thị Ngọc",
     content:
-      "Thử món bún bò Huế ở quán X, hương vị rất đặc trưng, sẽ quay lại!",
-    imageUrls: ["https://via.placeholder.com/500"],
+      "Thử món bún bò Huế ở Bún Bò Huế Cô Hà, hương vị rất đặc trưng, sẽ quay lại!",
+    imageUrls: ["https://images.unsplash.com/photo-1598516802417-8d17f2d3b648"],
     likeCount: 36,
     comments: [
       {
         userName: "Lâm Minh Quang",
         content: "Cảm nhận của bạn về nước dùng thế nào?",
       },
-      { userName: "Nguyễn Thị Lan", content: "Món này ăn cực kỳ ngon luôn!" },
+      { userName: "Nguyễn Thị Hương", content: "Món này ăn cực kỳ ngon luôn!" },
     ],
     isLiked: true,
     createdAt: "2025-06-24T13:20:00Z",
   },
   {
     id: 24,
-    userName: "Mai Thị Lan",
-    content: "Món hủ tiếu tại quán A là một sự kết hợp hoàn hảo!",
-    imageUrls: ["https://via.placeholder.com/500"],
+    userName: "Mai Thị Hồng",
+    content:
+      "Món hủ tiếu tại Hủ Tiếu Nam Vang Nhân Quán là một sự kết hợp hoàn hảo!",
+    imageUrls: ["https://images.unsplash.com/photo-1598516802417-8d17f2d3b648"],
     likeCount: 61,
-    comments: [{ userName: "Nguyễn Thanh Sơn", content: "Quán nào vậy bạn?" }],
+    comments: [
+      { userName: "Nguyễn Thanh Bình", content: "Quán này ở đâu vậy bạn?" },
+    ],
     isLiked: false,
     createdAt: "2025-06-23T12:00:00Z",
   },
   {
     id: 25,
-    userName: "Lê Thị Lan",
-    content: "Món chè tại quán Z thật sự rất ngon, mùi vị thơm béo!",
-    imageUrls: ["https://via.placeholder.com/500"],
+    userName: "Lê Thị Hoa",
+    content: "Món chè tại Chè Kỳ Đồng thật sự rất ngon, mùi vị thơm béo!",
+    imageUrls: ["https://images.unsplash.com/photo-1629644295879-4b6e5e2489a7"],
     likeCount: 50,
     comments: [
-      { userName: "Nguyễn Minh Thi", content: "Chè này có gì đặc biệt vậy?" },
+      { userName: "Nguyễn Minh Thư", content: "Chè này có gì đặc biệt vậy?" },
     ],
     isLiked: true,
     createdAt: "2025-06-22T11:00:00Z",
