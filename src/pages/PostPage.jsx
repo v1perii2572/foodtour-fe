@@ -86,15 +86,8 @@ export default function PostPage({ token, username, userId }) {
   };
 
   const loadPosts = async () => {
-    try {
-      const res = await axios.get(
-        `${config.apiUrl}/api/Posts?userId=${userId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setPosts(Array.isArray(res.data) ? res.data : []);
-    } catch {
-      setPosts([]);
-    }
+    // Use fake posts instead of making an API request
+    setPosts(fakePosts);
   };
 
   const filteredPosts = posts.filter((post) => {
