@@ -315,7 +315,7 @@ const fakePosts = [
     id: 1,
     userName: "Nguyễn Văn An",
     content: "Hôm nay mình thử món phở bò tại Phở Thìn, rất ngon và đậm đà!",
-    imageUrls: ["https://images.unsplash.com/photo-1512058564366-4c4e4e1c6143"],
+    imageUrls: ["https://images.unsplash.com/photo-1598516341144-d4ed399bed44"],
     likeCount: 12,
     comments: [
       {
@@ -332,7 +332,7 @@ const fakePosts = [
     userName: "Phạm Thị Ngọc",
     content:
       "Mới thử món sushi ở Sushi Kei. Món ăn tươi ngon nhưng giá hơi cao.",
-    imageUrls: ["https://images.unsplash.com/photo-1579584425555-35d27bf4a8d3"],
+    imageUrls: ["https://images.unsplash.com/photo-1599563704049-c8ff9cfa8099"],
     likeCount: 45,
     comments: [
       {
@@ -352,7 +352,7 @@ const fakePosts = [
     userName: "Đỗ Minh Tuấn",
     content:
       "Hôm nay mình thử món bánh xèo tại Bánh Xèo 46A, không được như mong đợi, hơi khô và nhạt.",
-    imageUrls: ["https://images.unsplash.com/photo-1629644295879-4b6e5e2489a7"],
+    imageUrls: ["https://images.unsplash.com/photo-1601749284435-594399515df0"],
     likeCount: 8,
     comments: [
       {
@@ -459,10 +459,7 @@ const fakePosts = [
     imageUrls: [],
     likeCount: 21,
     comments: [
-      {
-        userName: "Lê Thị Minh",
-        content: "Cuốn sách này mình cũng đang đọc!",
-      },
+      { userName: "Lê Thị Minh", content: "Cuốn sách này mình cũng đang đọc!" },
       { userName: "Nguyễn Thanh Tùng", content: "Mình cũng yêu sách!" },
     ],
     isLiked: false,
