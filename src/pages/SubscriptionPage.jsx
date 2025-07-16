@@ -11,6 +11,14 @@ import config from "../config";
 
 const plans = [
   {
+    name: "3 Ngày (Miễn phí)",
+    price: 0,
+    days: 3,
+    chats: 5,
+    benefit: "Dùng thử giới hạn",
+    savings: 0,
+  },
+  {
     name: "1 Tuần",
     price: 49000,
     days: 7,
@@ -27,27 +35,19 @@ const plans = [
     savings: 67000,
   },
   {
-    name: "6 Tháng",
-    price: 549000,
-    days: 180,
-    chats: 50,
+    name: "3 Tháng",
+    price: 339000, // giảm so với gói 6 tháng cũ
+    days: 90,
+    chats: 35,
     benefit: "Gợi ý món không thích",
-    savings: 345000,
-  },
-  {
-    name: "1 Năm",
-    price: 849000,
-    days: 365,
-    chats: 100,
-    benefit: "Gợi ý món không thích",
-    savings: 743000,
+    savings: 108000, // tùy chỉnh hợp lý
   },
 ];
 
 function calculateSavings(currentIndex) {
-  if (currentIndex === 0) return 0;
+  if (currentIndex <= 1) return 0;
   const currentPlan = plans[currentIndex];
-  const weeklyEquivalent = (currentPlan.days / 7) * plans[0].price;
+  const weeklyEquivalent = (currentPlan.days / 7) * plans[1].price; // so sánh với gói 1 tuần
   const savings = weeklyEquivalent - currentPlan.price;
   return Math.round((savings / weeklyEquivalent) * 100);
 }
@@ -57,6 +57,11 @@ export default function SubscriptionPage({ token }) {
 
   const handleSubscribe = async (amount, days) => {
     const userId = localStorage.getItem("userId");
+
+    if (amount === 0) {
+      alert("Gói miễn phí đã được kích hoạt!");
+      return;
+    }
 
     try {
       const res = await fetch(
@@ -102,23 +107,29 @@ export default function SubscriptionPage({ token }) {
                 <FiMessageSquare /> {plan.chats} lượt chat bot mỗi ngày
               </p>
               <p className="text-gray-700 flex items-center gap-2 mb-1">
-                <FiGift /> {plan.benefit}
+                <FiGift /> {plan.benefit || "Không có ưu đãi thêm"}
               </p>
-              {index > 0 && (
+              {index > 1 && (
                 <p className="text-sm text-green-600 flex items-center gap-2 mt-2">
                   <FiPercent /> Tiết kiệm {calculateSavings(index)}% so với mua
-                  gói nhỏ lẻ
+                  lẻ
                 </p>
               )}
               <p className="text-2xl font-bold text-green-600 mt-4">
-                {plan.price.toLocaleString()} ₫
+                {plan.price === 0
+                  ? "Miễn phí"
+                  : `${plan.price.toLocaleString()} ₫`}
               </p>
             </div>
             <button
               onClick={() => handleSubscribe(plan.price, plan.days)}
-              className="mt-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 justify-center text-lg"
+              className={`mt-6 ${
+                plan.price === 0
+                  ? "bg-gray-400 hover:bg-gray-500"
+                  : "bg-green-600 hover:bg-green-700"
+              } text-white px-6 py-3 rounded-lg flex items-center gap-2 justify-center text-lg`}
             >
-              <FiCreditCard /> Mua ngay
+              <FiCreditCard /> {plan.price === 0 ? "Dùng thử miễn phí" : "Mua ngay"}
             </button>
           </div>
         ))}
