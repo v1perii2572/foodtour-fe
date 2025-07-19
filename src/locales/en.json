@@ -140,79 +140,111 @@
     "geolocationNotSupported": "Browser does not support Geolocation"
   },
   "home": {
-    "about": {
-      "support": {
-        "title": "24/7 Support",
-        "desc": "Hotline: 0123 456 789 – always ready to help you."
+    "home": {
+      "hero": {
+        "sub": "Welcome To",
+        "title": "Food Tour - Discover Great Restaurants",
+        "desc": "An exciting culinary journey to explore outstanding nearby restaurants with AI assistance.",
+        "ctaVideo": "Watch Video",
+        "ctaExplore": "Explore Now"
+      },
+      "ai": {
+        "title": "EatAround AI Food Assistant",
+        "desc": "Not sure what to eat today? Let EatAround AI suggest tasty dishes and suitable places!",
+        "inputPlaceholder": "What do you want to eat today?",
+        "button": "Ask Now"
+      },
+      "about": {
+        "support": {
+          "title": "24/7 Support",
+          "desc": "Hotline: 0123 456 789 – always ready to help you."
+        }
+      },
+      "services": {
+        "title": "Outstanding Services",
+        "heading": "Top Culinary Experiences\nEasy to Discover",
+        "desc": "EatAround offers top-notch features to help you quickly search, explore, and enjoy food.",
+        "items": [
+          {
+            "title": "Quick Search",
+            "desc": "Find restaurants quickly with smart filters and AI."
+          },
+          {
+            "title": "Visual Map",
+            "desc": "View exact locations and directions to top restaurants."
+          },
+          {
+            "title": "Diverse Cuisine",
+            "desc": "Explore hundreds of dishes from many regions."
+          },
+          {
+            "title": "Reliable Reviews",
+            "desc": "Refer to real user reviews from the community."
+          }
+        ]
+      },
+      "benefits": {
+        "title": "User Benefits",
+        "heading": "Smooth Experience, Superior Convenience",
+        "desc": "EatAround offers a modern solution for exploring and saving your favorite food tours, helping you manage culinary schedules easily.",
+        "items": [
+          {
+            "title": "User-Friendly Interface",
+            "desc": "Intuitive interface that works well on all devices, helping you explore eateries anytime, anywhere."
+          },
+          {
+            "title": "Smart Map Integration",
+            "desc": "Interactive maps provide routes and details of dining spots."
+          },
+          {
+            "title": "Save Favorite Routes",
+            "desc": "Easily save and share food tours for yourself and friends."
+          },
+          {
+            "title": "24/7 User Support",
+            "desc": "Support team is always ready to assist and answer your questions quickly."
+          }
+        ]
+      },
+      "faqs": [
+        {
+          "question": "How to find suitable restaurants?",
+          "answer": "You can use EatAround’s smart search and filter features to quickly find places that match your preferences and needs."
+        },
+        {
+          "question": "Does EatAround support reservations?",
+          "answer": "Currently, EatAround is a discovery and food tour suggestion platform. Reservation features will be integrated in the future."
+        },
+        {
+          "question": "Is there a mobile app for EatAround?",
+          "answer": "We’re developing apps for iOS and Android, expected to launch soon."
+        }
+      ],
+      "faqTitle": "Frequently Asked Questions",
+      "faqSubtitle": "Answering Your Concerns",
+      "faqDesc": "We’ve gathered the most common questions to help you understand EatAround and our services better.",
+      "testimonials": {
+        "title": "Testimonials",
+        "heading": "What Do Customers Say About EatAround?",
+        "desc": "Real feedback from EatAround users helps us improve and deliver better services.",
+        "items": [
+          {
+            "name": "Nguyen Van A",
+            "role": "Food Lover",
+            "quote": "EatAround helps me discover delicious restaurants conveniently and quickly."
+          },
+          {
+            "name": "Tran Thi B",
+            "role": "Gastronomy Enthusiast",
+            "quote": "EatAround is really easy to use and gives me more diverse options for meals."
+          },
+          {
+            "name": "Le Van C",
+            "role": "Chef & Foodie",
+            "quote": "Discovering EatAround is a wonderful experience, helping me find my favorite dishes."
+          }
+        ]
       }
-    },
-    "services": {
-      "title": "Outstanding Services",
-      "heading": "Top Culinary Experiences\nEasy to Discover",
-      "desc": "EatAround offers top-notch features to help you quickly search, explore, and enjoy food.",
-      "items": [
-        {
-          "title": "Quick Search",
-          "desc": "Find restaurants quickly with smart filters and AI."
-        },
-        {
-          "title": "Visual Map",
-          "desc": "View exact locations and directions to top restaurants."
-        },
-        {
-          "title": "Diverse Cuisine",
-          "desc": "Explore hundreds of dishes from many regions."
-        },
-        {
-          "title": "Reliable Reviews",
-          "desc": "Refer to real user reviews from the community."
-        }
-      ]
-    },
-    "benefits": {
-      "title": "User Benefits",
-      "heading": "Smooth Experience, Superior Convenience",
-      "desc": "EatAround offers a modern solution for exploring and saving your favorite food tours, helping you manage culinary schedules easily.",
-      "items": [
-        {
-          "title": "User-Friendly Interface",
-          "desc": "Intuitive interface that works well on all devices, helping you explore eateries anytime, anywhere."
-        },
-        {
-          "title": "Smart Map Integration",
-          "desc": "Interactive maps provide routes and details of dining spots."
-        },
-        {
-          "title": "Save Favorite Routes",
-          "desc": "Easily save and share food tours for yourself and friends."
-        },
-        {
-          "title": "24/7 User Support",
-          "desc": "Support team is always ready to assist and answer your questions quickly."
-        }
-      ]
-    },
-    "testimonials": {
-      "title": "Testimonials",
-      "heading": "What Do Customers Say About EatAround?",
-      "desc": "Real feedback from EatAround users helps us improve and deliver better services.",
-      "items": [
-        {
-          "name": "Nguyen Minh Duc",
-          "role": "Food Lover",
-          "quote": "EatAround helps me discover delicious restaurants conveniently and quickly."
-        },
-        {
-          "name": "Tran Minh Quan",
-          "role": "Gastronomy Enthusiast",
-          "quote": "EatAround is really easy to use and gives me more diverse options for meals."
-        },
-        {
-          "name": "Binh Nguyen",
-          "role": "Chef & Foodie",
-          "quote": "Discovering EatAround is a wonderful experience, helping me find my favorite dishes."
-        }
-      ]
     }
   }
 }
