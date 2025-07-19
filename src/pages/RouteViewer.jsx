@@ -4,10 +4,13 @@ import MapRoute from "../components/MapRoute";
 import GooglePlaceInfo from "../components/GooglePlaceInfo";
 import { FaMapMarkedAlt, FaRoute } from "react-icons/fa";
 import config from "../config";
+import { useTranslation } from "react-i18next";
 
 const GOOGLE_API_KEY = config.google2ApiKey;
 
 export default function RouteViewer() {
+  const { t } = useTranslation();
+
   const [route, setRoute] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
 
@@ -23,12 +26,12 @@ export default function RouteViewer() {
           setUserLocation({
             latitude: pos.coords.latitude,
             longitude: pos.coords.longitude,
-            name: "Vị trí hiện tại",
+            name: t("routeViewer.currentLocation"),
             address: "",
           });
         },
         (error) => {
-          console.warn("Không lấy được vị trí người dùng:", error.message);
+          console.warn(t("routeViewer.locationError"), error.message);
         },
         {
           enableHighAccuracy: true,
@@ -37,14 +40,14 @@ export default function RouteViewer() {
         }
       );
     } else {
-      console.warn("Trình duyệt không hỗ trợ Geolocation");
+      console.warn(t("routeViewer.geolocationNotSupported"));
     }
-  }, []);
+  }, [t]);
 
   if (!route) {
     return (
       <div className="text-center mt-20 text-gray-500 text-lg italic">
-        Đang tải lộ trình...
+        {t("routeViewer.loading")}
       </div>
     );
   }
@@ -71,7 +74,7 @@ export default function RouteViewer() {
   );
 
   const placesForInfo = uniquePlaces.filter(
-    (p) => p.name && p.address && p.name !== "Vị trí hiện tại"
+    (p) => p.name && p.address && p.name !== t("routeViewer.currentLocation")
   );
 
   return (
@@ -80,7 +83,7 @@ export default function RouteViewer() {
         <div className="border-b pb-4">
           <h2 className="text-4xl font-extrabold text-green-700 flex items-center gap-2">
             <FaMapMarkedAlt className="text-green-500" />
-            Lộ trình: {route.name}
+            {t("routeViewer.routeName")}: {route.name}
           </h2>
 
           <a
@@ -90,7 +93,7 @@ export default function RouteViewer() {
             className="mt-4 inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-full text-sm font-semibold transition"
           >
             <FaRoute />
-            Xem chỉ đường toàn tuyến
+            {t("routeViewer.viewFullRoute")}
           </a>
         </div>
 
@@ -102,7 +105,7 @@ export default function RouteViewer() {
 
         <div>
           <h3 className="text-2xl font-bold text-green-800 mb-4">
-            Chi tiết các quán ăn trong lộ trình
+            {t("routeViewer.detailTitle")}
           </h3>
           <div className="space-y-6">
             {placesForInfo.map((place, idx) => (

@@ -1,14 +1,218 @@
 {
-  "welcome": "Chào mừng đến với EatAround",
-  "profile": "Thông tin cá nhân",
-  "email": "Email",
-  "role": "Vai trò",
-  "subscriptionDate": "Ngày hết hạn",
-  "yourName": "Tên của bạn",
-  "dislikedFoods": "Món không thích",
-  "saveChanges": "Lưu thay đổi",
-  "upgradeVIP": "Nâng cấp VIP ngay",
-  "loading": "Đang tải thông tin...",
-  "successUpdate": "✅ Đã cập nhật thành công!",
-  "errorUpdate": "Không thể cập nhật thông tin."
+  "header": {
+    "home": "Home",
+    "chatbot": "Chatbot AI",
+    "posts": "Posts",
+    "savedRoutes": "Saved Routes",
+    "admin": "Admin",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "hello": "Hello"
+  },
+  "login": {
+    "title": "Log in to EatAround",
+    "subtitle": "Discover amazing food tours near you!",
+    "noAccount": "Don't have an account?",
+    "registerNow": "Register now"
+  },
+  "register": {
+    "title": "Create an EatAround account",
+    "subtitle": "Start your exciting food tour journey!",
+    "haveAccount": "Already have an account?",
+    "login": "Login"
+  },
+  "profile": {
+    "title": "Profile Information",
+    "email": "Email",
+    "role": "Role",
+    "subscriptionDate": "Subscription Date",
+    "noSubscription": "None",
+    "yourName": "Your Name",
+    "dislikedFoods": "Disliked Foods",
+    "saveChanges": "Save Changes",
+    "upgradeVIP": "Upgrade to VIP",
+    "loading": "Loading information...",
+    "success": "Successfully updated!",
+    "error": {
+      "invalidResponse": "Invalid server response.",
+      "connection": "Unable to connect to server.",
+      "updateFailed": "Failed to update profile."
+    }
+  },
+  "subscription": {
+    "title": "Upgrade to VIP for exclusive benefits 🎉",
+    "days": "days of usage",
+    "chatPerDay": "bot chats per day",
+    "benefit": {
+      "trial": "Limited trial",
+      "dislikedSuggestion": "Disliked food suggestions",
+      "none": "No extra benefits"
+    },
+    "savings": "Save {{percent}}% compared to single purchase",
+    "free": "Free",
+    "button": {
+      "trial": "Try for free",
+      "buy": "Buy now"
+    },
+    "alert": {
+      "free": "Free plan has been activated!",
+      "failed": "Could not create payment link.",
+      "error": "Error while creating transaction."
+    },
+    "plan": {
+      "free": "3 Days (Free)",
+      "week": "1 Week",
+      "month": "1 Month",
+      "3months": "3 Months"
+    }
+  },
+  "savedRoutes": {
+    "title": "Saved Routes",
+    "loading": "Loading routes...",
+    "searchPlaceholder": "Search by name or description...",
+    "minStops": "Minimum stops:",
+    "daysFilter": "In the past days:",
+    "sort": "Sort by:",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "viewMap": "View on map",
+    "noDescription": "No description.",
+    "error": {
+      "loadFail": "Unable to load history."
+    }
+  },
+  "chat": {
+    "suggested": "Suggested Hanoi Routes",
+    "save": "Save",
+    "ai": "EatAround AI",
+    "success": "✅ Route saved successfully!",
+    "error": "❌ Failed to save route.",
+    "routes": {
+      "oldQuarter": "Old Quarter Cuisine",
+      "oldQuarterDesc": "Explore traditional dishes around Hoan Kiem Lake and the Old Quarter."
+    },
+    "role": {
+      "breakfast": "Breakfast",
+      "lunch": "Lunch",
+      "dessert": "Dessert"
+    },
+    "note": {
+      "pho": "Traditional beef pho, long-standing reputation.",
+      "buncha": "Bun cha spot visited by President Obama.",
+      "icecream": "Classic ice cream stick, cheap and famous."
+    }
+  },
+  "post": {
+    "create": "Create a post",
+    "placeholder": "What's on your mind?",
+    "image": "Image",
+    "submit": "Post",
+    "searchPlaceholder": "Search posts or users...",
+    "allDays": "All days",
+    "today": "Today",
+    "last7": "Last 7 days",
+    "last30": "Last 30 days",
+    "likes": "likes",
+    "comments": "comments",
+    "like": "Like",
+    "share": "Share",
+    "linkCopied": "Link copied!",
+    "showMoreComments": "Show more comments",
+    "hideComments": "Hide comments",
+    "writeComment": "Write a comment...",
+    "send": "Send",
+    "alert": {
+      "emptyContent": "Please enter content!"
+    }
+  },
+  "postDetail": {
+    "notFound": "Post not found.",
+    "comments": "Comments"
+  },
+  "routeViewer": {
+    "loading": "Loading route...",
+    "routeName": "Route",
+    "viewFullRoute": "View full directions",
+    "detailTitle": "Details of food stops in the route",
+    "currentLocation": "Current location",
+    "locationError": "Failed to get user location:",
+    "geolocationNotSupported": "Browser does not support Geolocation"
+  },
+  "home": {
+    "about": {
+      "support": {
+        "title": "24/7 Support",
+        "desc": "Hotline: 0123 456 789 – always ready to help you."
+      }
+    },
+    "services": {
+      "title": "Outstanding Services",
+      "heading": "Top Culinary Experiences\nEasy to Discover",
+      "desc": "EatAround offers top-notch features to help you quickly search, explore, and enjoy food.",
+      "items": [
+        {
+          "title": "Quick Search",
+          "desc": "Find restaurants quickly with smart filters and AI."
+        },
+        {
+          "title": "Visual Map",
+          "desc": "View exact locations and directions to top restaurants."
+        },
+        {
+          "title": "Diverse Cuisine",
+          "desc": "Explore hundreds of dishes from many regions."
+        },
+        {
+          "title": "Reliable Reviews",
+          "desc": "Refer to real user reviews from the community."
+        }
+      ]
+    },
+    "benefits": {
+      "title": "User Benefits",
+      "heading": "Smooth Experience, Superior Convenience",
+      "desc": "EatAround offers a modern solution for exploring and saving your favorite food tours, helping you manage culinary schedules easily.",
+      "items": [
+        {
+          "title": "User-Friendly Interface",
+          "desc": "Intuitive interface that works well on all devices, helping you explore eateries anytime, anywhere."
+        },
+        {
+          "title": "Smart Map Integration",
+          "desc": "Interactive maps provide routes and details of dining spots."
+        },
+        {
+          "title": "Save Favorite Routes",
+          "desc": "Easily save and share food tours for yourself and friends."
+        },
+        {
+          "title": "24/7 User Support",
+          "desc": "Support team is always ready to assist and answer your questions quickly."
+        }
+      ]
+    },
+    "testimonials": {
+      "title": "Testimonials",
+      "heading": "What Do Customers Say About EatAround?",
+      "desc": "Real feedback from EatAround users helps us improve and deliver better services.",
+      "items": [
+        {
+          "name": "Nguyen Minh Duc",
+          "role": "Food Lover",
+          "quote": "EatAround helps me discover delicious restaurants conveniently and quickly."
+        },
+        {
+          "name": "Tran Minh Quan",
+          "role": "Gastronomy Enthusiast",
+          "quote": "EatAround is really easy to use and gives me more diverse options for meals."
+        },
+        {
+          "name": "Binh Nguyen",
+          "role": "Chef & Foodie",
+          "quote": "Discovering EatAround is a wonderful experience, helping me find my favorite dishes."
+        }
+      ]
+    }
+  }
 }

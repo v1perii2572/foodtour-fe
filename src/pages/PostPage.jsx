@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import config from "../config";
+import { useTranslation } from "react-i18next";
 
 export default function PostPage({ token, username, userId }) {
+  const { t } = useTranslation();
+
   const [content, setContent] = useState("");
   const [images, setImages] = useState([]);
   const [preview, setPreview] = useState([]);
@@ -41,7 +44,7 @@ export default function PostPage({ token, username, userId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!content.trim()) return alert("Vui lòng nhập nội dung!");
+    if (!content.trim()) return alert(t("post.alert.emptyContent"));
     const imageUrls = await uploadImages();
 
     await axios.post(
@@ -92,13 +95,15 @@ export default function PostPage({ token, username, userId }) {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const apiPosts = Array.isArray(res.data) ? res.data : [];
-      // Combine fakePosts with API posts
-      setPosts([...fakePosts, ...apiPosts]);
+      setPosts(apiPosts);
     } catch {
-      // If API fails, use only fakePosts
-      setPosts(fakePosts);
+      setPosts([]);
     }
   };
+
+  useEffect(() => {
+    loadPosts();
+  }, []);
 
   const filteredPosts = posts.filter((post) => {
     const matchSearch =
@@ -117,17 +122,13 @@ export default function PostPage({ token, username, userId }) {
     return matchSearch && matchDate;
   });
 
-  useEffect(() => {
-    loadPosts();
-  }, []);
-
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-lg shadow-md mb-6">
           <div className="p-4 border-b border-gray-200">
             <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-              <span className="text-green-600">📝</span> Tạo bài viết
+              <span className="text-green-600">📝</span> {t("post.create")}
             </h2>
           </div>
           <form onSubmit={handleSubmit} className="p-4 space-y-4">
@@ -136,12 +137,12 @@ export default function PostPage({ token, username, userId }) {
               onChange={(e) => setContent(e.target.value)}
               rows={4}
               className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-800 placeholder-gray-400"
-              placeholder="Bạn đang nghĩ gì?"
+              placeholder={t("post.placeholder")}
             />
             <div className="flex items-center gap-4">
               <label className="flex items-center gap-2 cursor-pointer bg-gray-100 px-3 py-2 rounded-lg hover:bg-gray-200 transition">
                 <span className="text-green-600">📷</span>
-                <span className="text-sm text-gray-600">Ảnh</span>
+                <span className="text-sm text-gray-600">{t("post.image")}</span>
                 <input
                   id="imageInput"
                   type="file"
@@ -169,7 +170,7 @@ export default function PostPage({ token, username, userId }) {
               className="w-full bg-green-600 text-white py-2 rounded-lg font-medium hover:bg-green-700 transition disabled:bg-gray-400"
               disabled={!content.trim() && !images.length}
             >
-              Đăng bài
+              {t("post.submit")}
             </button>
           </form>
         </div>
@@ -179,7 +180,7 @@ export default function PostPage({ token, username, userId }) {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Tìm bài viết hoặc người đăng..."
+            placeholder={t("post.searchPlaceholder")}
             className="flex-1 border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
           />
           <select
@@ -187,10 +188,10 @@ export default function PostPage({ token, username, userId }) {
             onChange={(e) => setFilterDays(e.target.value)}
             className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
           >
-            <option value="all">Tất cả ngày</option>
-            <option value="1">Hôm nay</option>
-            <option value="7">7 ngày gần đây</option>
-            <option value="30">30 ngày gần đây</option>
+            <option value="all">{t("post.allDays")}</option>
+            <option value="1">{t("post.today")}</option>
+            <option value="7">{t("post.last7")}</option>
+            <option value="30">{t("post.last30")}</option>
           </select>
         </div>
 
@@ -230,10 +231,16 @@ export default function PostPage({ token, username, userId }) {
                   </div>
                 )}
               </div>
+
               <div className="px-4 py-2 border-t border-gray-200 flex justify-between text-sm text-gray-600">
-                <span>❤️ {post.likeCount || 0} lượt thích</span>
-                <span>{post.comments?.length || 0} bình luận</span>
+                <span>
+                  ❤️ {post.likeCount || 0} {t("post.likes")}
+                </span>
+                <span>
+                  {post.comments?.length || 0} {t("post.comments")}
+                </span>
               </div>
+
               <div className="border-t border-gray-200 flex divide-x divide-gray-200">
                 <button
                   onClick={() => handleLike(post.id)}
@@ -241,20 +248,22 @@ export default function PostPage({ token, username, userId }) {
                     post.isLiked ? "text-red-600" : "text-gray-600"
                   }`}
                 >
-                  <span>{post.isLiked ? "❤️" : "🤍"}</span> Thích
+                  <span>{post.isLiked ? "❤️" : "🤍"}</span> {t("post.like")}
                 </button>
                 <button
                   onClick={() => handleShare(post.id)}
                   className="flex-1 py-2 text-gray-600 hover:bg-gray-100 transition flex items-center justify-center gap-2 text-sm font-medium"
                 >
-                  <span className="text-blue-600">🔗</span> Chia sẻ
+                  <span className="text-blue-600">🔗</span> {t("post.share")}
                 </button>
               </div>
+
               {copiedPostId === post.id && (
                 <div className="px-4 py-1 text-xs text-gray-500 bg-gray-50">
-                  Đã sao chép liên kết!
+                  {t("post.linkCopied")}
                 </div>
               )}
+
               <div className="p-4 border-t border-gray-200">
                 {(showAllComments[post.id]
                   ? post.comments
@@ -278,8 +287,8 @@ export default function PostPage({ token, username, userId }) {
                     }
                   >
                     {showAllComments[post.id]
-                      ? "Ẩn bớt bình luận"
-                      : "Xem thêm bình luận"}
+                      ? t("post.hideComments")
+                      : t("post.showMoreComments")}
                   </button>
                 )}
                 <div className="mt-3 flex gap-2">
@@ -292,14 +301,14 @@ export default function PostPage({ token, username, userId }) {
                         [post.id]: e.target.value,
                       }))
                     }
-                    쇼핑몰="Viết bình luận..."
+                    placeholder={t("post.writeComment")}
                     className="flex-1 border border-gray-300 px-3 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
                   <button
                     onClick={() => handleComment(post.id)}
                     className="bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
                   >
-                    Gửi
+                    {t("post.send")}
                   </button>
                 </div>
               </div>
@@ -310,6 +319,7 @@ export default function PostPage({ token, username, userId }) {
     </div>
   );
 }
+
 const fakePosts = [
   {
     id: 1,

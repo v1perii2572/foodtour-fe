@@ -8,18 +8,19 @@ import {
   FiGift,
 } from "react-icons/fi";
 import config from "../config";
+import { useTranslation } from "react-i18next";
 
 const plans = [
   {
-    name: "3 Ngày (Miễn phí)",
+    id: "free",
     price: 0,
     days: 3,
     chats: 5,
-    benefit: "Dùng thử giới hạn",
+    benefit: "subscription.benefit.trial",
     savings: 0,
   },
   {
-    name: "1 Tuần",
+    id: "week",
     price: 49000,
     days: 7,
     chats: 10,
@@ -27,39 +28,40 @@ const plans = [
     savings: 0,
   },
   {
-    name: "1 Tháng",
+    id: "month",
     price: 129000,
     days: 30,
     chats: 20,
-    benefit: "Gợi ý món không thích",
+    benefit: "subscription.benefit.dislikedSuggestion",
     savings: 67000,
   },
   {
-    name: "3 Tháng",
-    price: 339000, // giảm so với gói 6 tháng cũ
+    id: "3months",
+    price: 339000,
     days: 90,
     chats: 35,
-    benefit: "Gợi ý món không thích",
-    savings: 108000, // tùy chỉnh hợp lý
+    benefit: "subscription.benefit.dislikedSuggestion",
+    savings: 108000,
   },
 ];
 
 function calculateSavings(currentIndex) {
   if (currentIndex <= 1) return 0;
   const currentPlan = plans[currentIndex];
-  const weeklyEquivalent = (currentPlan.days / 7) * plans[1].price; // so sánh với gói 1 tuần
+  const weeklyEquivalent = (currentPlan.days / 7) * plans[1].price;
   const savings = weeklyEquivalent - currentPlan.price;
   return Math.round((savings / weeklyEquivalent) * 100);
 }
 
 export default function SubscriptionPage({ token }) {
+  const { t } = useTranslation();
   const API_BASE_URL = config.apiUrl;
 
   const handleSubscribe = async (amount, days) => {
     const userId = localStorage.getItem("userId");
 
     if (amount === 0) {
-      alert("Gói miễn phí đã được kích hoạt!");
+      alert(t("subscription.alert.free"));
       return;
     }
 
@@ -77,47 +79,51 @@ export default function SubscriptionPage({ token }) {
       if (data.payUrl) {
         window.location.href = data.payUrl;
       } else {
-        alert("Không thể tạo liên kết thanh toán.");
+        alert(t("subscription.alert.failed"));
       }
     } catch (err) {
-      alert("Lỗi khi tạo giao dịch.");
+      alert(t("subscription.alert.error"));
     }
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6 mt-8">
       <h2 className="text-3xl font-bold mb-8 text-green-700 flex items-center gap-3">
-        <FiStar className="text-3xl" /> Nâng cấp tài khoản VIP để nhận nhiều ưu
-        đãi 🎉
+        <FiStar className="text-3xl" /> {t("subscription.title")}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {plans.map((plan, index) => (
           <div
-            key={plan.name}
+            key={plan.id}
             className="border border-green-300 rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:shadow-xl transition duration-300"
           >
             <div>
               <h3 className="text-2xl font-semibold text-green-800 mb-3">
-                {plan.name}
+                {t(`subscription.plan.${plan.id}`)}
               </h3>
               <p className="text-gray-700 flex items-center gap-2 mb-1">
-                <FiCalendar /> {plan.days} ngày sử dụng
+                <FiCalendar /> {plan.days} {t("subscription.days")}
               </p>
               <p className="text-gray-700 flex items-center gap-2 mb-1">
-                <FiMessageSquare /> {plan.chats} lượt chat bot mỗi ngày
+                <FiMessageSquare /> {plan.chats} {t("subscription.chatPerDay")}
               </p>
               <p className="text-gray-700 flex items-center gap-2 mb-1">
-                <FiGift /> {plan.benefit || "Không có ưu đãi thêm"}
+                <FiGift />{" "}
+                {plan.benefit
+                  ? t(plan.benefit)
+                  : t("subscription.benefit.none")}
               </p>
               {index > 1 && (
                 <p className="text-sm text-green-600 flex items-center gap-2 mt-2">
-                  <FiPercent /> Tiết kiệm {calculateSavings(index)}% so với mua
-                  lẻ
+                  <FiPercent />{" "}
+                  {t("subscription.savings", {
+                    percent: calculateSavings(index),
+                  })}
                 </p>
               )}
               <p className="text-2xl font-bold text-green-600 mt-4">
                 {plan.price === 0
-                  ? "Miễn phí"
+                  ? t("subscription.free")
                   : `${plan.price.toLocaleString()} ₫`}
               </p>
             </div>
@@ -129,7 +135,10 @@ export default function SubscriptionPage({ token }) {
                   : "bg-green-600 hover:bg-green-700"
               } text-white px-6 py-3 rounded-lg flex items-center gap-2 justify-center text-lg`}
             >
-              <FiCreditCard /> {plan.price === 0 ? "Dùng thử miễn phí" : "Mua ngay"}
+              <FiCreditCard />
+              {plan.price === 0
+                ? t("subscription.button.trial")
+                : t("subscription.button.buy")}
             </button>
           </div>
         ))}

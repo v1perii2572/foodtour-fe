@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiMapPin, FiMap, FiBookOpen, FiSearch, FiClock } from "react-icons/fi";
 import config from "../config";
+import { useTranslation } from "react-i18next";
 
 export default function SavedRoutes({ token }) {
+  const { t } = useTranslation();
   const [routes, setRoutes] = useState([]);
   const [filteredRoutes, setFilteredRoutes] = useState([]);
   const [search, setSearch] = useState("");
@@ -27,7 +29,7 @@ export default function SavedRoutes({ token }) {
         setRoutes(data);
         setFilteredRoutes(data);
       } catch (err) {
-        alert("Không thể tải lịch sử.");
+        alert(t("savedRoutes.error.loadFail"));
         console.error(err);
       } finally {
         setLoading(false);
@@ -35,7 +37,7 @@ export default function SavedRoutes({ token }) {
     };
 
     fetchRoutes();
-  }, [token]);
+  }, [token, t]);
 
   useEffect(() => {
     const keyword = search.toLowerCase();
@@ -65,7 +67,9 @@ export default function SavedRoutes({ token }) {
 
   if (loading)
     return (
-      <p className="text-center mt-10 text-gray-500">Đang tải lộ trình...</p>
+      <p className="text-center mt-10 text-gray-500">
+        {t("savedRoutes.loading")}
+      </p>
     );
 
   const totalPages = Math.ceil(filteredRoutes.length / itemsPerPage);
@@ -77,7 +81,7 @@ export default function SavedRoutes({ token }) {
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
       <h2 className="text-3xl font-bold text-green-700 mb-6 flex items-center gap-2">
-        <FiBookOpen /> Lộ trình đã lưu
+        <FiBookOpen /> {t("savedRoutes.title")}
       </h2>
 
       <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -85,7 +89,7 @@ export default function SavedRoutes({ token }) {
           <FiSearch className="text-green-600" />
           <input
             type="text"
-            placeholder="Tìm kiếm theo tên hoặc mô tả..."
+            placeholder={t("savedRoutes.searchPlaceholder")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full max-w-sm border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:border-green-400"
@@ -93,7 +97,9 @@ export default function SavedRoutes({ token }) {
         </div>
 
         <div className="flex items-center gap-4 flex-wrap">
-          <label className="text-sm text-gray-600">Tối thiểu điểm dừng:</label>
+          <label className="text-sm text-gray-600">
+            {t("savedRoutes.minStops")}
+          </label>
           <input
             type="number"
             min="0"
@@ -102,7 +108,9 @@ export default function SavedRoutes({ token }) {
             className="w-20 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring focus:border-green-400"
           />
 
-          <label className="text-sm text-gray-600">Trong số ngày qua:</label>
+          <label className="text-sm text-gray-600">
+            {t("savedRoutes.daysFilter")}
+          </label>
           <input
             type="number"
             min="0"
@@ -111,14 +119,16 @@ export default function SavedRoutes({ token }) {
             className="w-20 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring focus:border-green-400"
           />
 
-          <label className="text-sm text-gray-600">Sắp xếp:</label>
+          <label className="text-sm text-gray-600">
+            {t("savedRoutes.sort")}
+          </label>
           <select
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
             className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring focus:border-green-400"
           >
-            <option value="desc">Mới nhất</option>
-            <option value="asc">Cũ nhất</option>
+            <option value="desc">{t("savedRoutes.newest")}</option>
+            <option value="asc">{t("savedRoutes.oldest")}</option>
           </select>
         </div>
       </div>
@@ -139,7 +149,7 @@ export default function SavedRoutes({ token }) {
               <FiMapPin /> {route.name}
             </h3>
             <p className="text-gray-600 mt-1 mb-2 text-sm">
-              {route.description || "Không có mô tả."}
+              {route.description || t("savedRoutes.noDescription")}
             </p>
 
             {route.Places && route.Places.length > 0 && (
@@ -157,7 +167,7 @@ export default function SavedRoutes({ token }) {
               }}
               className="mt-auto bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition flex items-center gap-2"
             >
-              <FiMap /> Xem trên bản đồ
+              <FiMap /> {t("savedRoutes.viewMap")}
             </button>
           </div>
         ))}

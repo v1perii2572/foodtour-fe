@@ -2,8 +2,10 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import config from "../config";
+import { useTranslation } from "react-i18next";
 
 export default function PostDetail() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [post, setPost] = useState(null);
 
@@ -14,7 +16,8 @@ export default function PostDetail() {
       .catch(() => setPost(null));
   }, [id]);
 
-  if (post === null) return <div className="p-4">Không tìm thấy bài viết.</div>;
+  if (post === null)
+    return <div className="p-4">{t("postDetail.notFound")}</div>;
 
   return (
     <div className="min-h-screen bg-white">
@@ -31,9 +34,11 @@ export default function PostDetail() {
               </div>
             </div>
           </div>
+
           <div className="whitespace-pre-line text-gray-800 border-t border-gray-200 pt-3">
             {post.content}
           </div>
+
           {post.imageUrls?.length > 0 && (
             <div className="flex justify-center border-t border-gray-200 pt-3">
               {post.imageUrls.map((url, i) => (
@@ -46,9 +51,10 @@ export default function PostDetail() {
               ))}
             </div>
           )}
+
           <div className="border-t border-gray-200 pt-3">
             <div className="text-sm font-semibold text-gray-700 mb-2">
-              Bình luận
+              {t("postDetail.comments")}
             </div>
             {post.comments?.map((c, i) => (
               <div key={i} className="text-sm border-b border-gray-200 py-2">

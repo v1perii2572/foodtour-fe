@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export default function Header({ onLogout }) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [username, setUsername] = useState(localStorage.getItem("username"));
@@ -93,14 +93,14 @@ export default function Header({ onLogout }) {
             onClick={() => setMenuOpen(false)}
             className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
           >
-            Trang chủ
+            {t("header.home")}
           </Link>
           <Link
             to="/chat"
             onClick={() => setMenuOpen(false)}
             className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
           >
-            Chatbot AI
+            {t("header.chatbot")}
           </Link>
           {username && (
             <>
@@ -109,21 +109,21 @@ export default function Header({ onLogout }) {
                 onClick={() => setMenuOpen(false)}
                 className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
               >
-                Bài viết
+                {t("header.posts")}
               </Link>
               <Link
                 to="/saved"
                 onClick={() => setMenuOpen(false)}
                 className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
               >
-                Lộ trình đã lưu
+                {t("header.savedRoutes")}
               </Link>
               {/* <Link
                 to="/admin"
                 onClick={() => setMenuOpen(false)}
                 className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
               >
-                Quản trị
+                {t("header.admin")}
               </Link> */}
             </>
           )}
@@ -134,7 +134,7 @@ export default function Header({ onLogout }) {
                 className="flex items-center gap-2 text-green-700 font-semibold hover:text-green-500 focus:outline-none"
               >
                 <span className="hidden sm:inline">
-                  👋 Xin chào, <strong>{username}</strong>
+                  👋 {t("header.hello")}, <strong>{username}</strong>
                 </span>
                 <img
                   src="/user_avatar.png"
@@ -166,7 +166,7 @@ export default function Header({ onLogout }) {
                       }}
                       className="block px-4 py-2 hover:bg-green-100 text-green-700"
                     >
-                      Thông tin cá nhân
+                      {t("header.profile")}
                     </Link>
                   </li>
                   <li>
@@ -178,7 +178,7 @@ export default function Header({ onLogout }) {
                       }}
                       className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600"
                     >
-                      Đăng xuất
+                      {t("header.logout")}
                     </button>
                   </li>
                 </ul>
@@ -190,7 +190,7 @@ export default function Header({ onLogout }) {
               onClick={() => setMenuOpen(false)}
               className="block px-4 py-2 mt-2 lg:mt-0 bg-green-600 hover:bg-green-700 text-white rounded transition"
             >
-              Đăng nhập
+              {t("header.login")}
             </Link>
           )}
         </nav>

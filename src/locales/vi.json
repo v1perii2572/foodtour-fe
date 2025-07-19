@@ -1,14 +1,218 @@
 {
-  "welcome": "Chào mừng đến với EatAround",
-  "profile": "Thông tin cá nhân",
-  "email": "Email",
-  "role": "Vai trò",
-  "subscriptionDate": "Ngày hết hạn",
-  "yourName": "Tên của bạn",
-  "dislikedFoods": "Món không thích",
-  "saveChanges": "Lưu thay đổi",
-  "upgradeVIP": "Nâng cấp VIP ngay",
-  "loading": "Đang tải thông tin...",
-  "successUpdate": "✅ Đã cập nhật thành công!",
-  "errorUpdate": "Không thể cập nhật thông tin."
+  "header": {
+    "home": "Trang chủ",
+    "chatbot": "Chatbot AI",
+    "posts": "Bài viết",
+    "savedRoutes": "Lộ trình đã lưu",
+    "admin": "Quản trị",
+    "profile": "Thông tin cá nhân",
+    "logout": "Đăng xuất",
+    "login": "Đăng nhập",
+    "hello": "Xin chào"
+  },
+  "login": {
+    "title": "Đăng nhập vào EatAround",
+    "subtitle": "Khám phá các tuyến food tour tuyệt vời gần bạn!",
+    "noAccount": "Chưa có tài khoản?",
+    "registerNow": "Đăng ký ngay"
+  },
+  "register": {
+    "title": "Tạo tài khoản EatAround",
+    "subtitle": "Bắt đầu hành trình food tour hấp dẫn của bạn!",
+    "haveAccount": "Đã có tài khoản?",
+    "login": "Đăng nhập"
+  },
+  "profile": {
+    "title": "Thông tin cá nhân",
+    "email": "Email",
+    "role": "Vai trò",
+    "subscriptionDate": "Ngày hết hạn",
+    "noSubscription": "Không có",
+    "yourName": "Tên của bạn",
+    "dislikedFoods": "Món không thích",
+    "saveChanges": "Lưu thay đổi",
+    "upgradeVIP": "Nâng cấp VIP ngay",
+    "loading": "Đang tải thông tin...",
+    "success": "Đã cập nhật thành công!",
+    "error": {
+      "invalidResponse": "Phản hồi từ server không hợp lệ.",
+      "connection": "Không thể kết nối đến máy chủ.",
+      "updateFailed": "Không thể cập nhật thông tin."
+    }
+  },
+  "subscription": {
+    "title": "Nâng cấp tài khoản VIP để nhận nhiều ưu đãi 🎉",
+    "days": "ngày sử dụng",
+    "chatPerDay": "lượt chat bot mỗi ngày",
+    "benefit": {
+      "trial": "Dùng thử giới hạn",
+      "dislikedSuggestion": "Gợi ý món không thích",
+      "none": "Không có ưu đãi thêm"
+    },
+    "savings": "Tiết kiệm {{percent}}% so với mua lẻ",
+    "free": "Miễn phí",
+    "button": {
+      "trial": "Dùng thử miễn phí",
+      "buy": "Mua ngay"
+    },
+    "alert": {
+      "free": "Gói miễn phí đã được kích hoạt!",
+      "failed": "Không thể tạo liên kết thanh toán.",
+      "error": "Lỗi khi tạo giao dịch."
+    },
+    "plan": {
+      "free": "3 Ngày (Miễn phí)",
+      "week": "1 Tuần",
+      "month": "1 Tháng",
+      "3months": "3 Tháng"
+    }
+  },
+  "savedRoutes": {
+    "title": "Lộ trình đã lưu",
+    "loading": "Đang tải lộ trình...",
+    "searchPlaceholder": "Tìm kiếm theo tên hoặc mô tả...",
+    "minStops": "Tối thiểu điểm dừng:",
+    "daysFilter": "Trong số ngày qua:",
+    "sort": "Sắp xếp:",
+    "newest": "Mới nhất",
+    "oldest": "Cũ nhất",
+    "viewMap": "Xem trên bản đồ",
+    "noDescription": "Không có mô tả.",
+    "error": {
+      "loadFail": "Không thể tải lịch sử."
+    }
+  },
+  "chat": {
+    "suggested": "Gợi ý lộ trình Hà Nội",
+    "save": "Lưu",
+    "ai": "EatAround AI",
+    "success": "✅ Đã lưu thành công lộ trình!",
+    "error": "❌ Không thể lưu lộ trình.",
+    "routes": {
+      "oldQuarter": "Ẩm thực phố cổ Hà Nội",
+      "oldQuarterDesc": "Khám phá món ngon đặc trưng quanh Hồ Gươm và phố cổ."
+    },
+    "role": {
+      "breakfast": "Ăn sáng",
+      "lunch": "Ăn trưa",
+      "dessert": "Tráng miệng"
+    },
+    "note": {
+      "pho": "Phở bò truyền thống, nổi tiếng lâu năm.",
+      "buncha": "Quán bún chả từng đón Tổng thống Obama.",
+      "icecream": "Kem que truyền thống, ngon - rẻ - lâu đời."
+    }
+  },
+  "post": {
+    "create": "Tạo bài viết",
+    "placeholder": "Bạn đang nghĩ gì?",
+    "image": "Ảnh",
+    "submit": "Đăng bài",
+    "searchPlaceholder": "Tìm bài viết hoặc người đăng...",
+    "allDays": "Tất cả ngày",
+    "today": "Hôm nay",
+    "last7": "7 ngày gần đây",
+    "last30": "30 ngày gần đây",
+    "likes": "lượt thích",
+    "comments": "bình luận",
+    "like": "Thích",
+    "share": "Chia sẻ",
+    "linkCopied": "Đã sao chép liên kết!",
+    "showMoreComments": "Xem thêm bình luận",
+    "hideComments": "Ẩn bớt bình luận",
+    "writeComment": "Viết bình luận...",
+    "send": "Gửi",
+    "alert": {
+      "emptyContent": "Vui lòng nhập nội dung!"
+    }
+  },
+  "postDetail": {
+    "notFound": "Không tìm thấy bài viết.",
+    "comments": "Bình luận"
+  },
+  "routeViewer": {
+    "loading": "Đang tải lộ trình...",
+    "routeName": "Lộ trình",
+    "viewFullRoute": "Xem chỉ đường toàn tuyến",
+    "detailTitle": "Chi tiết các quán ăn trong lộ trình",
+    "currentLocation": "Vị trí hiện tại",
+    "locationError": "Không lấy được vị trí người dùng:",
+    "geolocationNotSupported": "Trình duyệt không hỗ trợ Geolocation"
+  },
+  "home": {
+    "about": {
+      "support": {
+        "title": "Hỗ Trợ 24/7",
+        "desc": "Hotline: 0123 456 789 – luôn sẵn sàng giúp bạn."
+      }
+    },
+    "services": {
+      "title": "Dịch Vụ Nổi Bật",
+      "heading": "Trải Nghiệm Ẩm Thực Đỉnh Cao\nDễ Dàng Tìm Kiếm",
+      "desc": "EatAround mang đến những tiện ích hàng đầu giúp bạn nhanh chóng tìm kiếm, khám phá và tận hưởng ẩm thực.",
+      "items": [
+        {
+          "title": "Tìm Kiếm Nhanh",
+          "desc": "Tìm quán ăn nhanh chóng với bộ lọc thông minh và AI."
+        },
+        {
+          "title": "Bản Đồ Trực Quan",
+          "desc": "Xem vị trí chính xác và đường đi tới các quán ăn nổi bật."
+        },
+        {
+          "title": "Ẩm Thực Đa Dạng",
+          "desc": "Khám phá hàng trăm món ăn đến từ nhiều vùng miền."
+        },
+        {
+          "title": "Đánh Giá Tin Cậy",
+          "desc": "Tham khảo đánh giá thực tế từ cộng đồng người dùng."
+        }
+      ]
+    },
+    "benefits": {
+      "title": "Lợi Ích Dành Cho Người Dùng",
+      "heading": "Trải Nghiệm Mượt Mà, Tiện Ích Vượt Trội",
+      "desc": "EatAround mang đến giải pháp hiện đại giúp bạn khám phá và lưu giữ những tuyến food tour yêu thích, dễ dàng quản lý lịch trình ẩm thực.",
+      "items": [
+        {
+          "title": "Giao Diện Thân Thiện & Dễ Sử Dụng",
+          "desc": "Giao diện trực quan, dễ sử dụng trên mọi thiết bị, giúp bạn khám phá quán ăn thuận tiện mọi lúc mọi nơi."
+        },
+        {
+          "title": "Tích Hợp Bản Đồ Thông Minh",
+          "desc": "Tích hợp bản đồ tương tác, cung cấp đường đi và thông tin chi tiết các địa điểm ăn uống."
+        },
+        {
+          "title": "Lưu Lại Lộ Trình Yêu Thích",
+          "desc": "Dễ dàng lưu và chia sẻ các tuyến food tour cho bản thân và bạn bè."
+        },
+        {
+          "title": "Hỗ Trợ Người Dùng 24/7",
+          "desc": "Đội ngũ hỗ trợ luôn sẵn sàng giúp bạn giải đáp thắc mắc và hỗ trợ nhanh chóng."
+        }
+      ]
+    },
+    "testimonials": {
+      "title": "Đánh Giá",
+      "heading": "Khách Hàng Nói Gì Về EatAround?",
+      "desc": "Những phản hồi thực tế từ người dùng EatAround giúp chúng tôi hoàn thiện và phát triển dịch vụ ngày càng tốt hơn.",
+      "items": [
+        {
+          "name": "Nguyễn Văn A",
+          "role": "Yêu Ẩm Thực",
+          "quote": "Dịch vụ EatAround giúp tôi khám phá các quán ăn ngon thật tiện lợi và nhanh chóng."
+        },
+        {
+          "name": "Trần Thị B",
+          "role": "Người Yêu Ẩm Thực",
+          "quote": "EatAround thật sự rất dễ sử dụng và giúp tôi có nhiều lựa chọn phong phú hơn cho các bữa ăn."
+        },
+        {
+          "name": "Lê Văn C",
+          "role": "Đầu Bếp & Foodie",
+          "quote": "Khám phá EatAround là trải nghiệm tuyệt vời, giúp tôi tìm thấy những món ăn yêu thích."
+        }
+      ]
+    }
+  }
 }

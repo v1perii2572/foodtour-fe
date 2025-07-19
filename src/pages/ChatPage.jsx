@@ -1,8 +1,11 @@
 import { FiMapPin, FiSave } from "react-icons/fi";
 import Chat from "../components/Chat";
 import config from "../config";
+import { useTranslation } from "react-i18next";
 
-export default function DefaultRoutes({ token }) {
+export default function ChatPage({ token }) {
+  const { t } = useTranslation();
+
   const routes = [
     {
       name: "Ẩm thực phố cổ Hà Nội",
@@ -147,9 +150,9 @@ export default function DefaultRoutes({ token }) {
       });
 
       if (res.ok) {
-        alert("✅ Đã lưu thành công lộ trình!");
+        alert(t("chat.success"));
       } else {
-        alert("❌ Không thể lưu lộ trình.");
+        alert(t("chat.error"));
       }
     } catch (err) {
       console.error("Lỗi khi lưu lộ trình:", err);
@@ -160,7 +163,7 @@ export default function DefaultRoutes({ token }) {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-6 px-4 max-w-6xl mx-auto">
       <div className="col-span-1 max-h-[500px] overflow-y-auto pr-2">
         <h2 className="text-2xl font-bold text-green-800 mb-4 sticky top-0 bg-white z-10 py-2">
-          🧭 Gợi ý lộ trình Hà Nội
+          🧭 {t("chat.suggested")}
         </h2>
         <div className="space-y-4 pb-4">
           {routes.map((route, idx) => (
@@ -185,7 +188,7 @@ export default function DefaultRoutes({ token }) {
                 onClick={() => handleSave(route)}
                 className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-full text-xs flex items-center gap-1"
               >
-                <FiSave /> Lưu
+                <FiSave /> {t("chat.save")}
               </button>
             </div>
           ))}
@@ -195,7 +198,7 @@ export default function DefaultRoutes({ token }) {
       <div className="col-span-1 md:col-span-2">
         <div className="flex flex-col">
           <h2 className="text-lg font-semibold text-green-700 mb-4">
-            💬 EatAround AI
+            💬 {t("chat.ai")}
           </h2>
           <div className="flex-grow">
             <Chat token={token} />

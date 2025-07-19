@@ -10,8 +10,11 @@ import {
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import config from "../config";
+import { useTranslation } from "react-i18next";
 
 export default function ProfilePage({ token }) {
+  const { t } = useTranslation();
+
   const [name, setName] = useState("");
   const [dislikedFoods, setDislikedFoods] = useState("");
   const [email, setEmail] = useState("");
@@ -42,16 +45,16 @@ export default function ProfilePage({ token }) {
           localStorage.setItem("userId", data.id);
           setLoading(false);
         } catch (err) {
-          console.error("❌ Không phải JSON:", text);
-          setError("Phản hồi từ server không hợp lệ.");
+          console.error("❌ Not JSON:", text);
+          setError(t("profile.error.invalidResponse"));
           setLoading(false);
         }
       })
       .catch(() => {
-        setError("Không thể kết nối đến máy chủ.");
+        setError(t("profile.error.connection"));
         setLoading(false);
       });
-  }, [token]);
+  }, [token, t]);
 
   const handleSave = async () => {
     setSuccess(false);
@@ -75,29 +78,29 @@ export default function ProfilePage({ token }) {
     if (res.ok) {
       setSuccess(true);
     } else {
-      setError("Không thể cập nhật thông tin.");
+      setError(t("profile.error.updateFailed"));
     }
   };
 
   if (loading)
-    return <div className="p-4 text-gray-600">Đang tải thông tin...</div>;
+    return <div className="p-4 text-gray-600">{t("profile.loading")}</div>;
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-6">
       <h2 className="text-2xl font-bold mb-6 text-green-700 flex items-center gap-2">
-        <FiUser /> Thông tin cá nhân
+        <FiUser /> {t("profile.title")}
       </h2>
 
       {error && <div className="mb-4 text-red-600 font-medium">{error}</div>}
       {success && (
         <div className="mb-4 text-green-600 font-medium">
-          ✅ Đã cập nhật thành công!
+          ✅ {t("profile.success")}
         </div>
       )}
 
       <div className="mb-4">
         <label className="block font-medium text-gray-700 flex items-center gap-2">
-          <FiMail /> Email
+          <FiMail /> {t("profile.email")}
         </label>
         <div className="p-2 border rounded bg-gray-100 text-gray-700">
           {email}
@@ -106,7 +109,7 @@ export default function ProfilePage({ token }) {
 
       <div className="mb-4">
         <label className="block font-medium text-gray-700 flex items-center gap-2">
-          <FiShield /> Vai trò
+          <FiShield /> {t("profile.role")}
         </label>
         <div className="p-2 border rounded bg-gray-100 text-gray-700">
           {role}
@@ -115,18 +118,18 @@ export default function ProfilePage({ token }) {
 
       <div className="mb-4">
         <label className="block font-medium text-gray-700 flex items-center gap-2">
-          <FiCalendar /> Ngày hết hạn
+          <FiCalendar /> {t("profile.subscriptionDate")}
         </label>
         <div className="p-2 border rounded bg-gray-100 text-gray-700">
           {subscriptionDate
             ? new Date(subscriptionDate).toLocaleDateString()
-            : "Không có"}
+            : t("profile.noSubscription")}
         </div>
       </div>
 
       <div className="mb-4">
         <label className="block font-medium text-gray-700 flex items-center gap-2">
-          <FiEdit2 /> Tên của bạn
+          <FiEdit2 /> {t("profile.yourName")}
         </label>
         <input
           type="text"
@@ -138,7 +141,7 @@ export default function ProfilePage({ token }) {
 
       <div className="mb-6">
         <label className="block font-medium text-gray-700 flex items-center gap-2">
-          <FiEdit2 /> Món không thích
+          <FiEdit2 /> {t("profile.dislikedFoods")}
         </label>
         <input
           type="text"
@@ -153,14 +156,14 @@ export default function ProfilePage({ token }) {
           onClick={handleSave}
           className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded flex items-center gap-2"
         >
-          <FiSave /> Lưu thay đổi
+          <FiSave /> {t("profile.saveChanges")}
         </button>
 
         <Link
           to="/goi-dang-ky"
           className="inline-flex items-center gap-2 text-green-700 border border-green-600 px-4 py-2 rounded hover:bg-green-100"
         >
-          <FiStar /> Nâng cấp VIP ngay
+          <FiStar /> {t("profile.upgradeVIP")}
         </Link>
       </div>
     </div>
