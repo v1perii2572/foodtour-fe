@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function Header({ onLogout }) {
+  const { i18n } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [username, setUsername] = useState(localStorage.getItem("username"));
@@ -37,6 +39,21 @@ export default function Header({ onLogout }) {
             Eat Around
           </h1>
         </Link>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => i18n.changeLanguage("vi")}
+            className="text-sm hover:underline"
+          >
+            🇻🇳
+          </button>
+          <button
+            onClick={() => i18n.changeLanguage("en")}
+            className="text-sm hover:underline"
+          >
+            🇬🇧
+          </button>
+        </div>
 
         <button
           onClick={() => setMenuOpen(!menuOpen)}
