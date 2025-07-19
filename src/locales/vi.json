@@ -140,111 +140,128 @@
     "geolocationNotSupported": "Trình duyệt không hỗ trợ Geolocation"
   },
   "home": {
-    "home": {
-      "hero": {
-        "sub": "Chào Mừng Đến Với",
-        "title": "Food Tour - Khám Phá Quán Ăn Ngon",
-        "desc": "Hành trình ẩm thực thú vị, khám phá các quán ăn nổi bật gần bạn với sự trợ giúp của AI.",
-        "ctaVideo": "Xem Video",
-        "ctaExplore": "Khám Phá Ngay"
-      },
-      "ai": {
-        "title": "💬 Trợ Lý Ăn Uống EatAround AI",
-        "desc": "Bạn đang phân vân hôm nay ăn gì? Hãy để EatAround AI gợi ý cho bạn món ngon và địa điểm phù hợp!",
-        "inputPlaceholder": "Bạn muốn ăn gì hôm nay?",
-        "button": "Hỏi ngay"
-      },
-      "about": {
-        "support": {
-          "title": "Hỗ Trợ 24/7",
-          "desc": "Hotline: 0123 456 789 – luôn sẵn sàng giúp bạn."
-        }
-      },
-      "services": {
-        "title": "✨ Dịch Vụ Nổi Bật",
-        "heading": "Trải Nghiệm Ẩm Thực Đỉnh Cao\nDễ Dàng Tìm Kiếm",
-        "desc": "EatAround mang đến những tiện ích hàng đầu giúp bạn nhanh chóng tìm kiếm, khám phá và tận hưởng ẩm thực.",
-        "items": [
-          {
-            "title": "Tìm Kiếm Nhanh",
-            "desc": "Tìm quán ăn nhanh chóng với bộ lọc thông minh và AI."
-          },
-          {
-            "title": "Bản Đồ Trực Quan",
-            "desc": "Xem vị trí chính xác và đường đi tới các quán ăn nổi bật."
-          },
-          {
-            "title": "Ẩm Thực Đa Dạng",
-            "desc": "Khám phá hàng trăm món ăn đến từ nhiều vùng miền."
-          },
-          {
-            "title": "Đánh Giá Tin Cậy",
-            "desc": "Tham khảo đánh giá thực tế từ cộng đồng người dùng."
-          }
-        ]
-      },
-      "benefits": {
-        "title": "🌟 Lợi Ích Dành Cho Người Dùng",
-        "heading": "Trải Nghiệm Mượt Mà, Tiện Ích Vượt Trội",
-        "desc": "EatAround mang đến giải pháp hiện đại giúp bạn khám phá và lưu giữ những tuyến food tour yêu thích, dễ dàng quản lý lịch trình ẩm thực.",
-        "items": [
-          {
-            "title": "Giao Diện Thân Thiện & Dễ Sử Dụng",
-            "desc": "Giao diện trực quan, dễ sử dụng trên mọi thiết bị, giúp bạn khám phá quán ăn thuận tiện mọi lúc mọi nơi."
-          },
-          {
-            "title": "Tích Hợp Bản Đồ Thông Minh",
-            "desc": "Tích hợp bản đồ tương tác, cung cấp đường đi và thông tin chi tiết các địa điểm ăn uống."
-          },
-          {
-            "title": "Lưu Lại Lộ Trình Yêu Thích",
-            "desc": "Dễ dàng lưu và chia sẻ các tuyến food tour cho bản thân và bạn bè."
-          },
-          {
-            "title": "Hỗ Trợ Người Dùng 24/7",
-            "desc": "Đội ngũ hỗ trợ luôn sẵn sàng giúp bạn giải đáp thắc mắc và hỗ trợ nhanh chóng."
-          }
-        ]
-      },
-      "faqs": [
-        {
-          "question": "Làm thế nào để tìm quán ăn phù hợp?",
-          "answer": "Bạn có thể dùng tính năng tìm kiếm thông minh và bộ lọc của EatAround để nhanh chóng tìm được quán ăn phù hợp với sở thích và nhu cầu."
-        },
-        {
-          "question": "EatAround có hỗ trợ đặt chỗ không?",
-          "answer": "Hiện tại EatAround là nền tảng khám phá quán ăn và gợi ý tuyến food tour, chúng tôi sẽ tích hợp tính năng đặt chỗ trong tương lai."
-        },
-        {
-          "question": "EatAround có app trên điện thoại không?",
-          "answer": "Chúng tôi đang phát triển ứng dụng dành cho iOS và Android, dự kiến ra mắt trong thời gian tới."
-        }
-      ],
-      "faqTitle": "❓ Câu Hỏi Thường Gặp",
-      "faqSubtitle": "Giải Đáp Những Thắc Mắc Của Bạn",
-      "faqDesc": "Chúng tôi tổng hợp những câu hỏi phổ biến giúp bạn hiểu rõ hơn về EatAround và dịch vụ của chúng tôi.",
-      "testimonials": {
-        "title": "💬 Đánh Giá",
-        "heading": "Khách Hàng Nói Gì Về EatAround?",
-        "desc": "Những phản hồi thực tế từ người dùng EatAround giúp chúng tôi hoàn thiện và phát triển dịch vụ ngày càng tốt hơn.",
-        "items": [
-          {
-            "name": "Nguyễn Văn A",
-            "role": "Yêu Ẩm Thực",
-            "quote": "Dịch vụ EatAround giúp tôi khám phá các quán ăn ngon thật tiện lợi và nhanh chóng."
-          },
-          {
-            "name": "Trần Thị B",
-            "role": "Người Yêu Ẩm Thực",
-            "quote": "EatAround thật sự rất dễ sử dụng và giúp tôi có nhiều lựa chọn phong phú hơn cho các bữa ăn."
-          },
-          {
-            "name": "Lê Văn C",
-            "role": "Đầu Bếp & Foodie",
-            "quote": "Khám phá EatAround là trải nghiệm tuyệt vời, giúp tôi tìm thấy những món ăn yêu thích."
-          }
-        ]
+    "hero": {
+      "sub": "Chào Mừng Đến Với",
+      "title": "Food Tour - Khám Phá Quán Ăn Ngon",
+      "desc": "Hành trình ẩm thực thú vị, khám phá các quán ăn nổi bật gần bạn với sự trợ giúp của AI.",
+      "ctaVideo": "Xem Video",
+      "ctaExplore": "Khám Phá Ngay"
+    },
+    "ai": {
+      "title": "💬 Trợ Lý Ăn Uống EatAround AI",
+      "desc": "Bạn đang phân vân hôm nay ăn gì? Hãy để EatAround AI gợi ý cho bạn món ngon và địa điểm phù hợp!",
+      "inputPlaceholder": "Bạn muốn ăn gì hôm nay?",
+      "button": "Hỏi ngay"
+    },
+    "about": {
+      "support": {
+        "title": "Hỗ Trợ 24/7",
+        "desc": "Hotline: 0974696209 – luôn sẵn sàng giúp bạn."
       }
+    },
+    "services": {
+      "title": "✨ Dịch Vụ Nổi Bật",
+      "heading": "Trải Nghiệm Ẩm Thực Đỉnh Cao\nDễ Dàng Tìm Kiếm",
+      "desc": "EatAround mang đến những tiện ích hàng đầu giúp bạn nhanh chóng tìm kiếm, khám phá và tận hưởng ẩm thực.",
+      "items": [
+        {
+          "title": "Tìm Kiếm Nhanh",
+          "desc": "Tìm quán ăn nhanh chóng với bộ lọc thông minh và AI."
+        },
+        {
+          "title": "Bản Đồ Trực Quan",
+          "desc": "Xem vị trí chính xác và đường đi tới các quán ăn nổi bật."
+        },
+        {
+          "title": "Ẩm Thực Đa Dạng",
+          "desc": "Khám phá hàng trăm món ăn đến từ nhiều vùng miền."
+        },
+        {
+          "title": "Đánh Giá Tin Cậy",
+          "desc": "Tham khảo đánh giá thực tế từ cộng đồng người dùng."
+        }
+      ]
+    },
+    "benefits": {
+      "title": "🌟 Lợi Ích Dành Cho Người Dùng",
+      "heading": "Trải Nghiệm Mượt Mà, Tiện Ích Vượt Trội",
+      "desc": "EatAround mang đến giải pháp hiện đại giúp bạn khám phá và lưu giữ những tuyến food tour yêu thích, dễ dàng quản lý lịch trình ẩm thực.",
+      "items": [
+        {
+          "title": "Giao Diện Thân Thiện & Dễ Sử Dụng",
+          "desc": "Giao diện trực quan, dễ sử dụng trên mọi thiết bị, giúp bạn khám phá quán ăn thuận tiện mọi lúc mọi nơi."
+        },
+        {
+          "title": "Tích Hợp Bản Đồ Thông Minh",
+          "desc": "Tích hợp bản đồ tương tác, cung cấp đường đi và thông tin chi tiết các địa điểm ăn uống."
+        },
+        {
+          "title": "Lưu Lại Lộ Trình Yêu Thích",
+          "desc": "Dễ dàng lưu và chia sẻ các tuyến food tour cho bản thân và bạn bè."
+        },
+        {
+          "title": "Hỗ Trợ Người Dùng 24/7",
+          "desc": "Đội ngũ hỗ trợ luôn sẵn sàng giúp bạn giải đáp thắc mắc và hỗ trợ nhanh chóng."
+        }
+      ]
+    },
+    "faqs": [
+      {
+        "question": "Làm thế nào để tìm quán ăn phù hợp?",
+        "answer": "Bạn có thể dùng tính năng tìm kiếm thông minh và bộ lọc của EatAround để nhanh chóng tìm được quán ăn phù hợp với sở thích và nhu cầu."
+      },
+      {
+        "question": "EatAround có hỗ trợ đặt chỗ không?",
+        "answer": "Hiện tại EatAround là nền tảng khám phá quán ăn và gợi ý tuyến food tour, chúng tôi sẽ tích hợp tính năng đặt chỗ trong tương lai."
+      },
+      {
+        "question": "EatAround có app trên điện thoại không?",
+        "answer": "Chúng tôi đang phát triển ứng dụng dành cho iOS và Android, dự kiến ra mắt trong thời gian tới."
+      }
+    ],
+    "faqTitle": "❓ Câu Hỏi Thường Gặp",
+    "faqSubtitle": "Giải Đáp Những Thắc Mắc Của Bạn",
+    "faqDesc": "Chúng tôi tổng hợp những câu hỏi phổ biến giúp bạn hiểu rõ hơn về EatAround và dịch vụ của chúng tôi.",
+    "testimonials": {
+      "title": "💬 Đánh Giá",
+      "heading": "Khách Hàng Nói Gì Về EatAround?",
+      "desc": "Những phản hồi thực tế từ người dùng EatAround giúp chúng tôi hoàn thiện và phát triển dịch vụ ngày càng tốt hơn.",
+      "items": [
+        {
+          "name": "Nguyễn Minh Đức",
+          "role": "Yêu Ẩm Thực",
+          "quote": "Dịch vụ EatAround giúp tôi khám phá các quán ăn ngon thật tiện lợi và nhanh chóng."
+        },
+        {
+          "name": "Trần Minh Quân",
+          "role": "Người Yêu Ẩm Thực",
+          "quote": "EatAround thật sự rất dễ sử dụng và giúp tôi có nhiều lựa chọn phong phú hơn cho các bữa ăn."
+        },
+        {
+          "name": "Lê Văn Quyên",
+          "role": "Đầu Bếp & Foodie",
+          "quote": "Khám phá EatAround là trải nghiệm tuyệt vời, giúp tôi tìm thấy những món ăn yêu thích."
+        }
+      ]
+    }
+  },
+  "footer": {
+    "description": "EatAround giúp bạn khám phá các tuyến food tour hấp dẫn tại Việt Nam với bản đồ thông minh và gợi ý địa điểm thú vị.",
+    "slogan": "Khám phá và thưởng thức ngay hôm nay!",
+    "quickLinks": "Liên kết nhanh",
+    "support": "Hỗ trợ",
+    "contact": "Liên hệ",
+    "location": "Hà Nội, Việt Nam",
+    "copyright": "Đã đăng ký bản quyền.",
+    "links": {
+      "home": "Trang chủ",
+      "services": "Dịch vụ",
+      "blog": "Blog",
+      "contact": "Liên hệ",
+      "privacy": "Chính sách bảo mật",
+      "terms": "Điều khoản sử dụng",
+      "faq": "Câu hỏi thường gặp",
+      "help": "Trợ giúp"
     }
   }
 }

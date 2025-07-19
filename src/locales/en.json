@@ -156,7 +156,7 @@
     "about": {
       "support": {
         "title": "24/7 Support",
-        "desc": "Hotline: 0123 456 789 – always ready to help you."
+        "desc": "Hotline: 0974696209 – always ready to help you."
       }
     },
     "services": {
@@ -228,21 +228,40 @@
       "desc": "Real feedback from EatAround users helps us improve and deliver better services.",
       "items": [
         {
-          "name": "Nguyen Van A",
+          "name": "Nguyen Minh Duc",
           "role": "Food Lover",
           "quote": "EatAround helps me discover delicious restaurants conveniently and quickly."
         },
         {
-          "name": "Tran Thi B",
+          "name": "Tran Minh Quan",
           "role": "Gastronomy Enthusiast",
           "quote": "EatAround is really easy to use and gives me more diverse options for meals."
         },
         {
-          "name": "Le Van C",
+          "name": "Le Van Quyen",
           "role": "Chef & Foodie",
           "quote": "Discovering EatAround is a wonderful experience, helping me find my favorite dishes."
         }
       ]
+    }
+  },
+  "footer": {
+    "description": "EatAround helps you explore exciting food tours across Vietnam with smart maps and great place recommendations.",
+    "slogan": "Start exploring and enjoying today!",
+    "quickLinks": "Quick Links",
+    "support": "Support",
+    "contact": "Contact",
+    "location": "Hanoi, Vietnam",
+    "copyright": "All rights reserved.",
+    "links": {
+      "home": "Home",
+      "services": "Services",
+      "blog": "Blog",
+      "contact": "Contact",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "faq": "FAQ",
+      "help": "Help"
     }
   }
 }

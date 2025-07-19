@@ -6,13 +6,18 @@ export default function Header({ onLogout }) {
   const { t, i18n } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const [username, setUsername] = useState(localStorage.getItem("username"));
   const dropdownRef = useRef();
+  const langRef = useRef();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setUserDropdownOpen(false);
+      }
+      if (langRef.current && !langRef.current.contains(event.target)) {
+        setLangDropdownOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -27,6 +32,11 @@ export default function Header({ onLogout }) {
     return () => clearInterval(interval);
   }, []);
 
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    setLangDropdownOpen(false);
+  };
+
   return (
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
@@ -40,21 +50,50 @@ export default function Header({ onLogout }) {
           </h1>
         </Link>
 
-        <div className="flex items-center gap-2">
+        {/* Language Switcher */}
+        <div className="relative" ref={langRef}>
           <button
-            onClick={() => i18n.changeLanguage("vi")}
-            className="text-sm hover:underline"
+            onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+            className="flex items-center gap-2 px-3 py-1 border border-green-300 rounded-md text-sm text-green-700 hover:bg-green-100 transition"
           >
-            🇻🇳
+            🌐 {i18n.language === "vi" ? "VN" : "EN"}
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
           </button>
-          <button
-            onClick={() => i18n.changeLanguage("en")}
-            className="text-sm hover:underline"
-          >
-            🇬🇧
-          </button>
+          {langDropdownOpen && (
+            <ul className="absolute right-0 mt-2 bg-white border rounded shadow text-sm z-50">
+              <li>
+                <button
+                  onClick={() => changeLanguage("vi")}
+                  className="block w-full px-4 py-2 hover:bg-green-100"
+                >
+                  🇻🇳 Tiếng Việt
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => changeLanguage("en")}
+                  className="block w-full px-4 py-2 hover:bg-green-100"
+                >
+                  🇬🇧 English
+                </button>
+              </li>
+            </ul>
+          )}
         </div>
 
+        {/* Hamburger for mobile */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="lg:hidden p-2 rounded-md text-green-700 hover:bg-green-100 focus:outline-none"
@@ -83,6 +122,7 @@ export default function Header({ onLogout }) {
           </svg>
         </button>
 
+        {/* Main Nav */}
         <nav
           className={`${
             menuOpen ? "block" : "hidden"
@@ -118,13 +158,6 @@ export default function Header({ onLogout }) {
               >
                 {t("header.savedRoutes")}
               </Link>
-              {/* <Link
-                to="/admin"
-                onClick={() => setMenuOpen(false)}
-                className="block px-4 py-2 text-green-700 font-semibold hover:text-green-500"
-              >
-                {t("header.admin")}
-              </Link> */}
             </>
           )}
           {username ? (
